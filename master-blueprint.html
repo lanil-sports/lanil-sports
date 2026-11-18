@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANILSPORTS — Master Operating Blueprint & System Specification</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { background: white !important; color: black !important; }
+      .no-print { display: none !important; }
+      .card { border: 1px solid #ccc !important; background: white !important; color: black !important; }
+    }
+  </style>
+</head>
+<body class="bg-[#0b132b] text-slate-100 font-sans p-6 sm:p-12 max-w-4xl mx-auto leading-relaxed">
+  <div class="no-print mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+    <a href="/" class="text-xs text-amber-400 hover:underline">&larr; Back to Directory</a>
+    <div class="flex gap-2">
+      <a href="/LANILSPORTS_Master_Operating_Blueprint.docx" download class="px-3.5 py-2 rounded-xl bg-amber-400 text-black font-bold text-xs hover:bg-yellow-300 transition shadow-md">
+        Download Word Document (.docx)
+      </a>
+      <button onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition">
+        Print / Save to PDF
+      </button>
+    </div>
+  </div>
+
+  <header class="border-b border-white/15 pb-6 mb-8 text-center sm:text-left">
+    <div class="flex items-center justify-center sm:justify-start gap-2 mb-2">
+      <span class="px-2.5 py-0.5 rounded bg-amber-400 text-black text-xs font-bold">CONFIDENTIAL</span>
+      <span class="text-xs text-slate-400">Official Master System Specification • Version 2.0</span>
+    </div>
+    <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">LANILSPORTS.COM</h1>
+    <h2 class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">Master Operating Blueprint & System Specification</h2>
+    <p class="text-xs sm:text-sm text-slate-300 mt-2">Louisiana High School Sports Directory, Recruiting Intelligence & NIL Valuation Engine ($0 Zero-Budget Stack)</p>
+  </header>
+
+  <div class="space-y-8 text-sm">
+    <!-- Section 1 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">1. Executive Vision & Market Opportunity</h3>
+      <p class="text-slate-300 leading-relaxed mb-3">
+        <strong>LANILSPORTS.COM (Louisiana NIL)</strong> is the definitive, centralized sports information, digital yearbook, and NIL intelligence platform for Louisiana high school student-athletes across all 64 parishes.
+      </p>
+      <p class="text-slate-300 leading-relaxed">
+        While national recruiting networks (On3, 247Sports, Rivals) cater almost exclusively to the top 1-2% of five-star recruits, LANIL owns the <strong>"98% Market Gap"</strong>: the thousands of varsity student-athletes destined for D2, D3, NAIA, JUCO, or local commercial opportunities. LANIL combines athletic accomplishments, verified weekly statistics, recruiting milestones, and social media analytics into a unified public directory with subscription-based intelligence dossiers.
+      </p>
+    </section>
+
+    <!-- Section 2 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">2. The $0 Cloud Architecture & Technical Stack</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10 card">
+          <h4 class="font-bold text-white text-xs mb-0.5">Edge Delivery & CDN</h4>
+          <p class="text-xs text-slate-400"><strong>Cloudflare Pages ($0):</strong> Ultra-fast global static CDN, free SSL certificates, and custom domain mapping for <code>lanilsports.com</code>.</p>
+        </div>
+        <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10 card">
+          <h4 class="font-bold text-white text-xs mb-0.5">Database & Authentication</h4>
+          <p class="text-xs text-slate-400"><strong>Supabase PostgreSQL ($0):</strong> Cloud database storing 64 Louisiana parishes, all LHSAA schools, and athlete profiles with Row-Level Security.</p>
+        </div>
+        <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10 card">
+          <h4 class="font-bold text-white text-xs mb-0.5">Automated Scraper / Cron</h4>
+          <p class="text-xs text-slate-400"><strong>GitHub Actions ($0):</strong> Scheduled runners (2,000 free minutes/mo) waking up every Tuesday at 6 AM CST to parse Louisiana sports RSS feeds.</p>
+        </div>
+        <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10 card">
+          <h4 class="font-bold text-white text-xs mb-0.5">Monetization Gateway</h4>
+          <p class="text-xs text-slate-400"><strong>Stripe ($0 Upfront):</strong> Zero monthly fee. Charges 2.9% + 30¢ only when parents or recruiters purchase subscriptions.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">3. Complete 64 Louisiana Parishes Registry</h3>
+      <p class="text-slate-300 text-xs leading-relaxed">
+        LANIL covers every single one of Louisiana's 64 parishes: North Louisiana (Ouachita/Monroe, Caddo/Shreveport, Bossier, Lincoln/Ruston, etc.), Capital Area (East Baton Rouge, Livingston, Ascension), Greater New Orleans (Orleans, Jefferson, St. Bernard), Acadiana (Lafayette, Iberia, St. Landry), Central Louisiana (Rapides/Alexandria), Southwest Louisiana (Calcasieu/Lake Charles), and Florida Parishes (St. Tammany, Tangipahoa).
+      </p>
+    </section>
+
+    <!-- Section 4 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">4. Dynamic NIL Valuation Mathematical Engine</h3>
+      <div class="p-4 bg-slate-900 rounded-xl border border-amber-400/30 font-mono text-xs text-amber-300 mb-3 card">
+        Est_NIL_Value = [(Base + C_college) &times; M_stats &times; K_position] + S_social + B_multisport
+      </div>
+      <ul class="space-y-1.5 text-xs text-slate-300">
+        <li><strong>C_college:</strong> SEC / Power 4 (+&dollar;1,500/offer) &bull; Regional FBS (+&dollar;600/offer) &bull; FCS/D2 (+&dollar;250/offer)</li>
+        <li><strong>M_stats:</strong> Dynamic weekly multiplier (1.0x to 2.2x) scaling with cumulative touchdowns, passing yards, points, and strikeouts.</li>
+        <li><strong>K_position:</strong> QB & Scoring PG (1.35x) &bull; WR, Edge Rusher, Pitcher (1.15x) &bull; RB, Center (1.0x) &bull; Linemen (0.9x)</li>
+        <li><strong>S_social:</strong> Instagram (&dollar;0.15) + TikTok (&dollar;0.08) + X (&dollar;0.10)</li>
+        <li><strong>B_multisport:</strong> +&dollar;300 for multi-sport varsity athletes.</li>
+      </ul>
+    </section>
+
+    <!-- Section 5 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">5. Monetization & Revenue Targets</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/10 card">
+          <span class="text-xs text-amber-400 font-bold block">Athlete Plus</span>
+          <span class="text-xl font-bold text-white block">&dollar;3.99/mo</span>
+          <span class="text-[11px] text-slate-400">10 photos, full bio, highlight reel links, verified badge.</span>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/10 card">
+          <span class="text-xs text-indigo-400 font-bold block">Recruiter Pro</span>
+          <span class="text-xl font-bold text-white block">&dollar;19.99/mo</span>
+          <span class="text-[11px] text-slate-400">Full statewide prospect database, verified offer dossiers, CSV exports.</span>
+        </div>
+        <div class="p-3 bg-slate-900 rounded-xl border border-white/10 card">
+          <span class="text-xs text-emerald-400 font-bold block">Parish Sponsor</span>
+          <span class="text-xl font-bold text-white block">&dollar;99.00/mo</span>
+          <span class="text-[11px] text-slate-400">Hyperlocal banner placement on parish directory pages.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 6 -->
+    <section>
+      <h3 class="text-lg font-bold text-amber-400 border-b border-white/10 pb-1.5 mb-3">6. Anti-Scraping Defense & Legal Compliance</h3>
+      <ul class="space-y-1.5 text-xs text-slate-300">
+        <li><strong>Row-Level Security (RLS):</strong> Public users cannot scrape sensitive guardian records or private recruiter notes.</li>
+        <li><strong>Cloudflare Bot Fight Mode:</strong> Automatically blocks headless scrapers (Puppeteer, Scrapy, Selenium).</li>
+        <li><strong>Anti-Framing Headers:</strong> <code>X-Frame-Options: DENY</code> blocks competitor iframe stealing.</li>
+        <li><strong>Louisiana Act 810 (La. R.S. 17:3705):</strong> Minor parental consent verification, no school uniforms in commercial endorsements, zero gambling/alcohol sponsorships.</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>

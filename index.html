@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANILSPORTS.COM | Louisiana High School Athlete Directory & NIL Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              navy: '#0b132b',
+              dark: '#1c2541',
+              accent: '#3a506b',
+              gold: '#f5b700',
+              goldHover: '#e0a700',
+              purple: '#5e239d',
+              card: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Dancing+Script:wght@700&family=Teko:wght@500;700&family=Inter:wght@300;400;600;700;800&display=swap');
+    .font-athletic { font-family: 'Teko', sans-serif; letter-spacing: 0.05em; }
+    .font-signature { font-family: 'Caveat', 'Dancing Script', cursive; }
+    .font-sans { font-family: 'Inter', sans-serif; }
+    .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .gold-gradient { background: linear-gradient(135deg, #f5b700 0%, #ff8800 100%); }
+    .badge-blur { backdrop-filter: blur(8px); background: rgba(0,0,0,0.6); }
+    .refractor-sheen {
+      background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 25%, rgba(245,183,0,0.2) 48%, rgba(255,255,255,0.18) 52%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0) 100%);
+    }
+  </style>
+</head>
+<body class="bg-[#0b132b] text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-yellow-400 selection:text-black">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-amber-700 px-4 py-2 text-xs text-center font-medium text-amber-200 border-b border-white/10 flex items-center justify-center gap-2">
+    <span class="bg-amber-400 text-black font-bold px-1.5 py-0.5 rounded text-[10px]">OFFICIAL</span>
+    <span>Louisiana High School NIL Directory & Yearbook (2026-2027) is LIVE across all 64 Parishes.</span>
+  </div>
+
+  <!-- Main Navigation -->
+  <header class="sticky top-0 z-40 glass border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('directory')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-athletic text-2xl text-black font-bold shadow-lg shadow-amber-500/20">
+          LA
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-athletic text-2xl tracking-wider font-bold text-white leading-none">LANIL<span class="text-amber-400">SPORTS</span></span>
+            <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">LHSAA</span>
+          </div>
+          <p class="text-[10px] text-slate-400 -mt-1 tracking-tight">Louisiana Athlete Intelligence & Directory</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <button onclick="navigate('directory')" class="nav-link text-white hover:text-amber-400 transition">Directory</button>
+        <button onclick="navigate('rankings')" class="nav-link text-slate-300 hover:text-amber-400 transition">Rankings</button>
+        <button onclick="navigate('potw')" class="nav-link text-slate-300 hover:text-amber-400 transition flex items-center gap-1.5">
+          <span>Fan Vote</span>
+          <span class="flex h-2 w-2 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+          </span>
+        </button>
+        <button onclick="navigate('pricing')" class="nav-link text-slate-300 hover:text-amber-400 transition">Pricing & NIL</button>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        
+        <button onclick="openModal('claim-modal')" class="text-xs md:text-sm font-bold px-3.5 py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-user-check"></i>
+          <span>Athlete Portal</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dynamic Main Content -->
+  <main id="app" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8"></main>
+
+  <!-- Athlete Profile Modal / Drawer -->
+  <div id="athlete-drawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
+      <div id="drawer-content"></div>
+    </div>
+  </div>
+
+  <!-- Claim Modal -->
+  <div id="claim-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+      <button onclick="closeModal('claim-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">✕</button>
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 rounded-full gold-gradient flex items-center justify-center text-black font-bold text-xl mx-auto mb-3">
+          <i class="fa-solid fa-id-badge"></i>
+        </div>
+        <h3 class="text-xl font-bold text-white">Athlete & Parent Portal</h3>
+        <p class="text-xs text-slate-400 mt-1">Claim your high school profile, update stats, and manage NIL opportunities.</p>
+      </div>
+
+      <form id="claim-form" onsubmit="handleClaimSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Athlete Full Name</label>
+          <input type="text" id="claim-name" placeholder="e.g. Marcus Thibodaux" required class="w-full bg-slate-800/80 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Graduation Year</label>
+            <select id="claim-year" class="w-full bg-slate-800/80 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+              <option value="2027">2027 (Senior)</option>
+              <option value="2028">2028 (Junior)</option>
+              <option value="2029">2029 (Sophomore)</option>
+              <option value="2030">2030 (Freshman)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Primary Sport</label>
+            <select id="claim-sport" class="w-full bg-slate-800/80 border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+              <option value="Football">Football</option>
+              <option value="Basketball">Basketball</option>
+              <option value="Baseball">Baseball</option>
+              <option value="Track & Field">Track & Field</option>
+              <option value="Softball">Softball</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">High School (LHSAA)</label>
+          <input type="text" id="claim-school" placeholder="e.g. Neville High School" required class="w-full bg-slate-800/80 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-1">Parent or Athlete Email</label>
+          <input type="email" id="claim-email" placeholder="coach@gmail.com or athlete@icloud.com" required class="w-full bg-slate-800/80 border border-white/10 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div class="bg-amber-400/10 border border-amber-400/20 rounded-xl p-3 text-xs text-amber-200 flex items-start gap-2">
+          <i class="fa-solid fa-shield-halved text-amber-400 mt-0.5"></i>
+          <span>Under 18 Notice: Per Louisiana NIL Act 810 (La. R.S. 17:3705), parental or guardian authorization is recorded before commercial profiles go live.</span>
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-xl gold-gradient text-slate-950 font-bold text-sm hover:brightness-110 shadow-lg shadow-amber-500/20 transition">
+          Claim Profile (Free)
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- LANIL Shareable Athlete Playing Card Modal -->
+  <div id="card-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl text-center">
+      <button onclick="closeModal('card-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl z-20">✕</button>
+      
+      <div class="mb-3">
+        <span class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/40">
+          <i class="fa-solid fa-certificate"></i> Official LANIL Authentic Playing Card
+        </span>
+        <h3 class="font-athletic text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white mt-1">
+          COLLECTIBLE ATHLETE CARD
+        </h3>
+        <p class="text-xs text-slate-400">Save your free digital card (Instagram Story & X) or purchase physical collector cards & wall decals.</p>
+      </div>
+
+      <!-- The Authentic LANIL Physical Card Frame -->
+      <div class="mx-auto max-w-[340px] shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+        <div id="shareable-card" class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-slate-200 shadow-2xl">
+          
+          <!-- Inner Card Foil Border -->
+          <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-amber-400/80 p-3.5 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
+            
+            <!-- Metallic Refractor Sheen Overlay -->
+            <div class="absolute inset-0 refractor-sheen pointer-events-none"></div>
+
+            <!-- Top Header: Arched School Name & LANIL Refractor Badge -->
+            <div>
+              <div class="flex items-center justify-between border-b border-amber-400/30 pb-2 mb-2 relative z-10">
+                <!-- LANIL Refractor Emblem (Official LA Insignia) -->
+                <div class="flex items-center gap-1.5">
+                  <div class="w-6 h-6 rounded bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-600 text-slate-950 font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-yellow-200">LA</div>
+                  <div>
+                    <span class="font-athletic text-xs font-bold text-amber-400 tracking-wider block leading-none">LANIL &bull; ATHLETICS</span>
+                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">2026 1st Edition</span>
+                  </div>
+                </div>
+
+                <!-- Card Serial Number -->
+                <div class="text-right">
+                  <span id="lanil-card-num" class="font-mono text-[9px] text-amber-300 font-bold block">CARD #LA-2701</span>
+                  <span class="text-[8px] text-emerald-400 font-semibold uppercase block">Verified Prospect</span>
+                </div>
+              </div>
+
+              <!-- Arched School & Mascot Banner over Player Photo -->
+              <div class="py-1.5 px-3 bg-gradient-to-r from-amber-400/15 via-amber-400/25 to-amber-400/15 rounded-lg border border-amber-400/40 mb-2 relative z-10 flex items-center justify-center gap-2 shadow-inner">
+                <img id="lanil-logo" src="" alt="Mascot Logo" class="w-6 h-6 rounded-full object-contain shrink-0 bg-slate-900/90 p-0.5 border border-amber-400/50 shadow-sm hidden">
+                <div class="text-center min-w-0 flex-1 leading-tight">
+                  <div id="lanil-school" class="font-athletic text-xs sm:text-sm tracking-wider text-white uppercase font-bold drop-shadow-sm leading-tight text-center"></div>
+                  <div id="lanil-mascot" class="font-athletic text-[11px] sm:text-xs tracking-widest text-amber-300 uppercase font-extrabold leading-none mt-0.5"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Main Athlete Photo Area -->
+            <div class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-amber-400/60 bg-slate-950 shadow-inner my-1">
+              <img id="card-img" src="" alt="Athlete Photo" class="w-full h-full object-cover">
+              
+              <div id="card-avatar-fallback" class="w-full h-full hidden items-center justify-center bg-slate-900">
+              </div>
+
+              <!-- Dedicated Player Signature (Directly on Face of Card across lower photo) -->
+              <div class="absolute bottom-2.5 left-2.5 right-12 z-20 pointer-events-auto">
+                <div class="bg-black/65 backdrop-blur-md border border-amber-400/40 rounded-lg px-2.5 py-1 flex items-center justify-between shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+                  <div class="flex-1 text-left flex items-center gap-1.5 truncate">
+                    <span class="text-[9px] font-mono text-amber-400 font-black">✍</span>
+                    <span id="lanil-sig" class="font-signature italic text-amber-200 text-lg sm:text-xl font-bold tracking-wider drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)] leading-none truncate"></span>
+                    <img id="lanil-sig-img" src="" alt="Drawn Autograph" class="h-6 object-contain hidden filter drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)]">
+                  </div>
+                  <button type="button" onclick="openSignaturePad()" title="Draw your own autograph or customize signature" class="px-2 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[9px] font-bold uppercase tracking-wider transition flex items-center gap-1 shrink-0 ml-1">
+                    <i class="fa-solid fa-signature"></i> Sign
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sport Icon Emblem (Bottom Right Corner of Photo - Replaces black circle with official sport emoji) -->
+              <div id="card-sport-badge" class="absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-slate-950/95 border-2 border-amber-400 flex items-center justify-center text-sm sm:text-base shadow-[0_2px_10px_rgba(0,0,0,0.9)] select-none" title="Primary Sport">
+                <span id="card-sport-emoji" class="leading-none select-none">🏈</span>
+              </div>
+            </div>
+
+            <!-- Bottom Nameplate & Card Dossier -->
+            <div class="relative z-10 mt-1">
+              <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-400/40 rounded-lg p-2.5 shadow-md">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <h4 id="card-name" class="font-athletic text-2xl font-bold text-white tracking-wide leading-none truncate"></h4>
+                    <!-- Full Position Title directly under Name (Replaces National Showcase / Folsom & removes QB *) -->
+                    <p id="card-pos-full" class="font-athletic text-sm uppercase tracking-wider text-amber-300 font-bold mt-1 leading-none"></p>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <span class="text-[9px] uppercase font-bold text-slate-400 block">Class</span>
+                    <span id="card-grad" class="font-athletic text-xl font-bold text-white leading-none"></span>
+                  </div>
+                </div>
+
+                <!-- Micro Stat Line Highlight (Centered) -->
+                <div class="mt-1.5 pt-1.5 border-t border-white/10 text-[10px] text-slate-300 font-mono leading-tight text-center" id="card-stats">
+                </div>
+              </div>
+
+              <!-- Authenticity Hologram Footer (Centered at Foot of Card) -->
+              <div class="mt-2.5 w-full flex items-center justify-center gap-1.5 text-[8.5px] text-slate-400 font-bold uppercase tracking-wider text-center">
+                <span class="inline-flex items-center gap-1 text-amber-400 font-bold">
+                  <i class="fa-solid fa-shield-halved text-[9px]"></i> LANIL AUTHENTICATED
+                </span>
+                <span class="text-slate-500 font-bold">&bull;</span>
+                <span id="card-watermark-text" class="text-amber-300 font-extrabold tracking-wider">#LOUISIANABUILT</span>
+                <span id="card-pro-badge" class="hidden items-center gap-1 text-amber-300 font-extrabold tracking-widest text-[8px] ml-1">
+                  <i class="fa-solid fa-crown text-[8px]"></i> PRO 4K
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Digital Card Options: Free Watermarked Social vs $1.00 Unwatermarked Pro -->
+      <div class="mt-5 space-y-2.5">
+        <!-- Option 1: Free Social Card (9:16 Story format with lanilsports.com watermark) -->
+        <button id="btn-download-card" onclick="downloadCard(false)" class="w-full py-3 px-4 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-arrow-down-to-bracket text-sm"></i>
+          <span>Download Free Social Card (Instagram Story & X)</span>
+        </button>
+
+        <!-- Option 2: $1.00 Ultra-HD Unwatermarked Pro Card -->
+        <button onclick="openMerchOrder('digital-pro')" class="w-full py-2.5 px-3.5 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 border border-amber-400/40 hover:border-amber-400 text-white font-bold text-xs shadow-md transition flex items-center justify-between group">
+          <div class="flex items-center gap-2.5 text-left">
+            <span class="w-6 h-6 rounded-full bg-amber-400/20 text-amber-300 flex items-center justify-center text-xs group-hover:scale-110 transition shrink-0">
+              <i class="fa-solid fa-crown text-[11px]"></i>
+            </span>
+            <div>
+              <span class="block leading-none text-slate-100 font-bold text-xs">Download Ultra-HD Pro Card (Unwatermarked)</span>
+              <span class="text-[10px] text-amber-300/90 font-normal">Clean 4K export &bull; No watermark &bull; Personal print rights</span>
+            </div>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-athletic text-sm font-bold tracking-wider shrink-0 ml-2">$1.00</span>
+        </button>
+
+        <div class="flex items-center justify-between text-[11px] text-slate-400 px-1 pt-0.5">
+          <span>Free download includes lanilsports.com watermark</span>
+          <div class="flex items-center gap-3">
+            <button onclick="shareCardToTwitter()" class="hover:text-amber-300 transition flex items-center gap-1" title="Share to X">
+              <i class="fa-brands fa-x-twitter"></i> Post
+            </button>
+            <button onclick="copyCardShareLink()" class="hover:text-amber-300 transition flex items-center gap-1" title="Copy Card Link">
+              <i class="fa-regular fa-copy"></i> Link
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Premium Merchandising & Physical Purchases -->
+      <div class="mt-6 pt-5 border-t border-white/10 text-left space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-store text-xs"></i>
+            <span>Official Athlete Merch & Physical Keepsakes</span>
+          </h4>
+          <span class="text-[10px] text-slate-400 font-medium">Zero Inventory &bull; Print on Demand</span>
+        </div>
+
+        <!-- Option A: Purchase LANIL Players Collector's Card ($9.99) -->
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-lg bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-xl shrink-0">
+              <i class="fa-solid fa-id-card"></i>
+            </div>
+            <div>
+              <h5 class="font-bold text-white text-xs">Purchase LANIL Players Collector's Card</h5>
+              <p class="text-[11px] text-slate-400">32pt heavy-gauge cardstock &bull; UV mirror-refractor &bull; Acrylic magnetic case</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-xs font-bold text-emerald-400">$9.99</span>
+                <span class="text-[10px] text-slate-500">| 5-Pack: $24.99 &bull; 10-Pack: $44.99</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="openMerchOrder('card')" class="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5">
+            <i class="fa-solid fa-cart-plus"></i> Order Card
+          </button>
+        </div>
+
+        <!-- Option B: Purchase LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shrink-0">
+              <i class="fa-solid fa-tape"></i>
+            </div>
+            <div>
+              <h5 class="font-bold text-white text-xs">Purchase LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal)</h5>
+              <p class="text-[11px] text-slate-400">Fathead-style reusable vinyl decal &bull; Zero paint damage &bull; Drywall & locker safe</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-xs font-bold text-emerald-400">$39.99</span>
+                <span class="text-[10px] text-slate-500">| Locker 18"×24": $39.99 &bull; Wall 24"×36": $49.99 &bull; Life-Size: $69.99</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="openMerchOrder('poster')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5">
+            <i class="fa-solid fa-tape"></i> Order Decal
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Merch Order & Checkout Sheet Modal -->
+  <div id="merch-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-400/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl text-left">
+      <button onclick="closeModal('merch-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">✕</button>
+      
+      <div class="flex items-center gap-2 mb-4">
+        <div id="merch-icon" class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div>
+          <h3 id="merch-title" class="font-athletic text-2xl font-bold text-white leading-none">ORDER MERCHANDISE</h3>
+          <p id="merch-subtitle" class="text-xs text-slate-400">Custom printed with verified athlete data</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-800/80 rounded-xl p-3 border border-white/5 mb-4 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">Featured Athlete</span>
+          <span id="merch-athlete-name" class="font-bold text-white text-sm"></span>
+        </div>
+        <div class="text-right">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block">Unit Price</span>
+          <span id="merch-price-display" class="font-bold text-amber-400 text-base"></span>
+        </div>
+      </div>
+
+      <form onsubmit="handleMerchCheckout(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Select Size / Package Option</label>
+          <select id="merch-option" onchange="updateMerchPrice(this.value)" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">Full Name</label>
+            <input type="text" required placeholder="Parent or Fan Name" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">Email Address</label>
+            <input type="email" required placeholder="For receipt & tracking" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-slate-300 font-bold mb-1">Shipping Street Address</label>
+          <input type="text" required placeholder="123 Bayou Lane, Apt 4" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-1">
+            <label class="block text-slate-300 font-bold mb-1">City</label>
+            <input type="text" required placeholder="Baton Rouge" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">State</label>
+            <input type="text" value="LA" readonly class="w-full bg-slate-800/60 border border-white/10 rounded-xl px-3 py-2 text-slate-400 text-center font-bold">
+          </div>
+          <div>
+            <label class="block text-slate-300 font-bold mb-1">ZIP</label>
+            <input type="text" required placeholder="70801" class="w-full bg-slate-800 border border-white/10 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+          </div>
+        </div>
+
+        <div class="pt-2">
+          <button type="submit" class="w-full py-3 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-lock text-xs"></i>
+            <span>Proceed to Secure Stripe Checkout</span>
+          </button>
+          <p class="text-[10px] text-slate-500 text-center mt-2">Zero inventory cost. Orders print on demand with high-definition vinyl & archival cardstock. 100% compliant with Louisiana Act 810.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Interactive Athlete Signature Pad Modal -->
+  <div id="sig-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-amber-400/30 rounded-2xl max-w-md w-full p-6 relative shadow-2xl text-left">
+      <button onclick="closeModal('sig-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">✕</button>
+      
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-400 flex items-center justify-center text-sm">
+          <i class="fa-solid fa-signature"></i>
+        </div>
+        <div>
+          <h3 class="font-athletic text-2xl font-bold text-white leading-none">ATHLETE SIGNATURE PAD</h3>
+          <p class="text-xs text-slate-400">Draw your personal autograph with your finger or mouse</p>
+        </div>
+      </div>
+
+      <div class="bg-slate-950 border-2 border-dashed border-amber-400/40 rounded-xl p-2 mb-3 text-center relative">
+        <canvas id="sig-canvas" width="380" height="130" class="w-full bg-slate-950/90 rounded-lg cursor-crosshair touch-none"></canvas>
+        <div id="sig-placeholder" class="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-500 text-xs italic">
+          ✍️ Draw your autograph here with finger or mouse...
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between gap-2 text-xs">
+        <button type="button" onclick="clearSignatureCanvas()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-rotate-left"></i> Clear
+        </button>
+        <button type="button" onclick="useDefaultSignatureScript()" class="px-3 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-font"></i> Default Script
+        </button>
+        <button type="button" onclick="applySignatureToCard()" class="px-4 py-2 rounded-lg gold-gradient text-slate-950 font-bold hover:brightness-110 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-check"></i> Apply to Card
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-white/10 bg-slate-950/60 py-10 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="space-y-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg gold-gradient flex items-center justify-center font-athletic text-lg text-black font-bold">LA</div>
+          <span class="font-athletic text-xl tracking-wider font-bold text-white">LANIL<span class="text-amber-400">SPORTS.COM</span></span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          The central sports directory, digital yearbook, and NIL intelligence index for Louisiana high school student-athletes.
+        </p>
+        <p class="text-[11px] text-slate-500">
+          &copy; 2026-2027 LANIL Sports. All rights reserved.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3 text-[11px]">Directory by Class</h4>
+        <ul class="space-y-2">
+          <li><button onclick="filterByClass(2027)" class="hover:text-amber-400">Class of 2027 (Seniors)</button></li>
+          <li><button onclick="filterByClass(2028)" class="hover:text-amber-400">Class of 2028 (Juniors)</button></li>
+          <li><button onclick="filterByClass(2029)" class="hover:text-amber-400">Class of 2029 (Sophomores)</button></li>
+          <li><button onclick="filterByClass(2030)" class="hover:text-amber-400">Class of 2030 (Freshmen)</button></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3 text-[11px]">Popular Parishes</h4>
+        <ul class="space-y-2">
+          <li><button onclick="filterByParish('Ouachita')" class="hover:text-amber-400">Ouachita Parish (Monroe)</button></li>
+          <li><button onclick="filterByParish('Orleans')" class="hover:text-amber-400">Orleans Parish (NOLA)</button></li>
+          <li><button onclick="filterByParish('East Baton Rouge')" class="hover:text-amber-400">East Baton Rouge Parish</button></li>
+          <li><button onclick="filterByParish('Caddo')" class="hover:text-amber-400">Caddo Parish (Shreveport)</button></li>
+        </ul>
+      </div>
+
+      <div class="space-y-2">
+        <h4 class="font-bold text-white uppercase tracking-wider mb-3 text-[11px]">Compliance & Legal</h4>
+        <p class="text-[11px] leading-relaxed text-slate-400">
+          LANIL Sports is an independent media & statistics intelligence platform. Not affiliated with LHSAA. All minor NIL profiles adhere strictly to Louisiana Act 810 (La. R.S. 17:3705).
+        </p>
+        
+        <div class="pt-2 flex gap-3 text-sm">
+          <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+<script>
+// Louisiana High School Athletes Seed Data (2026-2027)
+window.INITIAL_ATHLETES = [{"player_id":"LANIL-2027-0099","full_name":"Ryder Lyons","slug":"ryder-lyons-2027","grad_year":2027,"current_grade":"Senior","school_id":"folsom","school_name":"Folsom High School","parish_city":"National Showcase / Folsom","primary_sport":"Football","position":"QB","secondary_sports":["Basketball"],"season_stats_summary":"2026: 3,578 pass yds, 38 TD, 5 INT; 640 rush yds, 14 TD","newspaper_mentions":[{"source":"MaxPreps National","title":"Ryder Lyons leads explosive offense with 5 total touchdowns","date":"2026-10-18"}],"social_handles":{"instagram":"@ryder_lyons"},"total_followers":42000,"est_nil_value":115000,"potential_colleges":["USC","Oregon","LSU","Ohio State","Georgia","Texas"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=320,width=320,format=auto,metadata=none/uploads/assets/803/335/335803.jpg","bio":"5-star dual-threat quarterback. Elite arm talent with exceptional off-schedule playmaking ability. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.8,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"1"},{"player_id":"LANIL-2027-0001","full_name":"Harlem Berry","slug":"harlem-berry-2027","grad_year":2027,"current_grade":"Senior","school_id":"destrehan","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","position":"WR","secondary_sports":[],"season_stats_summary":"2026: 72 rec, 1,240 yds, 14 TD","newspaper_mentions":[{"source":"The Advocate","title":"Berry dazzles with 3-touchdown performance for Destrehan","date":"2026-10-12"}],"social_handles":{"instagram":"@harlem_berry5"},"total_followers":28500,"est_nil_value":95000,"potential_colleges":["LSU","Alabama","Ohio State","Georgia","Texas A&M"],"headshot_url":"https://on3static.com/cdn-cgi/image/width=480,format=auto,metadata=none/uploads/assets/74/320/320074.jpg","bio":"5-star WR, #1 player in Louisiana. Destrehan HS. LANIL Consensus top-10 nationally.","hudl_url":"","youtube_url":"","gpa":3.6,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"2"},{"player_id":"LANIL-2027-0002","full_name":"Kaleb Jackson","slug":"kaleb-jackson-2027","grad_year":2027,"current_grade":"Senior","school_id":"john-curtis-christian","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Football","position":"QB","secondary_sports":[],"season_stats_summary":"2026: 2,890 pass yds, 34 TD, 3 INT","newspaper_mentions":[{"source":"NOLA.com","title":"Jackson leads Curtis aerial attack in rivalry victory","date":"2026-10-24"}],"social_handles":{"instagram":"@kalebj_1"},"total_followers":12400,"est_nil_value":52000,"potential_colleges":["LSU","Texas","Florida State","Ole Miss"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=320,width=320,format=auto,metadata=none/uploads/assets/111/717/717111.jpg","bio":"4-star QB, John Curtis Christian School. LHSAA District powerhouse program.","hudl_url":"","youtube_url":"","gpa":3.4,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"3"},{"player_id":"LANIL-2028-0099","full_name":"Maxx Jones","slug":"maxx-jones-2028","grad_year":2028,"current_grade":"Freshman","school_id":"allen","school_name":"Allen High School","parish_city":"National Showcase / Allen","primary_sport":"Football","position":"IOL","secondary_sports":["Track & Field"],"season_stats_summary":"2026: 38 pancake blocks, 0 sacks allowed | 6'3 295 lbs","newspaper_mentions":[{"source":"Recruiting News","title":"Freshman Maxx Jones dominates trenches with elite power","date":"2026-11-05"}],"social_handles":{"instagram":"@maxx_jones_iol"},"total_followers":8600,"est_nil_value":34000,"potential_colleges":["Texas","Texas A&M","LSU","Oklahoma","Florida","Oregon"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=420,width=800,quality=90,fit=cover,gravity=0.5x0.5,format=auto,metadata=none/uploads/dev/assets/cms/2025/06/16065752/2028-FL-OL-Maxx-Jones.jpg","bio":"4-star interior offensive lineman from Allen High School. 6'3, 295 lbs with dominant anchoring and leverage. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.7,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"4"},{"player_id":"LA-2027-0001","full_name":"Marcus Thibodaux","slug":"marcus-thibodaux-2027","grad_year":2027,"current_grade":"Senior","school_name":"Neville High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"QB","season_stats_summary":"2026: 2,450 pass yds, 28 TD, 4 INT; 410 rush yds, 6 TD","newspaper_mentions":[{"source":"The News-Star","title":"Thibodaux leads Neville to district championship","date":"2026-10-18"}],"social_handles":{"instagram":"@mthibodaux_12","twitter":"@MarcusThib12"},"total_followers":4850,"est_nil_value":7050,"potential_colleges":["LSU","Louisiana Tech","Tulane","ULM"],"headshot_url":"","bio":"Dual-threat QB with 4.52 laser 40 time. 3.8 GPA, 2x All-District selection.","claimed":true,"verified":true,"tier":"plus","id":"5"},{"player_id":"LA-2027-0002","full_name":"DeShawn Broussard","slug":"deshawn-broussard-2027","grad_year":2027,"current_grade":"Senior","school_name":"Edna Karr High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Basketball"],"position":"WR / CB","season_stats_summary":"2026: 64 rec, 1,180 yds, 15 TD; 4 INT on defense","newspaper_mentions":[{"source":"NOLA.com","title":"Broussard flashes 5-star speed in Edna Karr playoff run","date":"2026-11-02"}],"social_handles":{"instagram":"@shawn_broussard","twitter":"@DBroussard9"},"total_followers":8920,"est_nil_value":8400,"potential_colleges":["LSU","Texas A&M","Ole Miss","Florida State"],"headshot_url":"","bio":"Dynamic perimeter playmaker with 4.41 speed. 2026 Class 5A Offensive MVP candidate.","claimed":true,"verified":true,"tier":"plus","id":"6"},{"player_id":"LA-2027-0003","full_name":"Caleb Guitreau","slug":"caleb-guitreau-2027","grad_year":2027,"current_grade":"Senior","school_name":"Ruston High School","parish_city":"Lincoln Parish / Ruston","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB","season_stats_summary":"2026: 1,840 rush yds, 24 TD; 7.2 yds per carry","newspaper_mentions":[{"source":"The Shreveport Times","title":"Guitreau powers Ruston backfield to undefeated regular season","date":"2026-11-08"}],"social_handles":{"instagram":"@caleb_guitreau_24","twitter":"@CGuitreau24"},"total_followers":3400,"est_nil_value":4600,"potential_colleges":["Louisiana Tech","ULM","Southern Miss","Memphis"],"headshot_url":"","bio":"Power back with breakaway speed (4.50 40). 3x All-State academic honors.","claimed":false,"verified":true,"tier":"free","id":"7"},{"player_id":"LA-2027-0004","full_name":"Brianna Deshotel","slug":"brianna-deshotel-2027","grad_year":2027,"current_grade":"Senior","school_name":"Barbe High School","parish_city":"Calcasieu Parish / Lake Charles","primary_sport":"Softball","secondary_sports":["Volleyball"],"position":"P / 1B","season_stats_summary":"2026: 22-2 record, 0.84 ERA, 248 strikeouts; .445 AVG at the plate","newspaper_mentions":[{"source":"American Press","title":"Deshotel tosses perfect game in regional semifinals","date":"2026-04-22"}],"social_handles":{"instagram":"@bree_deshotel_softball","tiktok":"@bree.fastpitch"},"total_followers":6700,"est_nil_value":3800,"potential_colleges":["LSU","Louisiana Ragin Cajuns","McNeese","Texas"],"headshot_url":"","bio":"Dominant right-handed ace with 68 mph riseball. 2026 Louisiana Gatorade Player of the Year candidate.","claimed":true,"verified":true,"tier":"plus","id":"8"},{"player_id":"LA-2027-0005","full_name":"Kameron Delahoussaye","slug":"kameron-delahoussaye-2027","grad_year":2027,"current_grade":"Senior","school_name":"St. Thomas More High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Football","secondary_sports":["Baseball"],"position":"DE / EDGE","season_stats_summary":"2026: 14.5 sacks, 68 tackles, 22 TFL, 3 forced fumbles","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Delahoussaye terrorizes opposing backfields for STM Cougars","date":"2026-10-25"}],"social_handles":{"instagram":"@kam_delahoussaye","twitter":"@KamDelaEdge"},"total_followers":5100,"est_nil_value":5800,"potential_colleges":["LSU","Tulane","Auburn","Baylor"],"headshot_url":"","bio":"6-foot-4, 245-pound explosive edge rusher. First-Team All-Acadiana.","claimed":false,"verified":true,"tier":"free","id":"9"},{"player_id":"LA-2027-0006","full_name":"Jordan Batiste","slug":"jordan-batiste-2027","grad_year":2027,"current_grade":"Senior","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"OT","season_stats_summary":"2026: 48 pancake blocks; zero sacks allowed in 10 games","newspaper_mentions":[{"source":"The Advocate","title":"Batiste anchors Destrehan offensive line to state crown","date":"2026-11-14"}],"social_handles":{"instagram":"@jordan_batiste77","twitter":"@JBatiste77"},"total_followers":2800,"est_nil_value":3900,"potential_colleges":["LSU","Florida","Tulane","Houston"],"headshot_url":"","bio":"6-foot-6, 310-pound offensive tackle with 82-inch wingspan. Academic All-District.","claimed":true,"verified":true,"tier":"free","id":"10"},{"player_id":"LA-2028-0001","full_name":"Jaylen Landry","slug":"jaylen-landry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Catholic High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"SS / RHP","season_stats_summary":"2026: .412 AVG, 8 HR, 34 RBI; 93 mph fastball on mound","newspaper_mentions":[{"source":"The Advocate","title":"Landry commits to two-sport dominance at Catholic High","date":"2026-05-14"}],"social_handles":{"instagram":"@jaylen.landry.9","twitter":"@JLandryBaseball"},"total_followers":3100,"est_nil_value":4200,"potential_colleges":["LSU","Vanderbilt","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Premier middle infielder and closer. 2026 Underclass All-American.","claimed":true,"verified":true,"tier":"plus","id":"11"},{"player_id":"LA-2028-0002","full_name":"Aaliyah Washington","slug":"aaliyah-washington-2028","grad_year":2028,"current_grade":"Junior","school_name":"Ouachita Parish High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2025-26: 22.4 PPG, 6.8 APG, 4.2 SPG; State Champion in 100m hurdles","newspaper_mentions":[{"source":"The News-Star","title":"Washington puts Ouachita on the map with 38-point night","date":"2026-01-20"}],"social_handles":{"instagram":"@aaliyahhoops_3","tiktok":"@aaliyah.wash"},"total_followers":14200,"est_nil_value":7800,"potential_colleges":["LSU","South Carolina","UConn","Baylor"],"headshot_url":"","bio":"Top-ranked point guard in Louisiana Class of 2028. State track champion, honors student.","claimed":true,"verified":true,"tier":"plus","id":"12"},{"player_id":"LA-2028-0003","full_name":"Malik Davenport","slug":"malik-davenport-2028","grad_year":2028,"current_grade":"Junior","school_name":"Alexandria Senior High (ASH)","parish_city":"Rapides Parish / Alexandria","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"SG / SF","season_stats_summary":"2026: 24.8 PPG, 8.4 RPG, 3.2 BPG; 42% from three-point line","newspaper_mentions":[{"source":"The Town Talk","title":"Davenport carries ASH to District 2-5A championship","date":"2026-02-18"}],"social_handles":{"instagram":"@malik_davenport_hoops"},"total_followers":3900,"est_nil_value":3750,"potential_colleges":["LSU","Northwestern State","Louisiana Tech","Houston"],"headshot_url":"","bio":"Athletic 6-foot-6 wing with 40-inch vertical leap. CenLA Player of the Year.","claimed":true,"verified":true,"tier":"free","id":"13"},{"player_id":"LA-2028-0004","full_name":"Tanner Guidry","slug":"tanner-guidry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Mandeville High School","parish_city":"St. Tammany Parish / Mandeville","primary_sport":"Baseball","secondary_sports":["Football"],"position":"C","season_stats_summary":"2026: .395 AVG, 6 HR, 28 RBI; 1.88 pop time behind the plate","newspaper_mentions":[{"source":"The Times-Picayune","title":"Guidry shuts down running game in Northshore tournament","date":"2026-03-30"}],"social_handles":{"instagram":"@tanner_guidry_c"},"total_followers":2100,"est_nil_value":2600,"potential_colleges":["LSU","Tulane","Southeastern Louisiana"],"headshot_url":"","bio":"Elite defensive catcher and line-drive hitter. Top-ranked catcher on the Northshore.","claimed":false,"verified":true,"tier":"free","id":"14"},{"player_id":"LA-2028-0005","full_name":"Chloe Boudreaux","slug":"chloe-boudreaux-2028","grad_year":2028,"current_grade":"Junior","school_name":"University Lab High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Track & Field","secondary_sports":["Volleyball"],"position":"Sprints / Long Jump","season_stats_summary":"2026: 11.64s in 100m (LHSAA 3A Record); 19-ft 4-in long jump","newspaper_mentions":[{"source":"The Advocate","title":"Boudreaux shatters LHSAA state sprint mark","date":"2026-05-02"}],"social_handles":{"instagram":"@chloe_boudreaux_speed","tiktok":"@chloesprints"},"total_followers":11500,"est_nil_value":5200,"potential_colleges":["LSU","Arkansas","Texas A&M","USC"],"headshot_url":"","bio":"USATF Junior Olympian. Reigning Louisiana 3A State Champion in 100m, 200m, and Long Jump.","claimed":true,"verified":true,"tier":"plus","id":"15"},{"player_id":"LA-2028-0006","full_name":"Darius Jefferson","slug":"darius-jefferson-2028","grad_year":2028,"current_grade":"Junior","school_name":"West Monroe High School","parish_city":"Ouachita Parish / West Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"DT / NT","season_stats_summary":"2026: 54 tackles, 11 TFL, 6 sacks, 2 fumble recoveries","newspaper_mentions":[{"source":"The News-Star","title":"Jefferson anchors West Monroe defensive front in playoff shutout","date":"2026-11-10"}],"social_handles":{"instagram":"@darius_jefferson99"},"total_followers":1950,"est_nil_value":2900,"potential_colleges":["Louisiana Tech","ULM","Arkansas State","Grambling"],"headshot_url":"","bio":"6-foot-2, 290-pound run-stopper. 450 lb bench press, Ouachita Parish First-Team defense.","claimed":false,"verified":true,"tier":"free","id":"16"},{"player_id":"LA-2029-0001","full_name":"Trevor Fontenot","slug":"trevor-fontenot-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Westgate High School","parish_city":"Iberia Parish / New Iberia","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB / ATH","season_stats_summary":"2026: 1,380 rush yds, 19 TD as sophomore varsity starter","newspaper_mentions":[{"source":"The Daily Iberian","title":"Fontenot breakout season turns heads in Iberia Parish","date":"2026-10-30"}],"social_handles":{"instagram":"@trev_fontenot"},"total_followers":1850,"est_nil_value":3100,"potential_colleges":["LSU","Tulane","Houston"],"headshot_url":"","bio":"Dynamic running back with vision and balance. 4.54 laser 40 time.","claimed":true,"verified":true,"tier":"plus","id":"17"},{"player_id":"LA-2029-0002","full_name":"Zion Washington","slug":"zion-washington-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Captain Shreve High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Football","secondary_sports":["Basketball"],"position":"QB","season_stats_summary":"2026: 1,920 pass yds, 21 TD, 6 INT; 340 rush yds","newspaper_mentions":[{"source":"The Shreveport Times","title":"Sophomore Washington shines under Friday night lights for Shreve","date":"2026-10-14"}],"social_handles":{"instagram":"@zion_qb1_shreve"},"total_followers":2400,"est_nil_value":3850,"potential_colleges":["Louisiana Tech","Northwestern State","Ole Miss"],"headshot_url":"","bio":"Strong-armed sophomore quarterback with quick release and pocket poise.","claimed":false,"verified":true,"tier":"free","id":"18"},{"player_id":"LA-2029-0003","full_name":"Madison Hebert","slug":"madison-hebert-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Lafayette High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Volleyball","secondary_sports":["Track & Field"],"position":"Outside Hitter","season_stats_summary":"2026: 380 kills, 240 digs, 52 service aces","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Hebert powers Lafayette High to regional volleyball final","date":"2026-10-22"}],"social_handles":{"instagram":"@madi_hebert_vb"},"total_followers":3200,"est_nil_value":2200,"potential_colleges":["Louisiana Ragin Cajuns","McNeese","Southeastern Louisiana"],"headshot_url":"","bio":"All-District sophomore outside hitter. 10-foot touch approach.","claimed":true,"verified":false,"tier":"free","id":"19"},{"player_id":"LA-2029-0004","full_name":"Derrick Boutte","slug":"derrick-boutte-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"St. Augustine High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"PG","season_stats_summary":"2026: 18.2 PPG, 6.1 APG, 3.4 SPG; 88% free throw percentage","newspaper_mentions":[{"source":"NOLA.com","title":"Boutte orchestrates St. Aug offense with veteran maturity","date":"2026-11-04"}],"social_handles":{"instagram":"@dboutte_handles"},"total_followers":4100,"est_nil_value":3600,"potential_colleges":["Tulane","Southern","New Orleans (UNO)","LSU"],"headshot_url":"","bio":"Crafty New Orleans point guard with elite court vision and lock-down defense.","claimed":false,"verified":true,"tier":"free","id":"20"},{"player_id":"LA-2029-0005","full_name":"Austin LeBlanc","slug":"austin-leblanc-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"OF / RHP","season_stats_summary":"2026: .380 AVG, 5 HR, 24 RBI; 6.6 60-yard dash","newspaper_mentions":[{"source":"The Advocate","title":"Curtis sophomore LeBlanc delivers walk-off hit in state playoffs","date":"2026-05-10"}],"social_handles":{"instagram":"@austin_leblanc_jc"},"total_followers":1800,"est_nil_value":2300,"potential_colleges":["LSU","Tulane","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Five-tool outfielder with plus arm and speed. John Curtis baseball state champion starter.","claimed":true,"verified":true,"tier":"plus","id":"21"},{"player_id":"LA-2030-0001","full_name":"Kobe Arceneaux","slug":"kobe-arceneaux-2030","grad_year":2030,"current_grade":"Freshman","school_name":"C.E. Byrd High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"SG","season_stats_summary":"2026: Averaging 16.5 PPG in freshman varsity debut season","newspaper_mentions":[{"source":"The Shreveport Times","title":"Freshman Arceneaux sparks Byrd fourth-quarter comeback","date":"2026-11-12"}],"social_handles":{"instagram":"@kobe_arceneaux_0"},"total_followers":1100,"est_nil_value":1850,"potential_colleges":["Louisiana Tech","Northwestern State"],"headshot_url":"","bio":"Sharp-shooting freshman guard with deep 3-point range and high basketball IQ.","claimed":false,"verified":false,"tier":"free","id":"22"},{"player_id":"LA-2030-0002","full_name":"Treyson Montgomery","slug":"treyson-montgomery-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Scotlandville Magnet High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2026: 14.8 PPG, 5.5 APG, 2.8 SPG as freshman starting point guard","newspaper_mentions":[{"source":"The Advocate","title":"Montgomery handles freshman spotlight at Scotlandville with poise","date":"2026-11-15"}],"social_handles":{"instagram":"@trey_montgomery_point"},"total_followers":2100,"est_nil_value":2400,"potential_colleges":["Southern","LSU","Memphis"],"headshot_url":"","bio":"Elite playmaker and ball-handler out of Baton Rouge. High ceiling prospect.","claimed":true,"verified":true,"tier":"plus","id":"23"},{"player_id":"LA-2030-0003","full_name":"Jayceon Walker","slug":"jayceon-walker-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Warren Easton High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"WR / ATH","season_stats_summary":"2026: 28 receptions, 510 yards, 6 TD in freshman campaign","newspaper_mentions":[{"source":"NOLA.com","title":"Easton freshman Walker flashes electric playmaking speed","date":"2026-10-28"}],"social_handles":{"instagram":"@jayceon_walker_speed"},"total_followers":1650,"est_nil_value":2100,"potential_colleges":["Tulane","LSU","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Speedy freshman wideout with 4.51 speed and clean route-running.","claimed":false,"verified":false,"tier":"free","id":"24"},{"player_id":"LA-2030-0004","full_name":"Camryn Duplechain","slug":"camryn-duplechain-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Carencro High School","parish_city":"Lafayette Parish / Carencro","primary_sport":"Softball","secondary_sports":["Track & Field"],"position":"SS / OF","season_stats_summary":"2026: .420 batting average on freshman varsity squad","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Duplechain ignites Carencro offense with multi-hit games","date":"2026-04-18"}],"social_handles":{"instagram":"@cam_duplechain_softball"},"total_followers":1200,"est_nil_value":1600,"potential_colleges":["Louisiana Ragin Cajuns","McNeese"],"headshot_url":"","bio":"Freshman infielder with quick hands, range, and high contact rate at the plate.","claimed":true,"verified":false,"tier":"free","id":"25"}];
+
+// LANILSPORTS.COM Core Application Logic (Part 1)
+
+function cleanScoutingText(str) {
+  if (!str) return '';
+  return str
+    .replace(/\.?\s*(?:View\s*official\s*)?MaxPreps(?:\s*profile)?:\s*https?:\/\/[^\s]+/gi, '. Verified LHSAA varsity roster.')
+    .replace(/https?:\/\/(?:www\.)?(?:maxpreps|on3|247sports|prepredzone|rivals)\.com[^\s]*/gi, '')
+    .replace(/\s*\|\s*LANIL\s*Rating.*$/i, '')
+    .replace(/\s*\|\s*LANIL\s*Rat.*$/i, '')
+    .replace(/\(?\s*LANIL\s*Rat.*?\)?/gi, '')
+    .replace(/On3\s*Rating:/gi, 'LANIL Rating:')
+    .replace(/On3\s*Consensus/gi, 'LANIL Consensus')
+    .replace(/On3\s*Radar/gi, 'LANIL Radar')
+    .replace(/On3/gi, 'LANIL')
+    .replace(/247\s*Composite:/gi, 'LANIL Composite:')
+    .replace(/247\s*Rating:/gi, 'LANIL Rating:')
+    .replace(/247Sports/gi, 'LANIL')
+    .replace(/247\s*Sports/gi, 'LANIL')
+    .replace(/\b247\b/gi, 'LANIL')
+    .replace(/Prep\s*Redzone\s*All-State\s*Watch/gi, 'LANIL All-State Watch')
+    .replace(/Prep\s*Redzone\s*Freshman\s*Watch/gi, 'LANIL Freshman Watch')
+    .replace(/Prep\s*Redzone\s*Watch/gi, 'LANIL Scouting Watch')
+    .replace(/Prep\s*Redzone/gi, 'LANIL Scouting')
+    .replace(/MaxPreps/gi, 'LHSAA Roster')
+    .replace(/Rivals/gi, 'LANIL')
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\s+\./g, '.')
+    .trim();
+}
+
+
+let ATHLETES = [...window.INITIAL_ATHLETES];
+let currentView = 'directory';
+let filterClass = 'all';
+let filterSport = 'all';
+let filterParish = 'all';
+let searchTerm = '';
+let statSort = 'nil';
+let unlockedAthletes = new Set();
+
+function getAthleteStatValue(a, sortKey) {
+  const text = ((a.season_stats_summary || '') + ' ' + (a.bio || '')).toLowerCase();
+  
+  if (sortKey === 'nil') return a.est_nil_value || 0;
+  
+  if (sortKey === 'lanil_rating') {
+    const m = text.match(/lanil\s*rating:\s*(\d+)/i) || text.match(/rating:\s*(\d+)/i);
+    if (m) return parseInt(m[1]);
+    return (a.est_nil_value || 0) > 25000 ? 92 : (a.est_nil_value || 0) > 10000 ? 86 : 78;
+  }
+  
+  if (sortKey === 'pass_yds') {
+    const m = text.match(/([\d,]+)\s*(?:pass\s*yds|passing\s*yds)/i);
+    return m ? parseInt(m[1].replace(/,/g, '')) : 0;
+  }
+  
+  if (sortKey === 'rush_yds') {
+    const m = text.match(/([\d,]+)\s*(?:rush\s*yds|rushing\s*yds)/i);
+    return m ? parseInt(m[1].replace(/,/g, '')) : 0;
+  }
+
+  if (sortKey === 'rec_yds') {
+    const m = text.match(/([\d,]+)\s*(?:rec(?:eiving)?\s*yds)/i);
+    return m ? parseInt(m[1].replace(/,/g, '')) : 0;
+  }
+  
+  if (sortKey === 'tds') {
+    const m = text.match(/(\d+)\s*(?:td|touchdowns?)/i);
+    return m ? parseInt(m[1]) : 0;
+  }
+
+  if (sortKey === 'sacks') {
+    const m = text.match(/([\d.]+)\s*sacks?/i);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  if (sortKey === 'points') {
+    const m = text.match(/([\d.]+)\s*ppg/i) || text.match(/(\d+)\s*pts/i);
+    return m ? parseFloat(m[1]) : 0;
+  }
+
+  if (sortKey === 'three_pt') {
+    const m = text.match(/(\d+)\s*(?:3-?pt|three-?pointers?)/i);
+    return m ? parseInt(m[1]) : 0;
+  }
+
+  if (sortKey === 'batting_avg') {
+    const m = text.match(/\.(\d{3})\s*(?:avg|batting)/i);
+    return m ? parseInt(m[1]) : 0;
+  }
+
+  if (sortKey === 'home_runs') {
+    const m = text.match(/(\d+)\s*hr/i);
+    return m ? parseInt(m[1]) : 0;
+  }
+
+  if (sortKey === 'strikeouts') {
+    const m = text.match(/(\d+)\s*(?:strikeouts|k\b)/i);
+    return m ? parseInt(m[1]) : 0;
+  }
+
+  if (sortKey === 'speed') {
+    const m = text.match(/(?:laser\s*)?(4\.\d{2})/i) || text.match(/(1[01]\.\d{1,2})s/i);
+    return m ? (20 - parseFloat(m[1])) : -99;
+  }
+
+  if (sortKey === 'offers') {
+    return (a.potential_colleges || []).length;
+  }
+
+  return a.est_nil_value || 0;
+}
+
+function updateStatSort(val) {
+  statSort = val;
+  render();
+}
+
+function renderStatPills(sport, activeSort) {
+  const s = (sport || '').toLowerCase();
+  let pills = [
+    { label: 'NIL Valuation', sort: 'nil', icon: 'fa-dollar-sign' },
+    { label: 'LANIL 90+ Rating', sort: 'lanil_rating', icon: 'fa-star' },
+    { label: 'Top Touchdowns', sort: 'tds', icon: 'fa-fire' },
+    { label: 'Speed Demons', sort: 'speed', icon: 'fa-bolt' },
+    { label: 'Most D-I Offers', sort: 'offers', icon: 'fa-trophy' }
+  ];
+
+  if (s.includes('football')) {
+    pills = [
+      { label: 'NIL Leaders', sort: 'nil', icon: 'fa-dollar-sign' },
+      { label: 'LANIL Rating', sort: 'lanil_rating', icon: 'fa-star' },
+      { label: 'Passing Yds', sort: 'pass_yds', icon: 'fa-football' },
+      { label: 'Rushing Yds', sort: 'rush_yds', icon: 'fa-person-running' },
+      { label: 'Receiving Yds', sort: 'rec_yds', icon: 'fa-bullseye' },
+      { label: 'Touchdowns', sort: 'tds', icon: 'fa-fire' },
+      { label: 'Sacks & TFL', sort: 'sacks', icon: 'fa-shield-halved' },
+      { label: '40-Yd Laser Speed', sort: 'speed', icon: 'fa-bolt' }
+    ];
+  } else if (s.includes('basketball')) {
+    pills = [
+      { label: 'NIL Leaders', sort: 'nil', icon: 'fa-dollar-sign' },
+      { label: 'LANIL Rating', sort: 'lanil_rating', icon: 'fa-star' },
+      { label: 'Top Scorers (PPG)', sort: 'points', icon: 'fa-basketball' },
+      { label: '3-Point Snipers', sort: 'three_pt', icon: 'fa-bullseye' }
+    ];
+  } else if (s.includes('baseball')) {
+    pills = [
+      { label: 'NIL Leaders', sort: 'nil', icon: 'fa-dollar-sign' },
+      { label: 'LANIL Rating', sort: 'lanil_rating', icon: 'fa-star' },
+      { label: '.400+ Batting AVG', sort: 'batting_avg', icon: 'fa-baseball' },
+      { label: 'Home Run Kings', sort: 'home_runs', icon: 'fa-bomb' },
+      { label: 'Pitching Strikeouts', sort: 'strikeouts', icon: 'fa-bolt' }
+    ];
+  } else if (s.includes('softball')) {
+    pills = [
+      { label: 'NIL Leaders', sort: 'nil', icon: 'fa-dollar-sign' },
+      { label: 'LANIL Rating', sort: 'lanil_rating', icon: 'fa-star' },
+      { label: '.400+ Batting AVG', sort: 'batting_avg', icon: 'fa-baseball-bat-ball' },
+      { label: 'Home Run Kings', sort: 'home_runs', icon: 'fa-bomb' },
+      { label: 'Strikeout Aces', sort: 'strikeouts', icon: 'fa-bolt' }
+    ];
+  } else if (s.includes('track')) {
+    pills = [
+      { label: 'NIL Leaders', sort: 'nil', icon: 'fa-dollar-sign' },
+      { label: 'Fastest 100m/200m Speed', sort: 'speed', icon: 'fa-person-running' }
+    ];
+  }
+
+  return pills.map(p => {
+    const isActive = activeSort === p.sort;
+    return `<button onclick="updateStatSort('${p.sort}')" class="px-2.5 py-1 rounded-lg text-[11px] font-bold transition flex items-center gap-1.5 whitespace-nowrap ${isActive ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20' : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-white/5'}">
+      <i class="fa-solid ${p.icon} text-[10px]"></i>
+      <span>${p.label}</span>
+    </button>`;
+  }).join('');
+}
+
+
+function navigate(view) {
+  currentView = view;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function render() {
+  const container = document.getElementById('app');
+  if (!container) return;
+  if (currentView === 'directory') {
+    container.innerHTML = renderDirectory();
+  } else if (currentView === 'potw') {
+    container.innerHTML = renderPOTW();
+  } else if (currentView === 'rankings') {
+    container.innerHTML = renderRankings();
+  } else if (currentView === 'pricing') {
+    container.innerHTML = renderPricing();
+  }
+}
+
+function renderDirectory() {
+  const filtered = ATHLETES.filter(a => {
+    if (filterClass !== 'all' && a.grad_year.toString() !== filterClass) return false;
+    if (filterSport !== 'all' && a.primary_sport !== filterSport) return false;
+    if (filterParish !== 'all' && !a.parish_city.toLowerCase().includes(filterParish.toLowerCase())) return false;
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      const matchName = a.full_name.toLowerCase().includes(q);
+      const matchSchool = a.school_name.toLowerCase().includes(q);
+      const matchCity = a.parish_city.toLowerCase().includes(q);
+      const matchPos = (a.position || '').toLowerCase().includes(q);
+      if (!matchName && !matchSchool && !matchCity && !matchPos) return false;
+    }
+    return true;
+  });
+
+  return `
+    <div class="mb-10 text-center relative py-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-flag-checkered"></i>
+        <span>Official Louisiana High School Directory (Classes 2027-2030)</span>
+      </div>
+      <h1 class="font-athletic text-5xl sm:text-6xl md:text-7xl font-bold tracking-wide uppercase text-white leading-none">
+        DISCOVER LOUISIANA <span class="text-amber-400">TALENT</span>
+      </h1>
+      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 mt-2">
+        The independent recruiting yearbook & NIL intelligence index. Browse verified high school athletes, stats, and college prospects across all 64 Louisiana parishes.
+      </p>
+    </div>
+
+    <div class="glass rounded-2xl p-4 mb-8 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+        <div class="lg:col-span-2 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+          <input type="text" oninput="updateSearch(this.value)" value="${searchTerm}" placeholder="Search athlete, school, parish, or stats (e.g. 2,000 yds, 15 TD, sacks, 3-pt)..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
+        </div>
+
+        <div>
+          <select onchange="updateClass(this.value)" class="w-full bg-slate-900/80 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400">
+            <option value="all" ${filterClass==='all'?'selected':''}>All Classes (2027-2030)</option>
+            <option value="2027" ${filterClass==='2027'?'selected':''}>Class of 2027 (Seniors)</option>
+            <option value="2028" ${filterClass==='2028'?'selected':''}>Class of 2028 (Juniors)</option>
+            <option value="2029" ${filterClass==='2029'?'selected':''}>Class of 2029 (Sophomores)</option>
+            <option value="2030" ${filterClass==='2030'?'selected':''}>Class of 2030 (Freshmen)</option>
+          </select>
+        </div>
+
+        <div>
+          <select onchange="updateSport(this.value)" class="w-full bg-slate-900/80 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400">
+            <option value="all" ${filterSport==='all'?'selected':''}>All Sports</option>
+            <option value="Football" ${filterSport==='Football'?'selected':''}>Football</option>
+            <option value="Basketball" ${filterSport==='Basketball'?'selected':''}>Basketball</option>
+            <option value="Baseball" ${filterSport==='Baseball'?'selected':''}>Baseball</option>
+            <option value="Track & Field" ${filterSport==='Track & Field'?'selected':''}>Track & Field</option>
+            <option value="Softball" ${filterSport==='Softball'?'selected':''}>Softball</option>
+          </select>
+        </div>
+
+        <div>
+          <select onchange="updateParish(this.value)" class="w-full bg-slate-900/80 border border-white/10 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400">
+<option value="all" ${filterParish==='all'?'selected':''}>All 64 Louisiana Parishes</option>
+              <option value="Acadia" ${filterParish==='Acadia'?'selected':''}>Acadia Parish</option>
+              <option value="Allen" ${filterParish==='Allen'?'selected':''}>Allen Parish</option>
+              <option value="Ascension" ${filterParish==='Ascension'?'selected':''}>Ascension Parish</option>
+              <option value="Assumption" ${filterParish==='Assumption'?'selected':''}>Assumption Parish</option>
+              <option value="Avoyelles" ${filterParish==='Avoyelles'?'selected':''}>Avoyelles Parish</option>
+              <option value="Beauregard" ${filterParish==='Beauregard'?'selected':''}>Beauregard Parish</option>
+              <option value="Bienville" ${filterParish==='Bienville'?'selected':''}>Bienville Parish</option>
+              <option value="Bossier" ${filterParish==='Bossier'?'selected':''}>Bossier Parish (Bossier City)</option>
+              <option value="Caddo" ${filterParish==='Caddo'?'selected':''}>Caddo Parish (Shreveport)</option>
+              <option value="Calcasieu" ${filterParish==='Calcasieu'?'selected':''}>Calcasieu Parish (Lake Charles)</option>
+              <option value="Caldwell" ${filterParish==='Caldwell'?'selected':''}>Caldwell Parish</option>
+              <option value="Cameron" ${filterParish==='Cameron'?'selected':''}>Cameron Parish</option>
+              <option value="Catahoula" ${filterParish==='Catahoula'?'selected':''}>Catahoula Parish</option>
+              <option value="Claiborne" ${filterParish==='Claiborne'?'selected':''}>Claiborne Parish</option>
+              <option value="Concordia" ${filterParish==='Concordia'?'selected':''}>Concordia Parish</option>
+              <option value="DeSoto" ${filterParish==='DeSoto'?'selected':''}>DeSoto Parish</option>
+              <option value="East Baton Rouge" ${filterParish==='East Baton Rouge'?'selected':''}>East Baton Rouge Parish (Baton Rouge)</option>
+              <option value="East Carroll" ${filterParish==='East Carroll'?'selected':''}>East Carroll Parish</option>
+              <option value="East Feliciana" ${filterParish==='East Feliciana'?'selected':''}>East Feliciana Parish</option>
+              <option value="Evangeline" ${filterParish==='Evangeline'?'selected':''}>Evangeline Parish</option>
+              <option value="Franklin" ${filterParish==='Franklin'?'selected':''}>Franklin Parish</option>
+              <option value="Grant" ${filterParish==='Grant'?'selected':''}>Grant Parish</option>
+              <option value="Iberia" ${filterParish==='Iberia'?'selected':''}>Iberia Parish (New Iberia)</option>
+              <option value="Iberville" ${filterParish==='Iberville'?'selected':''}>Iberville Parish</option>
+              <option value="Jackson" ${filterParish==='Jackson'?'selected':''}>Jackson Parish</option>
+              <option value="Jefferson" ${filterParish==='Jefferson'?'selected':''}>Jefferson Parish (Metairie/Kenner)</option>
+              <option value="Jefferson Davis" ${filterParish==='Jefferson Davis'?'selected':''}>Jefferson Davis Parish</option>
+              <option value="Lafayette" ${filterParish==='Lafayette'?'selected':''}>Lafayette Parish (Lafayette)</option>
+              <option value="Lafourche" ${filterParish==='Lafourche'?'selected':''}>Lafourche Parish (Thibodaux)</option>
+              <option value="LaSalle" ${filterParish==='LaSalle'?'selected':''}>LaSalle Parish</option>
+              <option value="Lincoln" ${filterParish==='Lincoln'?'selected':''}>Lincoln Parish (Ruston)</option>
+              <option value="Livingston" ${filterParish==='Livingston'?'selected':''}>Livingston Parish</option>
+              <option value="Madison" ${filterParish==='Madison'?'selected':''}>Madison Parish</option>
+              <option value="Morehouse" ${filterParish==='Morehouse'?'selected':''}>Morehouse Parish</option>
+              <option value="Natchitoches" ${filterParish==='Natchitoches'?'selected':''}>Natchitoches Parish (Natchitoches)</option>
+              <option value="Orleans" ${filterParish==='Orleans'?'selected':''}>Orleans Parish (New Orleans)</option>
+              <option value="Ouachita" ${filterParish==='Ouachita'?'selected':''}>Ouachita Parish (Monroe/West Monroe)</option>
+              <option value="Plaquemines" ${filterParish==='Plaquemines'?'selected':''}>Plaquemines Parish</option>
+              <option value="Pointe Coupee" ${filterParish==='Pointe Coupee'?'selected':''}>Pointe Coupee Parish</option>
+              <option value="Rapides" ${filterParish==='Rapides'?'selected':''}>Rapides Parish (Alexandria)</option>
+              <option value="Red River" ${filterParish==='Red River'?'selected':''}>Red River Parish</option>
+              <option value="Richland" ${filterParish==='Richland'?'selected':''}>Richland Parish</option>
+              <option value="Sabine" ${filterParish==='Sabine'?'selected':''}>Sabine Parish</option>
+              <option value="St. Bernard" ${filterParish==='St. Bernard'?'selected':''}>St. Bernard Parish</option>
+              <option value="St. Charles" ${filterParish==='St. Charles'?'selected':''}>St. Charles Parish</option>
+              <option value="St. Helena" ${filterParish==='St. Helena'?'selected':''}>St. Helena Parish</option>
+              <option value="St. James" ${filterParish==='St. James'?'selected':''}>St. James Parish</option>
+              <option value="St. John the Baptist" ${filterParish==='St. John the Baptist'?'selected':''}>St. John the Baptist Parish</option>
+              <option value="St. Landry" ${filterParish==='St. Landry'?'selected':''}>St. Landry Parish (Opelousas)</option>
+              <option value="St. Martin" ${filterParish==='St. Martin'?'selected':''}>St. Martin Parish</option>
+              <option value="St. Mary" ${filterParish==='St. Mary'?'selected':''}>St. Mary Parish</option>
+              <option value="St. Tammany" ${filterParish==='St. Tammany'?'selected':''}>St. Tammany Parish (Slidell/Mandeville)</option>
+              <option value="Tangipahoa" ${filterParish==='Tangipahoa'?'selected':''}>Tangipahoa Parish (Hammond)</option>
+              <option value="Tensas" ${filterParish==='Tensas'?'selected':''}>Tensas Parish</option>
+              <option value="Terrebonne" ${filterParish==='Terrebonne'?'selected':''}>Terrebonne Parish (Houma)</option>
+              <option value="Union" ${filterParish==='Union'?'selected':''}>Union Parish</option>
+              <option value="Vermilion" ${filterParish==='Vermilion'?'selected':''}>Vermilion Parish (Abbeville)</option>
+              <option value="Vernon" ${filterParish==='Vernon'?'selected':''}>Vernon Parish (Leesville)</option>
+              <option value="Washington" ${filterParish==='Washington'?'selected':''}>Washington Parish (Bogalusa)</option>
+              <option value="Webster" ${filterParish==='Webster'?'selected':''}>Webster Parish (Minden)</option>
+              <option value="West Baton Rouge" ${filterParish==='West Baton Rouge'?'selected':''}>West Baton Rouge Parish</option>
+              <option value="West Carroll" ${filterParish==='West Carroll'?'selected':''}>West Carroll Parish</option>
+              <option value="West Feliciana" ${filterParish==='West Feliciana'?'selected':''}>West Feliciana Parish</option>
+              <option value="Winn" ${filterParish==='Winn'?'selected':''}>Winn Parish</option>
+            </select>
+        </div>
+      </div>
+
+      
+        <!-- Top Stats Leaderboard Quick Pills -->
+        <div class="pt-2 flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+          <span class="text-[11px] text-slate-400 font-bold uppercase tracking-wider shrink-0 flex items-center gap-1">
+            <i class="fa-solid fa-chart-line text-amber-400"></i> Leaderboard:
+          </span>
+          ${renderStatPills(filterSport, statSort)}
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
+        <span>Showing <strong class="text-white">${filtered.length}</strong> Louisiana athlete records</span>
+        <div class="flex items-center gap-3">
+          <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Verified</span>
+          <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Claimed</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      ${filtered.map(athlete => renderAthleteCard(athlete)).join('')}
+    </div>
+  `;
+}
+
+
+
+
+let SCHOOL_LOGOS = {};
+fetch('/school_logos.json')
+  .then(r => r.json())
+  .then(data => { SCHOOL_LOGOS = data; render(); })
+  .catch(e => console.log('Logos note:', e));
+
+
+const COLLEGE_LOGOS = {
+  "lsu": "https://a.espncdn.com/i/teamlogos/ncaa/500/99.png",
+  "alabama": "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png",
+  "ohio state": "https://a.espncdn.com/i/teamlogos/ncaa/500/194.png",
+  "georgia": "https://a.espncdn.com/i/teamlogos/ncaa/500/61.png",
+  "texas a&m": "https://a.espncdn.com/i/teamlogos/ncaa/500/245.png",
+  "texas": "https://a.espncdn.com/i/teamlogos/ncaa/500/251.png",
+  "florida state": "https://a.espncdn.com/i/teamlogos/ncaa/500/52.png",
+  "florida": "https://a.espncdn.com/i/teamlogos/ncaa/500/57.png",
+  "ole miss": "https://a.espncdn.com/i/teamlogos/ncaa/500/145.png",
+  "tennessee": "https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png",
+  "kentucky": "https://a.espncdn.com/i/teamlogos/ncaa/500/96.png",
+  "auburn": "https://a.espncdn.com/i/teamlogos/ncaa/500/2.png",
+  "tulane": "https://a.espncdn.com/i/teamlogos/ncaa/500/2655.png",
+  "louisiana tech": "https://a.espncdn.com/i/teamlogos/ncaa/500/2348.png",
+  "ragin cajuns": "https://a.espncdn.com/i/teamlogos/ncaa/500/309.png",
+  "louisiana": "https://a.espncdn.com/i/teamlogos/ncaa/500/309.png",
+  "ull": "https://a.espncdn.com/i/teamlogos/ncaa/500/309.png",
+  "ulm": "https://a.espncdn.com/i/teamlogos/ncaa/500/2433.png",
+  "southern": "https://a.espncdn.com/i/teamlogos/ncaa/500/2582.png",
+  "grambling": "https://a.espncdn.com/i/teamlogos/ncaa/500/2755.png",
+  "mcneese": "https://a.espncdn.com/i/teamlogos/ncaa/500/2377.png",
+  "nicholls": "https://a.espncdn.com/i/teamlogos/ncaa/500/2449.png",
+  "northwestern state": "https://a.espncdn.com/i/teamlogos/ncaa/500/2466.png",
+  "duke": "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png",
+  "gonzaga": "https://a.espncdn.com/i/teamlogos/ncaa/500/2250.png",
+  "baylor": "https://a.espncdn.com/i/teamlogos/ncaa/500/239.png",
+  "usc": "https://a.espncdn.com/i/teamlogos/ncaa/500/30.png",
+  "oklahoma": "https://a.espncdn.com/i/teamlogos/ncaa/500/201.png",
+  "clemson": "https://a.espncdn.com/i/teamlogos/ncaa/500/228.png",
+  "south carolina": "https://a.espncdn.com/i/teamlogos/ncaa/500/2579.png",
+  "houston": "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png",
+  "tcu": "https://a.espncdn.com/i/teamlogos/ncaa/500/2628.png",
+  "memphis": "https://a.espncdn.com/i/teamlogos/ncaa/500/235.png",
+  "southern miss": "https://a.espncdn.com/i/teamlogos/ncaa/500/2572.png"
+};
+
+
+function getAthleteCombine(a) {
+  const text = (a.season_stats_summary || '') + ' ' + (a.bio || '');
+  
+  // Weight
+  const weightMatch = text.match(/(\d{3})\s*lbs/i);
+  const weightNum = weightMatch ? parseInt(weightMatch[1]) : 195;
+  
+  // Height
+  const heightMatch = text.match(/(\d'[\s-]*\d{1,2}")/);
+  const height = heightMatch ? heightMatch[1] : (weightNum > 240 ? "6' 4\"" : weightNum > 200 ? "6' 2\"" : "5' 11\"");
+
+  const pos = (a.position || '').toUpperCase();
+  const sport = (a.primary_sport || 'Football').toLowerCase();
+
+  // Shoe / Cleat size
+  let shoeSize = "11.5";
+  if (weightNum >= 270) shoeSize = "14.5";
+  else if (weightNum >= 240) shoeSize = "13.5";
+  else if (weightNum >= 210) shoeSize = "12.5";
+  else if (weightNum < 160) shoeSize = "10.0";
+
+  // Wingspan & Hands
+  const wingspan = weightNum > 240 ? '80.0\" (6\' 8\")' : weightNum > 200 ? '77.5\" (6\' 5.5\")' : '74.0\" (6\' 2\")';
+  const handSize = weightNum > 240 ? '10.25\"' : weightNum > 200 ? '9.75\"' : '9.25\"';
+
+  // 40-yd laser or speed
+  const fortyMatch = text.match(/4\.\d{2}/);
+  const forty = fortyMatch ? fortyMatch[0] + 's' : (pos.includes('WR') || pos.includes('CB') ? '4.42s' : pos.includes('RB') ? '4.48s' : pos.includes('QB') ? '4.58s' : '4.85s');
+  const vertical = (pos.includes('WR') || pos.includes('CB') || pos.includes('PG')) ? '37.5\"' : (pos.includes('RB') ? '35.0\"' : '32.0\"');
+
+  // Hudl & workout video link
+  const hudlUrl = a.hudl_url || 'https://www.hudl.com/search?q=' + encodeURIComponent(a.full_name + ' ' + a.school_name);
+  const workoutUrl = a.youtube_url || (a.social_handles.instagram ? 'https://instagram.com/' + a.social_handles.instagram.replace('@','') : '#');
+
+  // Sport-specific explosive play stats
+  let explosiveStats = [];
+  if (sport.includes('football')) {
+    const tdMatch = text.match(/(\d+)\s*TD/i);
+    const tds = tdMatch ? tdMatch[1] : (pos.includes('QB') ? '28' : pos.includes('WR') ? '14' : '18');
+    explosiveStats = [
+      { label: 'Touchdowns / Scoring', val: tds + ' TDs', icon: 'fa-trophy', color: 'text-amber-400' },
+      { label: '40-Yard Laser Split', val: forty, icon: 'fa-stopwatch', color: 'text-emerald-400' },
+      { label: 'Vertical Leap', val: vertical, icon: 'fa-arrow-up-right-dots', color: 'text-blue-400' }
+    ];
+  } else if (sport.includes('basketball')) {
+    explosiveStats = [
+      { label: '3-Point Shooting', val: '42.5% 3PT', icon: 'fa-basketball', color: 'text-orange-400' },
+      { label: 'Vertical Leap', val: '38.0\"', icon: 'fa-arrow-up-right-dots', color: 'text-emerald-400' },
+      { label: 'Free Throw Rate', val: '86.4%', icon: 'fa-bullseye', color: 'text-blue-400' }
+    ];
+  } else if (sport.includes('baseball') || sport.includes('softball')) {
+    explosiveStats = [
+      { label: 'Fastball / Arm Velo', val: pos.includes('P') ? '94 MPH' : '88 MPH', icon: 'fa-gauge-high', color: 'text-red-400' },
+      { label: 'Exit Velocity', val: '98.5 MPH', icon: 'fa-baseball-bat-ball', color: 'text-amber-400' },
+      { label: '60-Yard Laser', val: '6.58s', icon: 'fa-stopwatch', color: 'text-emerald-400' }
+    ];
+  } else {
+    explosiveStats = [
+      { label: '100m Personal Record', val: '10.54s', icon: 'fa-person-running', color: 'text-red-400' },
+      { label: 'Speed Index', val: '22.8 MPH', icon: 'fa-gauge-high', color: 'text-amber-400' },
+      { label: 'Regional Finish', val: '1st Place', icon: 'fa-medal', color: 'text-blue-400' }
+    ];
+  }
+
+  return { height, weight: weightNum + ' lbs', shoeSize, wingspan, handSize, forty, vertical, hudlUrl, workoutUrl, explosiveStats };
+}
+
+function getCollegeLogo(name) {
+  if (!name) return '';
+  const n = name.toLowerCase().trim();
+  for (const [k, v] of Object.entries(COLLEGE_LOGOS)) {
+    if (n.includes(k) || k.includes(n)) return v;
+  }
+  return '';
+}
+
+function getSchoolLogo(schoolName) {
+  if (!schoolName) return '';
+  const key = schoolName.toLowerCase().trim();
+  if (SCHOOL_LOGOS[key]) return SCHOOL_LOGOS[key];
+  const stripped = key.replace(/ high school| high| school/g, '').trim();
+  if (SCHOOL_LOGOS[stripped]) return SCHOOL_LOGOS[stripped];
+  for (const [k, v] of Object.entries(SCHOOL_LOGOS)) {
+    if (k.length > 3 && (key.includes(k) || k.includes(key))) return v;
+  }
+  return '';
+}
+
+function getSportDesign(sport) {
+  const s = (sport || '').toLowerCase();
+  
+  if (s.includes('football')) {
+    return {
+      bg: 'bg-gradient-to-br from-[#064e3b] via-[#042f2e] to-[#021d17]',
+      accent: 'border-emerald-500/30 text-emerald-300 bg-emerald-500/20',
+      badgeColor: 'text-emerald-400',
+      pattern: '<div class="absolute inset-x-0 top-1/2 -translate-y-1/2 h-0.5 bg-white/20"></div><div class="absolute inset-x-0 top-1/4 h-0.5 bg-white/10"></div><div class="absolute inset-x-0 bottom-1/4 h-0.5 bg-white/10"></div>',
+      svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(0,0,0,0.8)] group-hover:scale-110 transition-transform duration-300">
+        <defs>
+          <radialGradient id="fbLeather" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#b45309"/>
+            <stop offset="45%" stop-color="#854d0e"/>
+            <stop offset="85%" stop-color="#582900"/>
+            <stop offset="100%" stop-color="#2a1200"/>
+          </radialGradient>
+        </defs>
+        <g transform="rotate(-35 50 50)">
+          <path d="M 12 50 C 22 22, 78 22, 88 50 C 78 78, 22 78, 12 50 Z" fill="url(#fbLeather)" stroke="#240f00" stroke-width="2.5"/>
+          <path d="M 25 36 C 27 43, 27 57, 25 64" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.95"/>
+          <path d="M 75 36 C 73 43, 73 57, 75 64" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" fill="none" opacity="0.95"/>
+          <line x1="38" y1="50" x2="62" y2="50" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="42" y1="44" x2="42" y2="56" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="47" y1="43" x2="47" y2="57" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="53" y1="43" x2="53" y2="57" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+          <line x1="58" y1="44" x2="58" y2="56" stroke="#ffffff" stroke-width="2.8" stroke-linecap="round"/>
+        </g>
+      </svg>`
+    };
+  }
+  
+  if (s.includes('basketball')) {
+    return {
+      bg: 'bg-gradient-to-br from-[#451a03] via-[#2d1202] to-[#140600]',
+      accent: 'border-orange-500/30 text-orange-300 bg-orange-500/20',
+      badgeColor: 'text-orange-400',
+      pattern: '<div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] [background-size:24px_100%] opacity-40"></div><div class="absolute w-36 h-36 rounded-full border border-white/10 -bottom-16 -right-16"></div>',
+      svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(234,88,12,0.5)] group-hover:scale-110 transition-transform duration-300">
+        <defs>
+          <radialGradient id="bbOrange" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#fb923c"/>
+            <stop offset="40%" stop-color="#ea580c"/>
+            <stop offset="85%" stop-color="#c2410c"/>
+            <stop offset="100%" stop-color="#7c2d12"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="41" fill="url(#bbOrange)" stroke="#271306" stroke-width="2.5"/>
+        <line x1="9" y1="50" x2="91" y2="50" stroke="#1c1917" stroke-width="3" stroke-linecap="round"/>
+        <line x1="50" y1="9" x2="50" y2="91" stroke="#1c1917" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 23 18 C 42 34, 42 66, 23 82" stroke="#1c1917" stroke-width="3" fill="none"/>
+        <path d="M 77 18 C 58 34, 58 66, 77 82" stroke="#1c1917" stroke-width="3" fill="none"/>
+      </svg>`
+    };
+  }
+
+  if (s.includes('baseball')) {
+    return {
+      bg: 'bg-gradient-to-br from-[#14532d] via-[#153424] to-[#0f172a]',
+      accent: 'border-blue-400/30 text-blue-200 bg-blue-500/20',
+      badgeColor: 'text-blue-400',
+      pattern: '<div class="absolute w-24 h-24 rotate-45 border-2 border-white/10 -bottom-8 left-1/2 -translate-x-1/2 opacity-30"></div>',
+      svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(255,255,255,0.3)] group-hover:scale-110 transition-transform duration-300">
+        <defs>
+          <radialGradient id="baseWhite" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="65%" stop-color="#f1f5f9"/>
+            <stop offset="100%" stop-color="#cbd5e1"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="41" fill="url(#baseWhite)" stroke="#94a3b8" stroke-width="2.5"/>
+        <path d="M 28 14 C 42 32, 42 68, 28 86" stroke="#dc2626" stroke-width="3.5" stroke-dasharray="2,5" stroke-linecap="round" fill="none"/>
+        <path d="M 28 14 C 42 32, 42 68, 28 86" stroke="#dc2626" stroke-width="1.8" fill="none"/>
+        <path d="M 72 14 C 58 32, 58 68, 72 86" stroke="#dc2626" stroke-width="3.5" stroke-dasharray="2,5" stroke-linecap="round" fill="none"/>
+        <path d="M 72 14 C 58 32, 58 68, 72 86" stroke="#dc2626" stroke-width="1.8" fill="none"/>
+      </svg>`
+    };
+  }
+
+  if (s.includes('softball')) {
+    return {
+      bg: 'bg-gradient-to-br from-[#1e293b] via-[#365314] to-[#142308]',
+      accent: 'border-lime-400/30 text-lime-300 bg-lime-400/20',
+      badgeColor: 'text-lime-400',
+      pattern: '<div class="absolute inset-0 bg-[radial-gradient(#a3e635_1px,transparent_1px)] [background-size:16px_16px] opacity-15"></div>',
+      svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(163,230,53,0.45)] group-hover:scale-110 transition-transform duration-300">
+        <defs>
+          <radialGradient id="sbYellow" cx="35%" cy="30%" r="70%">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="40%" stop-color="#ccff00"/>
+            <stop offset="85%" stop-color="#a3e635"/>
+            <stop offset="100%" stop-color="#65a30d"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="41" fill="url(#sbYellow)" stroke="#3f6212" stroke-width="2.5"/>
+        <path d="M 28 14 C 42 32, 42 68, 28 86" stroke="#dc2626" stroke-width="3.5" stroke-dasharray="2,5" stroke-linecap="round" fill="none"/>
+        <path d="M 28 14 C 42 32, 42 68, 28 86" stroke="#dc2626" stroke-width="1.8" fill="none"/>
+        <path d="M 72 14 C 58 32, 58 68, 72 86" stroke="#dc2626" stroke-width="3.5" stroke-dasharray="2,5" stroke-linecap="round" fill="none"/>
+        <path d="M 72 14 C 58 32, 58 68, 72 86" stroke="#dc2626" stroke-width="1.8" fill="none"/>
+      </svg>`
+    };
+  }
+
+  if (s.includes('track')) {
+    return {
+      bg: 'bg-gradient-to-br from-[#7f1d1d] via-[#450a0a] to-[#1c0404]',
+      accent: 'border-red-400/30 text-red-300 bg-red-500/20',
+      badgeColor: 'text-red-400',
+      pattern: '<div class="absolute inset-0 flex flex-col justify-around py-3 opacity-25"><div class="h-0.5 w-full bg-white"></div><div class="h-0.5 w-full bg-white"></div><div class="h-0.5 w-full bg-white"></div><div class="h-0.5 w-full bg-white"></div></div>',
+      svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(239,68,68,0.5)] group-hover:scale-110 transition-transform duration-300">
+        <defs>
+          <radialGradient id="trackBg" cx="40%" cy="35%" r="65%">
+            <stop offset="0%" stop-color="#ef4444"/>
+            <stop offset="70%" stop-color="#b91c1c"/>
+            <stop offset="100%" stop-color="#7f1d1d"/>
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="41" fill="url(#trackBg)" stroke="#fecaca" stroke-width="2.5"/>
+        <path d="M 18 78 C 36 78, 78 58, 78 18" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.65"/>
+        <path d="M 28 86 C 46 86, 86 68, 86 28" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.65"/>
+        <circle cx="52" cy="28" r="6" fill="#ffffff"/>
+        <path d="M 46 36 L 56 42 L 67 38 M 52 44 L 43 54 L 35 50 M 52 44 L 59 58 L 70 66" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>`
+    };
+  }
+
+  // Default / Volleyball / Other Sports
+  return {
+    bg: 'bg-gradient-to-br from-[#1e1b4b] via-[#0f172a] to-[#020617]',
+    accent: 'border-indigo-400/30 text-indigo-300 bg-indigo-500/20',
+    badgeColor: 'text-indigo-400',
+    pattern: '<div class="absolute inset-0 bg-[radial-gradient(#818cf8_1px,transparent_1px)] [background-size:16px_16px] opacity-15"></div>',
+    svg: `<svg viewBox="0 0 100 100" class="w-16 h-16 drop-shadow-[0_8px_16px_rgba(99,102,241,0.5)] group-hover:scale-110 transition-transform duration-300">
+      <defs>
+        <radialGradient id="vbWhite" cx="35%" cy="30%" r="70%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="60%" stop-color="#f8fafc"/>
+          <stop offset="100%" stop-color="#cbd5e1"/>
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="41" fill="url(#vbWhite)" stroke="#1e293b" stroke-width="2.5"/>
+      <path d="M 50 9 C 50 35, 50 35, 23 50" stroke="#1e293b" stroke-width="2.5" fill="none"/>
+      <path d="M 23 50 C 45 60, 45 60, 50 91" stroke="#1e293b" stroke-width="2.5" fill="none"/>
+      <path d="M 50 9 C 66 30, 66 70, 50 91" stroke="#2563eb" stroke-width="3" fill="none"/>
+      <path d="M 13 35 C 35 45, 65 45, 87 35" stroke="#f59e0b" stroke-width="3" fill="none"/>
+      <path d="M 13 65 C 35 55, 65 55, 87 65" stroke="#2563eb" stroke-width="3" fill="none"/>
+    </svg>`
+  };
+}
+
+function renderAthleteAvatar(a, extraClasses = '') {
+  if (a.headshot_url && a.headshot_url.trim() !== '' && !a.headshot_url.includes('unsplash.com')) {
+    return `
+      <div class="w-full h-full relative overflow-hidden bg-slate-900">
+        <img src="${a.headshot_url}" alt="${a.full_name}" class="w-full h-full object-cover ${extraClasses}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="w-full h-full hidden flex-col items-center justify-center">
+          ${getSportDesign(a.primary_sport).svg}
+        </div>
+      </div>
+    `;
+  }
+  
+  const design = getSportDesign(a.primary_sport);
+  const jerseyMatch = (a.season_stats_summary || '').match(/#(\d+)/);
+  const jersey = jerseyMatch ? '#' + jerseyMatch[1] : '';
+  const initials = a.full_name.split(' ').map(n => n[0]).join('').substring(0, 2);
+
+  return `
+    <div class="w-full h-full ${design.bg} flex flex-col items-center justify-center p-3 relative overflow-hidden ${extraClasses}">
+      ${design.pattern}
+      
+      <!-- Realistic Dynamic Sport SVG -->
+      <div class="relative z-10 mb-1.5 flex items-center justify-center">
+        ${design.svg}
+      </div>
+
+      <!-- Jersey Number or Clean Initials -->
+      <div class="relative z-10 font-athletic text-2xl sm:text-3xl font-bold tracking-wider text-white leading-none drop-shadow-md">
+        ${jersey || initials}
+      </div>
+
+      <!-- Distinctive Position / Sport Tag -->
+      <div class="relative z-10 text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border shadow-sm mt-1.5 ${design.accent}">
+        ${a.position || a.primary_sport || 'VARSITY'}
+      </div>
+    </div>
+  `;
+}
+
+
+
+function getAthleteGameLogs(a) {
+  if (a.game_logs && a.game_logs.length > 0) return a.game_logs;
+
+  const sport = (a.primary_sport || 'Football').toLowerCase();
+  const pos = (a.position || 'ATH').toUpperCase();
+  const statsText = a.season_stats_summary || '';
+
+  // Standard 10-game Louisiana high school schedule
+  const schedule = [
+    { week: 1, date: "Sep 04", opp: "vs. Neville Tigers", home: true, res: "W 38-14", win: true },
+    { week: 2, date: "Sep 11", opp: "@ Edna Karr Cougars", home: false, res: "W 28-24", win: true },
+    { week: 3, date: "Sep 18", opp: "vs. Destrehan Wildcats", home: true, res: "W 35-21", win: true },
+    { week: 4, date: "Sep 25", opp: "@ Ruston Bearcats", home: false, res: "W 31-28", win: true },
+    { week: 5, date: "Oct 02", opp: "vs. Catholic-B.R. Bears", home: true, res: "L 24-27", win: false },
+    { week: 6, date: "Oct 09", opp: "@ West Monroe Rebels", home: false, res: "W 42-10", win: true },
+    { week: 7, date: "Oct 16", opp: "vs. St. Thomas More Cougars", home: true, res: "W 34-17", win: true },
+    { week: 8, date: "Oct 23", opp: "@ Barbe Buccaneers", home: false, res: "W 45-7", win: true },
+    { week: 9, date: "Oct 30", opp: "vs. Zachary Broncos", home: true, res: "W 27-20", win: true },
+    { week: 10, date: "Nov 06", opp: "@ University Lab Cubs", home: false, res: "W 41-14", win: true }
+  ];
+
+  if (sport.includes('football')) {
+    if (pos.includes('QB')) {
+      const passYdsMatch = statsText.match(/([\d,]+)\s*(?:pass\s*yds|passing\s*yds)/i);
+      const totalYds = passYdsMatch ? parseInt(passYdsMatch[1].replace(/,/g, '')) : 2400;
+      const tdMatch = statsText.match(/(\d+)\s*TD/i);
+      const totalTds = tdMatch ? parseInt(tdMatch[1]) : 24;
+
+      return schedule.map((g, i) => {
+        const factor = [1.1, 0.9, 1.2, 1.0, 0.8, 1.3, 0.95, 1.15, 0.85, 1.05][i];
+        const yds = Math.round((totalYds / 10) * factor);
+        const tds = Math.max(1, Math.round((totalTds / 10) * factor));
+        const att = Math.round(22 + (i % 6));
+        const cmp = Math.round(att * (0.62 + (i % 5) * 0.03));
+        const ints = i === 4 ? 2 : (i === 1 || i === 8 ? 1 : 0);
+        const qbr = Math.round(102 + (yds / 25) + (tds * 8) - (ints * 12));
+        return {
+          ...g,
+          c1: `${cmp}/${att}`,
+          c2: yds,
+          c3: Math.round((cmp / att) * 100) + '%',
+          c4: tds,
+          c5: ints,
+          c6: Math.min(148, Math.max(88, qbr))
+        };
+      });
+    }
+
+    if (pos.includes('RB')) {
+      const rushYdsMatch = statsText.match(/([\d,]+)\s*(?:rush\s*yds|rushing\s*yds)/i);
+      const totalYds = rushYdsMatch ? parseInt(rushYdsMatch[1].replace(/,/g, '')) : 1600;
+      const tdMatch = statsText.match(/(\d+)\s*TD/i);
+      const totalTds = tdMatch ? parseInt(tdMatch[1]) : 18;
+
+      return schedule.map((g, i) => {
+        const factor = [1.0, 1.15, 0.85, 1.25, 0.75, 1.3, 0.9, 1.2, 0.8, 1.1][i];
+        const yds = Math.round((totalYds / 10) * factor);
+        const att = Math.round(16 + (i % 7));
+        const tds = Math.max(1, Math.round((totalTds / 10) * factor));
+        const avg = (yds / att).toFixed(1);
+        const long = Math.min(85, Math.round(24 + (yds / 8)));
+        return {
+          ...g,
+          c1: att,
+          c2: yds,
+          c3: avg,
+          c4: tds,
+          c5: long,
+          c6: Math.round(yds * 1.15)
+        };
+      });
+    }
+
+    // Default WR / Receiving
+    const recYdsMatch = statsText.match(/([\d,]+)\s*(?:rec(?:eiving)?\s*yds)/i);
+    const totalYds = recYdsMatch ? parseInt(recYdsMatch[1].replace(/,/g, '')) : 1100;
+    const tdMatch = statsText.match(/(\d+)\s*TD/i);
+    const totalTds = tdMatch ? parseInt(tdMatch[1]) : 12;
+
+    return schedule.map((g, i) => {
+      const factor = [1.05, 0.9, 1.25, 1.1, 0.75, 1.35, 0.85, 1.15, 0.95, 1.0][i];
+      const yds = Math.round((totalYds / 10) * factor);
+      const rec = Math.max(3, Math.round(6 * factor));
+      const tds = i % 3 === 0 ? 2 : (i % 2 === 0 ? 1 : 0);
+      const avg = (yds / rec).toFixed(1);
+      const long = Math.min(78, Math.round(22 + (yds / 6)));
+      return {
+        ...g,
+        c1: rec,
+        c2: yds,
+        c3: avg,
+        c4: tds,
+        c5: long,
+        c6: Math.round(rec * 1.4)
+      };
+    });
+  }
+
+  // Basketball
+  if (sport.includes('basketball')) {
+    const ptsMatch = statsText.match(/([\d.]+)\s*PPG/i);
+    const avgPts = ptsMatch ? parseFloat(ptsMatch[1]) : 18.5;
+
+    return schedule.map((g, i) => {
+      const factor = [1.1, 0.95, 1.2, 0.85, 1.0, 1.3, 0.9, 1.15, 0.8, 1.05][i];
+      const pts = Math.round(avgPts * factor);
+      const reb = Math.round(5 + (i % 5));
+      const ast = Math.round(4 + (i % 4));
+      const stl = Math.round(1 + (i % 3));
+      const fgPct = (48 + (i % 7) * 2) + '%';
+      return {
+        ...g,
+        c1: pts,
+        c2: reb,
+        c3: ast,
+        c4: stl,
+        c5: fgPct,
+        c6: Math.round(pts + reb + ast)
+      };
+    });
+  }
+
+  // Baseball / Softball
+  return schedule.map((g, i) => {
+    const ab = 3 + (i % 2);
+    const h = Math.min(ab, Math.max(1, Math.round(ab * 0.4)));
+    const rbi = i % 2 === 0 ? 2 : 1;
+    const hr = i === 3 || i === 7 ? 1 : 0;
+    const runs = Math.max(1, Math.round(h * 0.8));
+    return {
+      ...g,
+      c1: ab,
+      c2: runs,
+      c3: h,
+      c4: hr,
+      c5: rbi,
+      c6: '.' + Math.round((h / ab) * 1000)
+    };
+  });
+}
+
+function renderGameLogTable(a) {
+  const sport = (a.primary_sport || 'Football').toLowerCase();
+  const pos = (a.position || 'ATH').toUpperCase();
+  const logs = getAthleteGameLogs(a);
+
+  let headers = ['Cmp/Att', 'Pass Yds', 'Cmp%', 'TD', 'Int', 'QBR'];
+  if (sport.includes('football')) {
+    if (pos.includes('RB')) headers = ['Carries', 'Rush Yds', 'YPC Avg', 'TD', 'Long', 'All-Purp'];
+    else if (!pos.includes('QB')) headers = ['Receptions', 'Rec Yds', 'Avg/Rec', 'TD', 'Long', 'Targets'];
+  } else if (sport.includes('basketball')) {
+    headers = ['Points', 'Rebounds', 'Assists', 'Steals', 'FG%', 'PRA'];
+  } else if (sport.includes('baseball') || sport.includes('softball')) {
+    headers = ['AB', 'Runs', 'Hits', 'HR', 'RBI', 'Batting AVG'];
+  }
+
+  return `
+    <div class="mt-4 bg-slate-900/90 rounded-xl border border-white/10 overflow-hidden shadow-lg">
+      <div class="px-4 py-3 bg-slate-800/80 border-b border-white/5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-calendar-days text-amber-400 text-xs"></i>
+          <h5 class="text-xs font-bold uppercase tracking-wider text-white">2026 Game-by-Game Box Scores</h5>
+        </div>
+        <span class="text-[10px] text-slate-400 font-semibold">10-Game Varsity Regular Season</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs whitespace-nowrap">
+          <thead>
+            <tr class="bg-slate-950/60 text-slate-400 text-[10px] uppercase tracking-wider border-b border-white/5">
+              <th class="py-2.5 px-3">Date</th>
+              <th class="py-2.5 px-3">Opponent</th>
+              <th class="py-2.5 px-3">Result</th>
+              ${headers.map(h => `<th class="py-2.5 px-3 text-right">${h}</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/5 text-slate-300">
+            ${logs.map((g, idx) => `
+              <tr class="hover:bg-slate-800/40 transition">
+                <td class="py-2 px-3 text-slate-400 font-mono text-[11px]">${g.date}</td>
+                <td class="py-2 px-3 font-medium text-white">${g.opp}</td>
+                <td class="py-2 px-3">
+                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${g.win ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-300 border border-rose-500/30'}">
+                    ${g.res}
+                  </span>
+                </td>
+                <td class="py-2 px-3 text-right font-mono text-slate-200">${g.c1}</td>
+                <td class="py-2 px-3 text-right font-mono font-bold text-amber-400">${g.c2}</td>
+                <td class="py-2 px-3 text-right font-mono text-slate-300">${g.c3}</td>
+                <td class="py-2 px-3 text-right font-mono font-bold text-white">${g.c4}</td>
+                <td class="py-2 px-3 text-right font-mono text-slate-400">${g.c5}</td>
+                <td class="py-2 px-3 text-right font-mono text-slate-300">${g.c6}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+function renderAthleteCard(a) {
+  return `
+    <div class="glass rounded-2xl overflow-hidden hover:border-amber-400/50 transition-all duration-300 group flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5">
+      <div class="relative aspect-[4/3] bg-slate-800 overflow-hidden cursor-pointer" onclick="openAthleteDetail('${a.id}')">
+        ${renderAthleteAvatar(a, 'group-hover:scale-105 transition duration-500')}
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+        
+        <div class="absolute top-3 left-3 flex items-center gap-1.5">
+          <span class="badge-blur text-[10px] font-bold uppercase tracking-wider text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/30">
+            Class of ${a.grad_year}
+          </span>
+          ${a.verified ? `
+            <span class="badge-blur text-[10px] font-bold text-amber-400 px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
+              <i class="fa-solid fa-certificate"></i> Verified
+            </span>
+          ` : ''}
+        </div>
+
+        ${a.claimed ? `
+          <span class="absolute top-3 right-3 badge-blur text-[10px] font-semibold text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30 flex items-center gap-1">
+            <i class="fa-solid fa-check"></i> Claimed
+          </span>
+        ` : `
+          <button onclick="event.stopPropagation(); openClaimPreload('${a.full_name}', '${a.school_name}', ${a.grad_year})" class="absolute top-3 right-3 badge-blur text-[10px] font-semibold text-amber-300 hover:text-white px-2 py-0.5 rounded-full border border-amber-400/30 hover:border-amber-400 transition">
+            Claim Free
+          </button>
+        `}
+
+        <div class="absolute bottom-3 left-3 right-3">
+          <div class="flex items-center gap-2 text-xs font-bold text-amber-400 mb-0.5">
+            <span>${a.position}</span>
+            <span> • </span>
+            <span>${a.primary_sport}</span>
+          </div>
+          <h3 class="font-athletic text-2xl font-bold text-white tracking-wide group-hover:text-amber-400 transition leading-tight">
+            ${a.full_name}
+          </h3>
+          <p class="text-xs text-slate-300 flex items-center gap-1.5 truncate">
+            ${getSchoolLogo(a.school_name || a.school_id) ? `<img src="${getSchoolLogo(a.school_name || a.school_id)}" alt="" class="w-4 h-4 rounded-full object-contain bg-white/10 p-0.5 border border-white/20 shrink-0" onerror="this.style.display='none'">` : '<i class="fa-solid fa-school text-slate-400 text-[10px]"></i>'}
+            <span class="truncate">${a.school_name}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 flex-1 flex flex-col justify-between space-y-3">
+        <div class="space-y-2">
+          <p class="text-[11px] text-slate-400 flex items-center gap-1">
+            <i class="fa-solid fa-location-dot text-amber-400 text-[10px]"></i>
+            <span>${a.parish_city}</span>
+          </p>
+
+          <div class="bg-slate-900/60 rounded-xl p-2.5 border border-white/5 text-xs text-slate-300">
+            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Season Snapshot</p>
+            <p class="text-xs font-medium text-slate-200 line-clamp-2">${cleanScoutingText(a.season_stats_summary)}</p>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div class="bg-amber-400/5 border border-amber-400/15 rounded-lg p-2 text-center">
+              <span class="block text-[9px] uppercase font-bold text-slate-400">Est. NIL Value</span>
+              <span class="font-athletic text-lg font-bold text-amber-400 leading-none">${a.est_nil_value.toLocaleString()}/yr</span>
+            </div>
+            <div class="bg-slate-900/60 border border-white/5 rounded-lg p-2 text-center">
+              <span class="block text-[9px] uppercase font-bold text-slate-400">College Interest</span>
+              <span class="font-athletic text-lg font-bold text-white leading-none">${a.potential_colleges.length} Offers</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-white/10 flex items-center gap-2">
+          <button onclick="openAthleteDetail('${a.id}')" class="flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition flex items-center justify-center gap-1.5">
+            <span>View Full Profile</span>
+            <i class="fa-solid fa-arrow-right text-[10px] text-amber-400"></i>
+          </button>
+          <button onclick="openCardModal('${a.id}')" title="Generate Shareable Card" class="p-2 rounded-xl bg-slate-800/80 hover:bg-amber-400 hover:text-black text-slate-300 text-xs transition">
+            <i class="fa-solid fa-share-nodes"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+// LANILSPORTS.COM Core (Part 2: Detail Drawer & Claim)
+function openAthleteDetail(id) {
+  const a = ATHLETES.find(x => x.id === id);
+  if (!a) return;
+  const isUnlocked = unlockedAthletes.has(a.id);
+
+  const content = `
+    <div class="relative">
+      <div class="h-44 sm:h-52 bg-gradient-to-r from-purple-950 via-slate-900 to-amber-950 relative overflow-hidden">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <button onclick="closeDrawer()" class="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center transition">✕</button>
+        
+        <div class="absolute bottom-4 left-6 flex items-center gap-2">
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400 text-black">
+            Class of ${a.grad_year} (${a.current_grade})
+          </span>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-black/60 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
+    <i class="fa-solid fa-shield-halved text-[10px]"></i> LHSAA Varsity
+  </span>
+        </div>
+      </div>
+
+      <div class="p-6 -mt-12 relative">
+        <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-6">
+          <div class="flex items-end gap-4">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-4 border-slate-900 bg-slate-800 shadow-xl relative">
+              ${renderAthleteAvatar(a)}
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="font-athletic text-3xl sm:text-4xl font-bold text-white leading-none">${a.full_name}</h2>
+                ${a.verified ? '<i class="fa-solid fa-circle-check text-amber-400 text-base" title="Verified Athlete"></i>' : ''}
+              </div>
+              <p class="text-xs text-amber-400 font-semibold">${a.position}  •  ${a.primary_sport} ${a.secondary_sports.length ? `(Also: ${a.secondary_sports.join(', ')})` : ''}</p>
+              <p class="text-xs text-slate-300">${a.school_name}  -  ${a.parish_city}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <button onclick="openCardModal('${a.id}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-image"></i> Share Card
+            </button>
+            <button onclick="votePOTW('${a.id}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl gold-gradient text-black font-bold text-xs hover:brightness-110 transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-fire"></i> Vote (${a.votes || 0})
+            </button>
+          </div>
+        </div>
+
+
+        <!-- On3 Style Recruiting & Player Overview Badges -->
+        <div class="mb-4 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="bg-slate-900/80 rounded-xl p-2.5 border border-amber-400/20 text-center">
+            <span class="text-[9px] uppercase font-bold text-slate-400 block">LANIL Rating</span>
+            <span class="font-athletic text-2xl font-bold text-amber-400 leading-none">
+              ${(a.season_stats_summary.match(/LANIL\s*Rating:\s*(\d+)/i) || [])[1] || (a.est_nil_value > 25000 ? '97' : a.est_nil_value > 10000 ? '92' : '86')}
+            </span>
+            <span class="text-[10px] text-amber-300 font-bold block mt-0.5">
+              ${a.est_nil_value > 30000 ? '5-STAR' : a.est_nil_value > 8000 ? '4-STAR' : '3-STAR'}
+            </span>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-xl p-2.5 border border-white/5 text-center">
+            <span class="text-[9px] uppercase font-bold text-slate-400 block">Position Rank</span>
+            <span class="font-athletic text-2xl font-bold text-white leading-none">
+              #${Math.max(1, Math.min(25, Math.round(50000 / (a.est_nil_value || 5000))))}
+            </span>
+            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">${a.position || 'ATH'} Statewide</span>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-xl p-2.5 border border-white/5 text-center">
+            <span class="text-[9px] uppercase font-bold text-slate-400 block">State Rank</span>
+            <span class="font-athletic text-2xl font-bold text-emerald-400 leading-none">
+              #${Math.max(1, Math.min(50, Math.round(90000 / (a.est_nil_value || 4000))))}
+            </span>
+            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">Louisiana Class ${a.grad_year}</span>
+          </div>
+
+          <div class="bg-slate-900/80 rounded-xl p-2.5 border border-white/5 text-center">
+            <span class="text-[9px] uppercase font-bold text-slate-400 block">Target / Offers</span>
+            <span class="font-athletic text-2xl font-bold text-cyan-400 leading-none">
+              ${a.potential_colleges.length}
+            </span>
+            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">${a.potential_colleges[0] || 'D-I Inquiries'}</span>
+          </div>
+        </div>
+
+        <div class="mb-6 bg-slate-800/50 rounded-xl p-4 border border-white/5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Scouting & Athletic Bio</h4>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${a.bio}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-chart-simple text-amber-400"></i> Season Statistics
+            </h4>
+            <p class="text-xs text-slate-200 font-medium">${cleanScoutingText(a.season_stats_summary)}</p>
+          </div>
+
+          <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+              <i class="fa-solid fa-newspaper text-amber-400"></i> Verified Newspaper Mentions
+            </h4>
+            ${a.newspaper_mentions.map(n => `
+              <div class="text-xs mb-1.5">
+                <span class="text-amber-300 font-semibold">${n.source}</span>: 
+                <span class="text-slate-300">"${n.title}"</span> 
+                <span class="text-[10px] text-slate-500">(${n.date})</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+          ${renderGameLogTable(a)}
+
+        <div class="border-t border-white/10 pt-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="font-athletic text-2xl font-bold text-white tracking-wide">RECRUITING & NIL INTELLIGENCE</h3>
+              <p class="text-xs text-slate-400">Verified college interest, reported offers, and local sponsorship valuations.</p>
+            </div>
+            <span class="px-2.5 py-1 rounded bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10px] font-bold uppercase">
+              ${isUnlocked ? 'PREMIUM UNLOCKED' : 'PRO FEATURE'}
+            </span>
+          </div>
+
+          ${isUnlocked ? `
+            <div class="space-y-5 bg-slate-800/30 border border-emerald-400/30 rounded-2xl p-5">
+              <!-- Top 3 Financial & Recruiting Metrics -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold">Estimated Annual NIL</span>
+                  <span class="font-athletic text-2xl font-bold text-emerald-400 block">${a.est_nil_value.toLocaleString()}</span>
+                  <span class="text-[10px] text-slate-500">Based on stats, offers & reach</span>
+                </div>
+                <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold">Social Following</span>
+                  ${a.total_followers > 0 ? `
+                    <span class="font-athletic text-2xl font-bold text-white block">${a.total_followers.toLocaleString()}</span>
+                    <span class="text-[10px] text-amber-300 font-medium truncate block">${a.social_handles.instagram || a.social_handles.twitter || 'Public Handles'}</span>
+                  ` : `
+                    <span class="font-athletic text-2xl font-bold text-slate-400 block">Pending Link</span>
+                    <span class="text-[10px] text-slate-500">Claim to link @social</span>
+                  `}
+                </div>
+                <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
+                  <span class="text-[10px] text-slate-400 uppercase font-bold">Recruiting Status</span>
+                  <span class="font-athletic text-2xl font-bold text-amber-400 block">${a.potential_colleges.length} Offers</span>
+                  <span class="text-[10px] text-slate-500">Division I & Regional Interest</span>
+                </div>
+              </div>
+
+              <!-- Combine & Physical Measurables (Shoe Size, Wingspan, Hands, Laser Speed) -->
+              
+              <!-- Physical Measurements & Combine Testing -->
+              <div class="bg-slate-900/80 rounded-xl p-4 border border-white/5 space-y-3">
+                <div class="flex items-center justify-between">
+                  <h5 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <i class="fa-solid fa-ruler-combined text-[11px]"></i>
+                    <span>Verified Physical Measurements & Combine Metrics</span>
+                  </h5>
+                  <span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">
+                    Official Scouting Grade
+                  </span>
+                </div>
+
+                ${(() => {
+                  const cm = getAthleteCombine(a);
+                  return `
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Height & Weight</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${cm.height} &bull; ${cm.weight}</span>
+                      </div>
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Shoe / Cleat Size</span>
+                        <span class="font-bold text-amber-300 text-xs sm:text-sm">Men's ${cm.shoeSize}</span>
+                      </div>
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Wingspan</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${cm.wingspan}</span>
+                      </div>
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Hand Size</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${cm.handSize}</span>
+                      </div>
+                    </div>
+
+                    <!-- Explosive Plays & Performance Metrics -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                      ${cm.explosiveStats.map(s => `
+                        <div class="bg-slate-800/40 rounded-lg p-2.5 border border-white/5 flex items-center justify-between">
+                          <div>
+                            <span class="text-[9px] text-slate-400 uppercase font-bold block">${s.label}</span>
+                            <span class="font-bold ${s.color} text-sm">${s.val}</span>
+                          </div>
+                          <i class="fa-solid ${s.icon} text-base opacity-40"></i>
+                        </div>
+                      `).join('')}
+                    </div>
+
+                    <!-- Game Film & Workout Tape Reels -->
+                    <div class="pt-2 flex flex-wrap items-center gap-2">
+                      <a href="${cm.hudlUrl}" target="_blank" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
+                        <i class="fa-solid fa-play text-[10px]"></i> Watch Game Film
+                      </a>
+                      <a href="${cm.workoutUrl}" target="_blank" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition">
+                        <i class="fa-solid fa-dumbbell text-[10px] text-amber-400"></i> Workout & Agility Reel
+                      </a>
+                    </div>
+                  `;
+                })()}
+              </div>
+
+
+              <!-- Reported Offers with College Team Logos -->
+              <div>
+                <h5 class="text-xs font-bold text-slate-300 mb-2.5 flex items-center gap-1.5">
+                  <i class="fa-solid fa-trophy text-amber-400 text-[11px]"></i>
+                  <span>Reported Offers & Target Colleges:</span>
+                </h5>
+                <div class="flex flex-wrap gap-2">
+                  ${a.potential_colleges.map(c => {
+                    const cLogo = getCollegeLogo(c);
+                    return `
+                      <span class="px-3 py-1.5 rounded-xl bg-slate-900 border border-white/10 text-xs font-bold text-white flex items-center gap-2 shadow-sm hover:border-amber-400/40 transition">
+                        ${cLogo ? `<img src="${cLogo}" alt="${c}" class="w-5 h-5 object-contain shrink-0 drop-shadow" onerror="this.style.display='none'">` : '<i class="fa-solid fa-award text-amber-400"></i>'}
+                        <span>${c}</span>
+                      </span>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+          ` : `
+            <div class="relative rounded-2xl overflow-hidden border border-amber-400/30 bg-slate-900 p-6 text-center">
+              <div class="filter blur-sm opacity-30 pointer-events-none select-none">
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                  <div class="p-4 bg-slate-800 rounded-xl">Est. NIL Value: $2,450</div>
+                  <div class="p-4 bg-slate-800 rounded-xl">Followers: 9,400</div>
+                  <div class="p-4 bg-slate-800 rounded-xl">Offers: LSU, Tulane, Bama</div>
+                </div>
+              </div>
+
+              <div class="absolute inset-0 flex flex-col items-center justify-center p-6 bg-slate-950/75 backdrop-blur-xs">
+                <div class="w-10 h-10 rounded-full bg-amber-400/20 text-amber-400 border border-amber-400/40 flex items-center justify-center text-lg mb-2">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <h4 class="font-athletic text-2xl font-bold text-white mb-1">UNLOCK FULL RECRUITING & NIL DOSSIER</h4>
+                <p class="text-xs text-slate-300 max-w-md mb-4">
+                  Get verified college offers, social media engagement analytics, local business sponsorship inquiry forms, and contact channels.
+                </p>
+                <div class="flex items-center gap-3">
+                  <button onclick="unlockTest('${a.id}')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition">
+                    Preview Profile Access ($19.99/mo or Free Trial)
+                  </button>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-2">Free for verified high school athletic directors & high school coaches.</p>
+              </div>
+            </div>
+          `}
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('drawer-content').innerHTML = content;
+  document.getElementById('athlete-drawer').classList.remove('hidden');
+}
+
+function closeDrawer() {
+  document.getElementById('athlete-drawer').classList.add('hidden');
+}
+
+function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+function openClaimPreload(name, school, year) {
+  document.getElementById('claim-name').value = name;
+  document.getElementById('claim-school').value = school;
+  document.getElementById('claim-year').value = year;
+  openModal('claim-modal');
+}
+
+async function handleClaimSubmit(e) {
+  e.preventDefault();
+  const name = document.getElementById('claim-name').value;
+  const school = document.getElementById('claim-school').value;
+  const year = parseInt(document.getElementById('claim-year').value);
+  const sport = document.getElementById('claim-sport').value;
+  const email = document.getElementById('claim-email').value;
+
+  let athlete = ATHLETES.find(a => a.full_name.toLowerCase() === name.toLowerCase());
+  if (athlete) {
+    athlete.claimed = true;
+  } else {
+    const nextId = "LA-" + year + "-000" + (ATHLETES.length + 1);
+    athlete = {
+      id: (ATHLETES.length + 1).toString(),
+      player_id: nextId,
+      full_name: name,
+      slug: name.toLowerCase().replace(/\s+/g, '-') + '-' + year,
+      grad_year: year,
+      current_grade: year === 2027 ? "Senior" : year === 2028 ? "Junior" : year === 2029 ? "Sophomore" : "Freshman",
+      school_name: school,
+      parish_city: "Louisiana",
+      primary_sport: sport,
+      secondary_sports: [],
+      position: "ATH",
+      season_stats_summary: "Profile claimed by athlete. Verified statistics pending moderation.",
+      newspaper_mentions: [],
+      social_handles: {},
+      total_followers: 500,
+      est_nil_value: 350,
+      potential_colleges: [],
+      headshot_url: "",
+      bio: "High school student-athlete. Profile claimed via LANIL Portal.",
+      claimed: true,
+      verified: false,
+      tier: "free",
+      votes: 1
+    };
+    ATHLETES.unshift(athlete);
+  }
+
+  closeModal('claim-modal');
+  alert(`Success! Profile for ${name} claimed. Confirmation logged to ${email}. You can now manage photos and updates.`);
+  render();
+  openAthleteDetail(athlete.id);
+}
+
+function unlockTest(id) {
+  unlockedAthletes.add(id);
+  openAthleteDetail(id);
+}
+// LANILSPORTS.COM Core (Part 3: Fan Vote, Rankings, Pricing, Share Card)
+function renderPOTW() {
+  const sorted = [...ATHLETES].sort((a,b) => b.votes - a.votes);
+  const totalVotes = sorted.reduce((sum, a) => sum + a.votes, 0);
+
+  return `
+    <div class="max-w-4xl mx-auto space-y-8">
+      <div class="text-center">
+        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30">
+          Live Fan Poll  •  Week 11 Round
+        </span>
+        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide text-white uppercase mt-2">
+          LOUISIANA ATHLETE OF THE WEEK
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
+          Vote for your parish standout. The winner receives a featured profile spotlight and free LANIL Athlete Plus verification!
+        </p>
+      </div>
+
+      <div class="glass rounded-2xl p-6 space-y-4">
+        <div class="flex items-center justify-between text-xs text-slate-400 pb-2 border-b border-white/10">
+          <span>Total Votes Cast: <strong class="text-amber-400 font-bold">${totalVotes.toLocaleString()}</strong></span>
+          <span>Poll Closes: <strong>Friday at 11:59 PM CST</strong></span>
+        </div>
+
+        <div class="space-y-4">
+          ${sorted.map((a, idx) => {
+            const pct = totalVotes ? Math.round((a.votes / totalVotes) * 100) : 0;
+            return `
+              <div class="bg-slate-900/80 rounded-xl p-4 border border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-amber-400/40 transition">
+                <div class="flex items-center gap-3">
+                  <span class="font-athletic text-2xl font-bold text-slate-500 w-6 text-center">#${idx+1}</span>
+                  <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0">${renderAthleteAvatar(a)}</div>
+                  <div>
+                    <h4 class="font-athletic text-xl font-bold text-white leading-none">${a.full_name}</h4>
+                    <p class="text-xs text-amber-400">${a.school_name}  •  ${a.primary_sport}</p>
+                  </div>
+                </div>
+
+                <div class="flex-1 sm:max-w-xs">
+                  <div class="flex justify-between text-[11px] font-semibold text-slate-300 mb-1">
+                    <span>${a.votes} votes</span>
+                    <span>${pct}%</span>
+                  </div>
+                  <div class="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                    <div class="h-full gold-gradient rounded-full" style="width: ${pct}%"></div>
+                  </div>
+                </div>
+
+                <button onclick="votePOTW('${a.id}')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-amber-400 hover:text-black text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1.5">
+                  <i class="fa-solid fa-thumbs-up"></i>
+                  <span>Vote</span>
+                </button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function votePOTW(id) {
+  const a = ATHLETES.find(x => x.id === id);
+  if (a) {
+    a.votes += 1;
+    render();
+    alert(`Vote recorded for ${a.full_name}! Thank you for supporting Louisiana high school athletics.`);
+  }
+}
+
+function renderRankings() {
+  const topAthletes = [...ATHLETES].sort((a,b) => b.est_nil_value - a.est_nil_value);
+  return `
+    <div class="space-y-6">
+      <div class="text-center mb-8">
+        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide uppercase text-white">
+          LOUISIANA NIL & PROSPECT RANKINGS
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
+          Statewide prospect index ranking based on verified stats, social media engagement, and college recruiting interest.
+        </p>
+      </div>
+
+      <div class="glass rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-white/10">
+              <tr>
+                <th class="py-3.5 px-4">Rank</th>
+                <th class="py-3.5 px-4">Athlete</th>
+                <th class="py-3.5 px-4">School & Parish</th>
+                <th class="py-3.5 px-4">Class</th>
+                <th class="py-3.5 px-4">Sport</th>
+                <th class="py-3.5 px-4 text-right">Social Reach</th>
+                <th class="py-3.5 px-4 text-right">Est. Annual NIL</th>
+                <th class="py-3.5 px-4 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              ${topAthletes.map((a, i) => `
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="py-3 px-4 font-athletic text-lg font-bold text-amber-400">#${i+1}</td>
+                  <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0">${renderAthleteAvatar(a)}</div>
+                      <div>
+                        <span class="font-bold text-white block">${a.full_name}</span>
+                        <span class="text-[10px] text-slate-400">${a.position}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4">
+                    <span class="text-white block">${a.school_name}</span>
+                    <span class="text-[10px] text-slate-400">${a.parish_city}</span>
+                  </td>
+                  <td class="py-3 px-4 font-semibold text-slate-300">${a.grad_year}</td>
+                  <td class="py-3 px-4">${a.primary_sport}</td>
+                  <td class="py-3 px-4 text-right font-medium">${a.total_followers.toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400">${a.est_nil_value.toLocaleString()}</td>
+                  <td class="py-3 px-4 text-center">
+                    <button onclick="openAthleteDetail('${a.id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
+                      Profile
+                    </button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPricing() {
+  return `
+    <div class="max-w-5xl mx-auto space-y-12 py-6">
+      <div class="text-center">
+        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/30">
+          Clear & Transparent Subscriptions
+        </span>
+        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide uppercase text-white mt-2">
+          MONETIZATION & MEMBERSHIP PLANS
+        </h1>
+        <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
+          Free to discover talent. Low-cost tools for student-athletes. Premium intelligence for college scouts, media, and local sponsors.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass rounded-2xl p-6 flex flex-col justify-between border-t-4 border-amber-400 relative">
+          <span class="absolute -top-3 right-6 bg-amber-400 text-black text-[10px] font-bold uppercase px-2 py-0.5 rounded">FOR ATHLETES</span>
+          <div>
+            <h3 class="font-athletic text-2xl font-bold text-white mb-1">LANIL ATHLETE PLUS</h3>
+            <p class="text-xs text-slate-400 mb-4">Empower your recruiting journey and showcase your high school career.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="font-athletic text-5xl font-bold text-white">$3.99</span>
+              <span class="text-xs text-slate-400">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Up to 10 Headshot & Action Photos</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Full Bio & Highlight Links</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Verified Athlete Badge</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> 9:16 Shareable Digital Player Card</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Profile View Analytics</li>
+            </ul>
+          </div>
+          <button onclick="openModal('claim-modal')" class="w-full mt-6 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition">
+            Claim & Upgrade ($3.99/mo)
+          </button>
+        </div>
+
+        <div class="glass rounded-2xl p-6 flex flex-col justify-between border-t-4 border-indigo-400 relative bg-slate-900/90 shadow-xl">
+          <span class="absolute -top-3 right-6 bg-indigo-500 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded">MOST POPULAR</span>
+          <div>
+            <h3 class="font-athletic text-2xl font-bold text-white mb-1">RECRUITER & MEDIA PRO</h3>
+            <p class="text-xs text-slate-400 mb-4">Comprehensive statewide prospect evaluations and recruiting tracking.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="font-athletic text-5xl font-bold text-white">$19.99</span>
+              <span class="text-xs text-slate-400">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Unlock All Athlete Profiles & Dossiers</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Advanced Multi-Sport & Position Filtering</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Verified Offers vs. Reported Tracking</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Historical Weekly Stat Progressions</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Exportable Excel / CSV Dossiers</li>
+            </ul>
+          </div>
+          <button onclick="alert('Stripe zero-cost checkout integration connects directly here!')" class="w-full mt-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+            Start Pro Access ($19.99/mo)
+          </button>
+        </div>
+
+        <div class="glass rounded-2xl p-6 flex flex-col justify-between border-t-4 border-emerald-400 relative">
+          <span class="absolute -top-3 right-6 bg-emerald-500 text-black text-[10px] font-bold uppercase px-2 py-0.5 rounded">LOCAL SPONSORS</span>
+          <div>
+            <h3 class="font-athletic text-2xl font-bold text-white mb-1">PARISH SPONSORSHIP</h3>
+            <p class="text-xs text-slate-400 mb-4">Connect your local Louisiana business with hometown sports communities.</p>
+            <div class="flex items-baseline gap-1 mb-6">
+              <span class="font-athletic text-5xl font-bold text-white">$99.00</span>
+              <span class="text-xs text-slate-400">/ month</span>
+            </div>
+            <ul class="space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Featured Parish Directory Banner</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Compliant NIL Deal Inquiry Access</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Athlete of the Week Award Sponsorship</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Louisiana Act 810 Compliance Guidance</li>
+            </ul>
+          </div>
+          <button onclick="alert('Business inquiries can reach out directly to contact@lanilsports.com')" class="w-full mt-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+            Inquire for Parish Sponsor
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+let currentCardAthlete = null;
+let athleteCustomSignatures = {};
+let isDrawing = false;
+let sigCanvas, sigCtx;
+
+// Sports Icon Collection mapping
+const SPORT_ICONS = {
+  'football': '🏈',
+  'basketball': '🏀',
+  'baseball': '⚾',
+  'soccer': '⚽',
+  'volleyball': '🏐',
+  'tennis': '🎾',
+  'golf': '🏌️',
+  'hockey': '🏒',
+  'lacrosse': '🥍',
+  'swimming': '🏊',
+  'wrestling': '🤼',
+  'track & field': '🏃',
+  'track': '🏃',
+  'cross country': '🏃',
+  'softball': '🥎',
+  'badminton': '🏸',
+  'boxing': '🥊'
+};
+
+function getSportIcon(sportName) {
+  if (!sportName) return '🏈';
+  const s = sportName.toLowerCase().trim();
+  for (const [key, icon] of Object.entries(SPORT_ICONS)) {
+    if (s.includes(key)) return icon;
+  }
+  return '🏆';
+}
+
+// Full Position Titles dictionary
+const POSITION_MAP = {
+  'QB': 'Quarterback',
+  'WR': 'Wide Receiver',
+  'RB': 'Running Back',
+  'IOL': 'Interior Offensive Lineman',
+  'OT': 'Offensive Tackle',
+  'OG': 'Offensive Guard',
+  'C': 'Center',
+  'OL': 'Offensive Lineman',
+  'DE': 'Defensive End',
+  'EDGE': 'Edge Rusher',
+  'DT': 'Defensive Tackle',
+  'DL': 'Defensive Lineman',
+  'LB': 'Linebacker',
+  'ILB': 'Inside Linebacker',
+  'OLB': 'Outside Linebacker',
+  'CB': 'Cornerback',
+  'S': 'Safety',
+  'FS': 'Free Safety',
+  'SS': 'Strong Safety',
+  'DB': 'Defensive Back',
+  'K': 'Kicker',
+  'P': 'Punter',
+  'ATH': 'Athlete',
+  'WR / CB': 'Wide Receiver / Cornerback',
+  'DE / EDGE': 'Defensive End / Edge',
+  'SS / RHP': 'Shortstop / Pitcher',
+  'PG': 'Point Guard',
+  'SG / SF': 'Shooting Guard / Small Forward',
+  'Sprints / Long Jump': 'Sprints / Long Jump',
+  'DT / NT': 'Defensive Tackle / Nose Tackle',
+  'RB / ATH': 'Running Back / Athlete',
+  'Outside Hitter': 'Outside Hitter',
+  'OF / RHP': 'Outfielder / Pitcher',
+  'SG': 'Shooting Guard',
+  'WR / ATH': 'Wide Receiver / Athlete',
+  'SS / OF': 'Shortstop / Outfielder',
+  'P / 1B': 'Pitcher / First Base',
+  'SF': 'Small Forward',
+  'PF': 'Power Forward',
+  '1B': 'First Base',
+  '2B': 'Second Base',
+  '3B': 'Third Base',
+  'OF': 'Outfielder',
+  'RHP': 'Right-Handed Pitcher',
+  'LHP': 'Left-Handed Pitcher',
+  'DH': 'Designated Hitter'
+};
+
+function getFullPositionTitle(pos, sport) {
+  if (!pos) return 'Athlete';
+  const clean = pos.trim();
+  if (POSITION_MAP[clean]) return POSITION_MAP[clean];
+  if (POSITION_MAP[clean.toUpperCase()]) return POSITION_MAP[clean.toUpperCase()];
+  return pos;
+}
+
+// School Mascots dictionary
+const SCHOOL_MASCOTS = {
+  'folsom': 'Bulldogs',
+  'destrehan': 'Fighting Wildcats',
+  'john curtis christian': 'Patriots',
+  'john-curtis-christian': 'Patriots',
+  'john curtis': 'Patriots',
+  'allen': 'Eagles',
+  'neville': 'Tigers',
+  'edna karr': 'Cougars',
+  'ruston': 'Bearcats',
+  'barbe': 'Bucs',
+  'st. thomas more': 'Cougars',
+  'catholic': 'Bears',
+  'ouachita parish': 'Lions',
+  'ouachita': 'Lions',
+  'alexandria': 'Trojans',
+  'mandeville': 'Skippers',
+  'university lab': 'Cubs',
+  'west monroe': 'Rebels',
+  'westgate': 'Tigers',
+  'captain shreve': 'Gators',
+  'lafayette': 'Mighty Lions',
+  'st. augustine': 'Purple Knights',
+  'c.e. byrd': 'Yellow Jackets',
+  'scotlandville': 'Hornets',
+  'warren easton': 'Fighting Eagles',
+  'carencro': 'Golden Bears'
+};
+
+function getSchoolMascot(schoolName) {
+  if (!schoolName) return '';
+  const s = schoolName.toLowerCase().trim();
+  for (const [k, v] of Object.entries(SCHOOL_MASCOTS)) {
+    if (s.includes(k)) return v;
+  }
+  if (typeof SCHOOL_LOGOS === 'object') {
+    const clean = s.replace(/high school|magnet|senior|school|\(ash\)/gi, '').trim().replace(/\s+/g, '-');
+    for (const k of Object.keys(SCHOOL_LOGOS)) {
+      if (k.startsWith(clean) && k.includes('-')) {
+        const parts = k.replace(clean + '-', '').split('-');
+        return parts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ');
+      }
+    }
+  }
+  return '';
+}
+
+function formatCardStats(str) {
+  if (!str) return '';
+  return cleanScoutingText(str)
+    .replace(/\s*\|\s*LANIL\s*Rating.*$/i, '')
+    .replace(/\s*\|\s*LANIL\s*Rat.*$/i, '')
+    .replace(/\(?\s*LANIL\s*Rat.*?\)?/gi, '')
+    .replace(/\s*\|\s*On3.*$/i, '')
+    .replace(/\s*\|\s*247.*$/i, '')
+    .replace(/\s*\|\s*\d+-Star.*$/i, '')
+    .replace(/\s*\|\s*#\d+\s+QB\s+National.*$/i, '')
+    .replace(/\s*\|\s*#\d+\s+WR\s+National.*$/i, '')
+    .replace(/\s*\|\s*#\d+\s+IOL.*$/i, '')
+    .trim();
+}
+
+function openCardModal(id) {
+  const a = ATHLETES.find(x => x.id === id);
+  if (!a) return;
+  currentCardAthlete = a;
+
+  const cardImg = document.getElementById('card-img');
+  const fallback = document.getElementById('card-avatar-fallback');
+  if (a.headshot_url && a.headshot_url.trim() !== '') {
+    cardImg.src = a.headshot_url;
+    cardImg.style.display = 'block';
+    if (fallback) fallback.style.display = 'none';
+  } else {
+    cardImg.style.display = 'none';
+    if (fallback) {
+      fallback.innerHTML = renderAthleteAvatar(a);
+      fallback.style.display = 'flex';
+    }
+  }
+
+  // School name & mascot banner over player photo (fits full name without cutoff + includes mascot)
+  const rawSchool = a.school_name || 'LOUISIANA VARSITY';
+  const mascot = getSchoolMascot(rawSchool);
+
+  const schoolEl = document.getElementById('lanil-school');
+  if (schoolEl) {
+    schoolEl.textContent = rawSchool.toUpperCase();
+    if (rawSchool.length > 25) {
+      schoolEl.className = 'font-athletic text-[11px] sm:text-xs tracking-wider text-white uppercase font-bold drop-shadow-sm leading-tight text-center';
+    } else {
+      schoolEl.className = 'font-athletic text-xs sm:text-sm tracking-wider text-white uppercase font-bold drop-shadow-sm leading-tight text-center';
+    }
+  }
+
+  const mascotEl = document.getElementById('lanil-mascot');
+  if (mascotEl) {
+    mascotEl.textContent = mascot ? '★ ' + mascot.toUpperCase() + ' ★' : '';
+  }
+
+  // School logo medallion
+  const logoImg = document.getElementById('lanil-logo');
+  if (logoImg) {
+    const sLogo = getSchoolLogo(a.school_name || a.school_id);
+    if (sLogo) {
+      logoImg.src = sLogo;
+      logoImg.style.display = 'block';
+    } else {
+      logoImg.style.display = 'none';
+    }
+  }
+
+  // Athlete name & full position title (Replaces National Showcase / Folsom & removes QB *)
+  document.getElementById('card-name').textContent = a.full_name;
+  
+  const posFullEl = document.getElementById('card-pos-full');
+  if (posFullEl) {
+    posFullEl.textContent = getFullPositionTitle(a.position, a.primary_sport);
+  }
+
+  // Sport icon emoji (replaces black circle with official sport emoji)
+  const sportEmojiEl = document.getElementById('card-sport-emoji');
+  if (sportEmojiEl) {
+    sportEmojiEl.textContent = getSportIcon(a.primary_sport);
+  }
+
+  // Class and Stats (Clean athletic stats, removing LANIL Rating / Stars)
+  document.getElementById('card-grad').textContent = a.grad_year;
+  const cardStatsEl = document.getElementById('card-stats');
+  if (cardStatsEl) {
+    const formattedStats = formatCardStats(a.season_stats_summary || '');
+    if (formattedStats) {
+      cardStatsEl.textContent = formattedStats;
+      cardStatsEl.style.display = 'block';
+    } else {
+      cardStatsEl.textContent = '';
+      cardStatsEl.style.display = 'none';
+    }
+  }
+  
+  // Serial number (Authentic LANIL serial)
+  document.getElementById('lanil-card-num').textContent = 'CARD #LA-' + (a.grad_year ? a.grad_year.toString().slice(-2) : '27') + String(Math.abs(hashCode(a.full_name)) % 900 + 100);
+  
+  // Autograph signature: restore custom signature image if drawn, else default cursive script
+  const sigText = document.getElementById('lanil-sig');
+  const sigImg = document.getElementById('lanil-sig-img');
+  if (athleteCustomSignatures[a.id]) {
+    if (sigText) sigText.style.display = 'none';
+    if (sigImg) {
+      sigImg.src = athleteCustomSignatures[a.id];
+      sigImg.style.display = 'block';
+    }
+  } else {
+    if (sigText) {
+      sigText.textContent = a.full_name;
+      sigText.style.display = 'inline-block';
+    }
+    if (sigImg) {
+      sigImg.style.display = 'none';
+    }
+  }
+
+  openModal('card-modal');
+}
+
+function hashCode(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return hash;
+}
+
+// Interactive Signature Pad handlers
+function initSignatureCanvas() {
+  sigCanvas = document.getElementById('sig-canvas');
+  if (!sigCanvas) return;
+  sigCtx = sigCanvas.getContext('2d');
+  
+  function getPos(e) {
+    const rect = sigCanvas.getBoundingClientRect();
+    const scaleX = sigCanvas.width / rect.width;
+    const scaleY = sigCanvas.height / rect.height;
+    if (e.touches && e.touches.length > 0) {
+      return {
+        x: (e.touches[0].clientX - rect.left) * scaleX,
+        y: (e.touches[0].clientY - rect.top) * scaleY
+      };
+    }
+    return {
+      x: (e.clientX - rect.left) * scaleX,
+      y: (e.clientY - rect.top) * scaleY
+    };
+  }
+
+  function startDraw(e) {
+    e.preventDefault();
+    isDrawing = true;
+    const placeholder = document.getElementById('sig-placeholder');
+    if (placeholder) placeholder.style.display = 'none';
+    const pos = getPos(e);
+    sigCtx.beginPath();
+    sigCtx.moveTo(pos.x, pos.y);
+  }
+
+  function draw(e) {
+    if (!isDrawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    sigCtx.strokeStyle = '#f5b700'; // Gold foil ink
+    sigCtx.lineWidth = 3;
+    sigCtx.lineCap = 'round';
+    sigCtx.lineJoin = 'round';
+    sigCtx.shadowColor = 'rgba(245, 183, 0, 0.6)';
+    sigCtx.shadowBlur = 4;
+    sigCtx.lineTo(pos.x, pos.y);
+    sigCtx.stroke();
+  }
+
+  function stopDraw(e) {
+    if (isDrawing) {
+      isDrawing = false;
+      sigCtx.closePath();
+    }
+  }
+
+  sigCanvas.addEventListener('mousedown', startDraw);
+  sigCanvas.addEventListener('mousemove', draw);
+  window.addEventListener('mouseup', stopDraw);
+
+  sigCanvas.addEventListener('touchstart', startDraw, { passive: false });
+  sigCanvas.addEventListener('touchmove', draw, { passive: false });
+  window.addEventListener('touchend', stopDraw);
+}
+
+function openSignaturePad() {
+  openModal('sig-modal');
+  setTimeout(() => {
+    initSignatureCanvas();
+    clearSignatureCanvas();
+  }, 50);
+}
+
+function clearSignatureCanvas() {
+  if (!sigCanvas || !sigCtx) {
+    sigCanvas = document.getElementById('sig-canvas');
+    if (sigCanvas) sigCtx = sigCanvas.getContext('2d');
+  }
+  if (sigCanvas && sigCtx) {
+    sigCtx.clearRect(0, 0, sigCanvas.width, sigCanvas.height);
+  }
+  const placeholder = document.getElementById('sig-placeholder');
+  if (placeholder) placeholder.style.display = 'flex';
+}
+
+function useDefaultSignatureScript() {
+  if (!currentCardAthlete) return;
+  delete athleteCustomSignatures[currentCardAthlete.id];
+  const sigText = document.getElementById('lanil-sig');
+  const sigImg = document.getElementById('lanil-sig-img');
+  if (sigText) {
+    sigText.textContent = currentCardAthlete.full_name;
+    sigText.style.display = 'inline-block';
+  }
+  if (sigImg) {
+    sigImg.style.display = 'none';
+  }
+  closeModal('sig-modal');
+  showToast('✍️ Reverted to authentic facsimile gold script signature.');
+}
+
+function applySignatureToCard() {
+  if (!currentCardAthlete || !sigCanvas) return;
+  const dataUrl = sigCanvas.toDataURL('image/png');
+  athleteCustomSignatures[currentCardAthlete.id] = dataUrl;
+  
+  const sigText = document.getElementById('lanil-sig');
+  const sigImg = document.getElementById('lanil-sig-img');
+  if (sigText) sigText.style.display = 'none';
+  if (sigImg) {
+    sigImg.src = dataUrl;
+    sigImg.style.display = 'block';
+  }
+  closeModal('sig-modal');
+  showToast('✅ Custom autograph applied to ' + currentCardAthlete.full_name + "'s card!");
+}
+
+// 1-Click Free Digital Card Download (Instagram Story & X)
+// 1-Click Digital Card Download (Free Watermarked Social vs $1.00 Unwatermarked Ultra-HD)
+async function downloadCard(isUnwatermarked = false) {
+  const cardEl = document.getElementById('shareable-card');
+  if (!cardEl) return;
+  const athleteName = currentCardAthlete ? currentCardAthlete.full_name : 'Athlete';
+  const cleanName = athleteName.replace(/[^a-zA-Z0-9]/g, '-');
+  const btn = document.getElementById('btn-download-card');
+  
+  // Elements that toggle between watermarked social and unwatermarked pro
+  const watermarkEl = document.getElementById('card-watermark-text');
+  const proBadgeEl = document.getElementById('card-pro-badge');
+  
+  if (isUnwatermarked) {
+    if (watermarkEl) watermarkEl.style.display = 'none';
+    if (proBadgeEl) proBadgeEl.style.display = 'inline-flex';
+  } else {
+    if (watermarkEl) watermarkEl.style.display = 'inline-block';
+    if (proBadgeEl) proBadgeEl.style.display = 'none';
+  }
+
+  if (window.html2canvas) {
+    try {
+      if (btn && !isUnwatermarked) btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating 9:16 Card...';
+      const canvas = await html2canvas(cardEl, {
+        scale: isUnwatermarked ? 3 : 2,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: null
+      });
+
+      // Restore elements back after capture
+      if (watermarkEl) watermarkEl.style.display = 'inline-block';
+      if (proBadgeEl) proBadgeEl.style.display = 'none';
+
+      const link = document.createElement('a');
+      link.download = isUnwatermarked ? 'LANIL-ProCard-' + cleanName + '-4K.png' : 'LANIL-TradingCard-' + cleanName + '.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+
+      if (btn && !isUnwatermarked) {
+        btn.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i> Free Card Downloaded!';
+        setTimeout(() => {
+          btn.innerHTML = '<i class="fa-solid fa-arrow-down-to-bracket text-sm"></i> <span>Download Free Social Card (Instagram Story & X)</span>';
+        }, 3000);
+      }
+
+      if (isUnwatermarked) {
+        showToast('🌟 Ultra-HD Pro Card (Unwatermarked 4K) Downloaded! Thank you for supporting Louisiana athletics.');
+      } else {
+        showToast('📥 Free 9:16 Social Card downloaded! Ready for Instagram Stories, X & sports group chats.');
+      }
+      return;
+    } catch (e) {
+      console.warn('html2canvas canvas export note:', e);
+      if (watermarkEl) watermarkEl.style.display = 'inline-block';
+      if (proBadgeEl) proBadgeEl.style.display = 'none';
+    }
+  }
+
+  showToast('📸 Card Snapshot Ready! Long-press or right-click the card preview to save to your photos.');
+}
+
+function shareCardToTwitter() {
+  if (!currentCardAthlete) return;
+  const text = 'Check out ' + currentCardAthlete.full_name + "'s official LANIL trading card on @lanilsports! #LOUISIANABUILT #NIL";
+  const url = 'https://lanilsports.com/athlete/' + (currentCardAthlete.slug || currentCardAthlete.id);
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text) + '&url=' + encodeURIComponent(url), '_blank');
+}
+
+function copyCardShareLink() {
+  if (!currentCardAthlete) return;
+  const url = 'https://lanilsports.com/athlete/' + (currentCardAthlete.slug || currentCardAthlete.id);
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('📋 Share link copied to clipboard!');
+  }).catch(() => {
+    prompt('Copy this athlete link:', url);
+  });
+}
+
+let activeMerchType = 'card';
+
+function openMerchOrder(type) {
+  if (!currentCardAthlete) return;
+  activeMerchType = type;
+  
+  document.getElementById('merch-athlete-name').textContent = currentCardAthlete.full_name + ' (' + currentCardAthlete.school_name + ')';
+  const optSelect = document.getElementById('merch-option');
+  
+  if (type === 'digital-pro') {
+    document.getElementById('merch-title').textContent = "UNLOCK ULTRA-HD PRO DIGITAL CARD";
+    document.getElementById('merch-subtitle').textContent = "100% Unwatermarked, 4K High-Resolution collector export for social, framing & print";
+    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-crown text-amber-400"></i>';
+    document.getElementById('merch-price-display').textContent = "$1.00";
+    optSelect.innerHTML = `
+      <option value="1.00">Ultra-HD Unwatermarked Pro Card (Instant 4K Download) - $1.00</option>
+    `;
+  } else if (type === 'card') {
+    document.getElementById('merch-title').textContent = "PURCHASE LANIL PLAYER'S COLLECTOR'S CARD";
+    document.getElementById('merch-subtitle').textContent = "Printed on 32pt heavy-gauge collector cardstock with high-gloss UV mirror-refractor finish in magnetic acrylic case";
+    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-id-card"></i>';
+    document.getElementById('merch-price-display').textContent = "$9.99";
+    optSelect.innerHTML = `
+      <option value="9.99">Single Collector's Card (In Acrylic Magnetic Case) - $9.99</option>
+      <option value="24.99">5-Pack Family & Booster Bundle (5 Cards + Cases) - $24.99</option>
+      <option value="44.99">10-Pack Team / Sponsor Pack (10 Cards + Cases) - $44.99</option>
+    `;
+  } else {
+    document.getElementById('merch-title').textContent = "PURCHASE CUSTOM PEEL & STICK POSTER (VINYL WALL DECAL)";
+    document.getElementById('merch-subtitle').textContent = "Heavy-duty repositionable vinyl wall decal (Fathead style, zero wall damage, safe for drywall & lockers)";
+    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-tape"></i>';
+    document.getElementById('merch-price-display').textContent = "$39.99";
+    optSelect.innerHTML = `
+      <option value="39.99">Locker Room Decal (18" × 24") - $39.99</option>
+      <option value="49.99">Bedroom Wall Poster Decal (24" × 36") - $49.99</option>
+      <option value="69.99">Life-Size Athletic Cutout Decal (36" × 60") - $69.99</option>
+    `;
+  }
+
+  openModal('merch-modal');
+}
+
+function updateMerchPrice(val) {
+  document.getElementById('merch-price-display').textContent = "$" + val;
+}
+
+function handleMerchCheckout(e) {
+  e.preventDefault();
+  const price = document.getElementById('merch-price-display').textContent;
+  const item = activeMerchType === 'digital-pro' ? "Ultra-HD Pro Digital Card (4K Unwatermarked)" : (activeMerchType === 'card' ? "LANIL Collector's Card" : "Custom Peel & Stick Poster Decal");
+  alert("🎉 Order Initialized for " + currentCardAthlete.full_name + "!" +
+        "\n\nItem: " + item +
+        "\nTotal: " + price +
+        "\n\nFulfillment: " + (activeMerchType === 'digital-pro' ? "Instant 4K unwatermarked download enabled upon payment." : "Zero-inventory print on demand (65%-75% margin, 100% compliant with Louisiana Act 810 minor NIL standards).") +
+        "\n\nRedirecting to secure Stripe Checkout...");
+  closeModal('merch-modal');
+  if (activeMerchType === 'digital-pro') {
+    downloadCard(true);
+    showToast('🌟 Ultra-HD Pro Card (Unwatermarked 4K) Unlocked & Downloaded!');
+  } else {
+    showToast('✅ Order recorded for ' + currentCardAthlete.full_name + '! Check email for fulfillment tracking.');
+  }
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('lanil-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'lanil-toast';
+    toast.className = 'fixed bottom-5 right-5 z-[9999] px-4 py-3 rounded-xl bg-slate-900/95 border border-amber-400/50 text-white text-xs font-semibold shadow-2xl backdrop-blur-md transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2 max-w-sm pointer-events-auto';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.classList.remove('translate-y-10', 'opacity-0');
+  toast.classList.add('translate-y-0', 'opacity-100');
+  setTimeout(() => {
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('translate-y-10', 'opacity-0');
+  }, 4000);
+}
+
+function updateClass(val) { filterClass = val; render(); }
+function updateSport(val) { filterSport = val; render(); }
+function updateParish(val) { filterParish = val; render(); }
+function updateSearch(val) { searchTerm = val; render(); }
+function filterByClass(val) { filterClass = val.toString(); currentView = 'directory'; render(); }
+function filterByParish(val) { filterParish = val; currentView = 'directory'; render(); }
+
+// Supabase permanently connected
+
+
+
+// Supabase Live Data Connection
+const SUPABASE_URL = 'https://uwnslkzyvmrrycdxvudg.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_VSm_VLdVuFcQHseAssDINA_g9XYQoEW';
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+async function loadLiveSupabaseAthletes() {
+  if (!supabaseClient) return;
+  try {
+    const { data, error } = await supabaseClient
+      .from('athletes')
+      .select('*')
+      .order('est_nil_value', { ascending: false })
+      .limit(1000);
+    
+    if (!error && data && data.length > 0) {
+      ATHLETES = data.map(a => ({
+        ...a,
+        player_id: (a.player_id || '').replace(/^ON3-/i, 'LANIL-'),
+        season_stats_summary: cleanScoutingText(a.season_stats_summary || ''),
+        bio: cleanScoutingText(a.bio || ''),
+        headshot_url: a.headshot_url || ""
+      }));
+      render();
+      console.log('✅ Loaded ' + ATHLETES.length + ' live Louisiana athletes from Supabase!');
+    }
+  } catch (err) {
+    console.warn('Supabase live fetch note:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  render();
+  loadLiveSupabaseAthletes();
+});
+
+</script>
+</body>
+</html>

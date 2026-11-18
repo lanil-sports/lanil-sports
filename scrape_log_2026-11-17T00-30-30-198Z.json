@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-11-17T00:30:30.198Z",
+  "raw": {
+    "On3": [],
+    "247Sports": [],
+    "Prep Redzone": [
+      {
+        "name": "Player Rankings",
+        "school": "Jack Stokes\n                                                    \n                                                    \n                                                        Catholic High",
+        "pos": "",
+        "gradYear": 2027,
+        "sport": "Football",
+        "source": "Prep Redzone",
+        "sourceUrl": "https://prepredzone.com/player/easton-royal/"
+      }
+    ]
+  },
+  "normalized": []
+}

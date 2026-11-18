@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LANILSPORTS — Backend Architecture & IP Walkthrough</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @media print {
+      body { background: white !important; color: black !important; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body class="bg-[#0b132b] text-slate-100 font-sans p-6 sm:p-12 max-w-4xl mx-auto leading-relaxed">
+  <div class="no-print mb-6 flex items-center justify-between border-b border-white/10 pb-4">
+    <a href="/" class="text-xs text-amber-400 hover:underline">&larr; Back to Directory</a>
+    <div class="flex gap-2">
+      <a href="/LANILSPORTS_Backend_Architecture_Walkthrough.md" download class="px-3 py-1.5 rounded-lg bg-amber-400 text-black font-bold text-xs hover:bg-yellow-300 transition">
+        Download Raw Markdown (.md)
+      </a>
+      <button onclick="window.print()" class="px-3 py-1.5 rounded-lg bg-slate-800 text-white font-bold text-xs hover:bg-slate-700 transition">
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <header class="border-b border-white/15 pb-6 mb-8">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="px-2 py-0.5 rounded bg-amber-400 text-black text-xs font-bold">CONFIDENTIAL</span>
+      <span class="text-xs text-slate-400">System Blueprint & IP Protection Manual</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">LANILSPORTS.COM Backend Architecture</h1>
+    <p class="text-sm text-slate-300 mt-1">Louisiana High School Athlete Directory & NIL Platform (Operating Model & Defense Moat)</p>
+  </header>
+
+  <section class="space-y-6 text-sm">
+    <h2 class="text-xl font-bold text-amber-400 border-b border-white/10 pb-2">1. The $0 High-Performance Tech Stack</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="p-4 bg-slate-900 rounded-xl border border-white/10">
+        <h3 class="font-bold text-white mb-1">Frontend & Edge CDN</h3>
+        <p class="text-xs text-slate-300"><strong>Cloudflare Pages ($0):</strong> Ultra-fast global static CDN, free SSL certificates, and custom domain mapping for <code>lanilsports.com</code>.</p>
+      </div>
+      <div class="p-4 bg-slate-900 rounded-xl border border-white/10">
+        <h3 class="font-bold text-white mb-1">Database & Authentication</h3>
+        <p class="text-xs text-slate-300"><strong>Supabase ($0):</strong> Cloud PostgreSQL database holding 64 Louisiana parishes, all LHSAA schools, and athlete profiles with Row-Level Security.</p>
+      </div>
+      <div class="p-4 bg-slate-900 rounded-xl border border-white/10">
+        <h3 class="font-bold text-white mb-1">Automated Scraper / Cron</h3>
+        <p class="text-xs text-slate-300"><strong>GitHub Actions ($0):</strong> Scheduled runners (2,000 free minutes/mo) waking up every Tuesday at 6 AM CST to parse Louisiana sports RSS feeds.</p>
+      </div>
+      <div class="p-4 bg-slate-900 rounded-xl border border-white/10">
+        <h3 class="font-bold text-white mb-1">Monetization Gateway</h3>
+        <p class="text-xs text-slate-300"><strong>Stripe ($0 Upfront):</strong> Zero monthly fee. Charges 2.9% + 30¢ only when parents or recruiters purchase subscriptions.</p>
+      </div>
+    </div>
+
+    <h2 class="text-xl font-bold text-amber-400 border-b border-white/10 pb-2 pt-4">2. Step-by-Step Data Flow</h2>
+    <ol class="list-decimal pl-5 space-y-2 text-slate-200">
+      <li><strong>Weekly News Scraping:</strong> Every Tuesday morning, the GitHub Actions script queries Louisiana RSS feeds (The Advocate, NOLA.com, The News-Star) for keyword mentions of touchdowns, points, and all-district awards.</li>
+      <li><strong>Entity Matching & Deduplication:</strong> Checks composite key <code>Full_Name + High_School</code>. Existing athletes receive updated stats; unlisted athletes receive a newly generated unique Player ID (e.g. <code>LA-2027-0005</code>).</li>
+      <li><strong>Athlete Claiming:</strong> When an athlete or guardian claims their profile, parent consent is recorded under Louisiana Act 810 (La. R.S. 17:3705) and their updates save straight to Supabase.</li>
+      <li><strong>Freemium Paywall:</strong> Public directory shows headshots, schools, and season stats. Full recruiting dossiers (verified offers, local NIL valuations, engagement analytics) are unlocked for paid subscribers.</li>
+    </ol>
+
+    <h2 class="text-xl font-bold text-amber-400 border-b border-white/10 pb-2 pt-4">3. How LANIL Defends Against Copycats & Scrapers</h2>
+    <div class="space-y-3">
+      <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10">
+        <h4 class="font-bold text-white text-xs">1. Database Row-Level Security (RLS)</h4>
+        <p class="text-xs text-slate-300 mt-0.5">The public anon key cannot access private minor contact details, internal notes, or raw guardian authorizations. Bulk data dump scripts are blocked by Supabase policy limits.</p>
+      </div>
+      <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10">
+        <h4 class="font-bold text-white text-xs">2. Cloudflare Bot Fight Mode</h4>
+        <p class="text-xs text-slate-300 mt-0.5">Cloudflare analyzes incoming traffic at the edge and blocks headless scrapers (Puppeteer, Scrapy, Python curl bots) before they can even touch your website.</p>
+      </div>
+      <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10">
+        <h4 class="font-bold text-white text-xs">3. Anti-Framing Security</h4>
+        <p class="text-xs text-slate-300 mt-0.5">HTTP response headers include <code>X-Frame-Options: DENY</code> so competitors cannot embed your portal inside their own websites.</p>
+      </div>
+      <div class="p-3.5 bg-slate-900 rounded-xl border border-white/10">
+        <h4 class="font-bold text-white text-xs">4. The Un-Copyable Community Network</h4>
+        <p class="text-xs text-slate-300 mt-0.5">A competitor can scrape static text once, but they cannot steal the parents voting every week, the athletes updating their own profiles, or the local parish sponsor relationships.</p>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

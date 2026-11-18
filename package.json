@@ -1,0 +1,25 @@
+{
+  "name": "lanil-sports",
+  "version": "1.0.0",
+  "description": "Welcome to **LANILSPORTS.COM** (Louisiana NIL) — the high school sports directory, digital yearbook, recruiting intelligence, and NIL brand portfolio platform for Louisiana student-athletes.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "docx": "^9.15.4",
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "cheerio": "^1.2.0",
+    "node-fetch": "^2.7.0",
+    "puppeteer": "^25.17.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  }
+}

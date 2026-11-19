@@ -11,19 +11,21 @@ function buildSlides4() {
     const rows = [
       [
         { text: "Product Item", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
-        { text: "Retail Price", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
-        { text: "Fulfillment Cost", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
+        { text: "Retail", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
+        { text: "COGS", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
+        { text: "Player (20%)", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
+        { text: "School (10%)", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
         { text: "Net Profit", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } },
         { text: "Margin %", options: { bold: true, fill: { color: '1E293B' }, color: COLORS.GOLD_ACCENT } }
       ],
-      ["Ultra-HD Pro Digital Card (4K)", "$1.00", "$0.00 (Instant)", "$0.97", "97%"],
-      ["Single 32pt Collector Card + Case", "$9.99", "$2.65", "$7.34", "73%"],
-      ["5-Pack Family & Booster Bundle", "$24.99", "$6.40", "$18.59", "74%"],
-      ["10-Pack Team / Sponsor Pack", "$44.99", "$10.80", "$34.19", "76%"],
-      ["Locker Room Decal (18x24)", "$39.99", "$11.50", "$28.49", "71%"],
-      ["Bedroom Wall Poster Decal (24x36)", "$49.99", "$12.80", "$37.19", "74%"],
-      ["Life-Size Athletic Cutout (36x60)", "$69.99", "$16.50", "$53.49", "76%"],
-      ["Custom 3D Athlete Bobblehead", "$49.99", "$19.00", "$30.99", "62%"]
+      ["Ultra-HD Pro Digital Card (4K)", "$1.00", "$0.03", "$0.20", "$0.10", "$0.67", "67.0%"],
+      ["Single 32pt Collector Card + Case", "$9.99", "$2.65", "$2.00", "$1.00", "$4.34", "43.4%"],
+      ["5-Pack Family & Booster Bundle", "$24.99", "$6.40", "$5.00", "$2.50", "$11.09", "44.4%"],
+      ["10-Pack Team / Sponsor Pack", "$44.99", "$10.80", "$9.00", "$4.50", "$20.69", "46.0%"],
+      ["Locker Room Decal (18x24)", "$39.99", "$11.50", "$8.00", "$4.00", "$16.49", "41.2%"],
+      ["Bedroom Wall Poster Decal (24x36)", "$49.99", "$12.80", "$10.00", "$5.00", "$22.19", "44.4%"],
+      ["Life-Size Athletic Cutout (36x60)", "$69.99", "$16.50", "$14.00", "$7.00", "$32.49", "46.4%"],
+      ["Custom 3D Athlete Bobblehead (7-inch)", "$65.00", "$19.00", "$13.00", "$6.50", "$26.50", "40.8%"]
     ];
 
     s.addTable(rows, {

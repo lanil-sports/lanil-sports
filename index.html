@@ -369,8 +369,8 @@
               </div>
               
               <!-- Wall Decal Photo Frame -->
-              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
-                <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-contain">
+              <div id="merch-decal-frame" class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
+                <img id="merch-decal-img" src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-contain">
               </div>
 
               <div class="pt-2 border-t border-emerald-400/30 text-center relative z-10">
@@ -397,8 +397,8 @@
               </div>
               
               <!-- 3D Figure Photo Frame -->
-              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
-                <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
+              <div id="merch-figure-frame" class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
+                <img id="merch-figure-img" src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
               </div>
 
               <div class="pt-2 border-t border-purple-400/30 text-center relative z-10">
@@ -492,8 +492,10 @@
 
         <!-- Option A: LANIL Players Collector's Card ($9.99) -->
         <div onclick="setMerchSlide(0)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
-          <div class="flex items-center gap-3">
-            <img src="/assets/ryder_lyons_card.jpg" alt="LANIL Player Card" class="w-14 h-14 rounded-xl object-cover border border-amber-400/50 shadow-md shrink-0 group-hover:scale-105 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="merch-thumb-card-container" class="w-14 h-14 rounded-xl overflow-hidden border border-amber-400/50 shadow-md shrink-0 group-hover:scale-105 transition bg-slate-900 flex items-center justify-center">
+              <img src="/assets/ryder_lyons_card.jpg" alt="LANIL Player Card" class="w-full h-full object-cover">
+            </div>
             <div>
               <div class="flex items-center gap-2">
                 <h5 class="font-bold text-white text-xs group-hover:text-amber-300 transition">LANIL Players Collector's Card</h5>
@@ -513,8 +515,10 @@
 
         <!-- Option B: LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
         <div onclick="setMerchSlide(1)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-emerald-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
-          <div class="flex items-center gap-3">
-            <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-14 h-14 rounded-xl object-cover border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="merch-thumb-decal-container" class="w-14 h-14 rounded-xl overflow-hidden border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition bg-slate-900 flex items-center justify-center">
+              <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-cover">
+            </div>
             <div>
               <div class="flex items-center gap-2">
                 <h5 class="font-bold text-white text-xs group-hover:text-emerald-300 transition">LANIL Players Custom Peel & Stick Poster (Vinyl Wall Decal)</h5>
@@ -534,8 +538,10 @@
 
         <!-- Option C: Custom 3D Athlete Figure & Bobblehead ($65.00) -->
         <div onclick="setMerchSlide(2)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-purple-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
-          <div class="flex items-center gap-3">
-            <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-14 h-14 rounded-xl object-cover border border-purple-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="merch-thumb-figure-container" class="w-14 h-14 rounded-xl overflow-hidden border border-purple-500/50 shadow-md shrink-0 group-hover:scale-105 transition bg-slate-900 flex items-center justify-center">
+              <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-cover">
+            </div>
             <div>
               <div class="flex items-center gap-2">
                 <h5 class="font-bold text-white text-xs group-hover:text-purple-300 transition">Custom 3D Athlete Figure & Bobblehead</h5>
@@ -571,7 +577,7 @@
         </div>
       </div>
 
-      <div class="bg-slate-800/80 rounded-xl p-3 border border-white/5 mb-4 flex items-center justify-between">
+      <div class="bg-slate-800/80 rounded-xl p-3 border border-white/5 mb-2.5 flex items-center justify-between">
         <div>
           <span class="text-[10px] uppercase font-bold text-slate-400 block">Featured Athlete</span>
           <span id="merch-athlete-name" class="font-bold text-white text-sm"></span>
@@ -579,6 +585,28 @@
         <div class="text-right">
           <span class="text-[10px] uppercase font-bold text-slate-400 block">Unit Price</span>
           <span id="merch-price-display" class="font-bold text-amber-400 text-base"></span>
+        </div>
+      </div>
+
+      <!-- Guaranteed Revenue Sharing Split (Louisiana Act 810 Compliant) -->
+      <div class="p-2.5 rounded-xl bg-slate-800/70 border border-emerald-400/30 text-[11px] mb-3.5 shadow-inner">
+        <div class="flex items-center justify-between text-emerald-400 font-bold uppercase tracking-wider text-[10px] mb-1.5">
+          <span class="flex items-center gap-1.5"><i class="fa-solid fa-scale-balanced text-amber-400"></i> Guaranteed Rev-Share (La. Act 810)</span>
+          <span class="text-emerald-300 font-semibold text-[9px] bg-emerald-500/20 px-1.5 py-0.5 rounded border border-emerald-500/30">Verified NIL Escrow</span>
+        </div>
+        <div class="grid grid-cols-3 gap-1.5 text-center">
+          <div class="bg-slate-900/90 rounded p-1.5 border border-amber-400/20">
+            <span class="text-[9px] text-slate-400 block uppercase font-semibold">Player / Parent</span>
+            <span id="merch-player-split" class="font-athletic text-sm font-bold text-amber-400 leading-none">20% ($2.00)</span>
+          </div>
+          <div class="bg-slate-900/90 rounded p-1.5 border border-cyan-400/20">
+            <span class="text-[9px] text-slate-400 block uppercase font-semibold">School Booster</span>
+            <span id="merch-school-split" class="font-athletic text-sm font-bold text-cyan-400 leading-none">10% ($1.00)</span>
+          </div>
+          <div class="bg-slate-900/90 rounded p-1.5 border border-emerald-400/20">
+            <span class="text-[9px] text-slate-400 block uppercase font-semibold">Production & Net</span>
+            <span id="merch-platform-split" class="font-athletic text-sm font-bold text-emerald-400 leading-none">70% ($6.99)</span>
+          </div>
         </div>
       </div>
 
@@ -2570,21 +2598,156 @@ function prevMerchSlide() {
   setMerchSlide((currentMerchSlide + 2) % 3);
 }
 
+function updateMerchSlidesForAthlete(a) {
+  const decalFrame = document.getElementById('merch-decal-frame');
+  const figureFrame = document.getElementById('merch-figure-frame');
+  const thumbCard = document.getElementById('merch-thumb-card-container');
+  const thumbDecal = document.getElementById('merch-thumb-decal-container');
+  const thumbFigure = document.getElementById('merch-thumb-figure-container');
+
+  const isRyder = a.full_name && a.full_name.includes('Ryder Lyons');
+  const hasPhoto = a.headshot_url && a.headshot_url.trim() !== '' && !a.headshot_url.includes('unsplash.com');
+  const photoSrc = isRyder ? '/assets/ryder_lyons_headshot.jpg' : (hasPhoto ? a.headshot_url : '');
+  const jerseyMatch = (a.season_stats_summary || '').match(/#(\d+)/);
+  const jerseyNum = jerseyMatch ? '#' + jerseyMatch[1] : '';
+
+  // Slide 1: Custom Peel & Stick Vinyl Wall Decal Frame
+  if (decalFrame) {
+    if (isRyder) {
+      decalFrame.innerHTML = '<img id="merch-decal-img" src="/assets/ryder_lyons_wall_decal.jpg" alt="Ryder Lyons Custom Wall Decal" class="w-full h-full object-contain">';
+    } else {
+      decalFrame.innerHTML = `
+        <div class="relative w-full h-full flex flex-col items-center justify-between p-3 bg-gradient-to-b from-slate-900 via-[#06241a] to-slate-950 text-white rounded-xl border border-emerald-500/40 overflow-hidden shadow-inner select-none">
+          <div class="absolute inset-2 border-2 border-dashed border-emerald-400/30 rounded-xl pointer-events-none"></div>
+          
+          <div class="relative z-10 w-full flex items-center justify-between border-b border-emerald-400/30 pb-1.5">
+            <span class="font-athletic text-xs font-bold text-emerald-300 tracking-wider uppercase truncate max-w-[190px]">${a.school_name || 'LOUISIANA VARSITY'}</span>
+            <span class="text-[9px] font-mono font-bold text-emerald-400 px-1.5 py-0.5 rounded bg-emerald-500/20">${a.position || 'ATH'} ${jerseyNum}</span>
+          </div>
+
+          <div class="relative z-10 my-auto flex flex-col items-center justify-center w-full max-h-[175px]">
+            ${photoSrc ? `
+              <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.35)] bg-slate-900">
+                <img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="w-full h-full hidden flex-col items-center justify-center">${renderAthleteAvatar(a)}</div>
+              </div>
+            ` : `
+              <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.35)]">
+                ${renderAthleteAvatar(a)}
+              </div>
+            `}
+            <div class="mt-2 text-center">
+              <span class="font-athletic text-base sm:text-lg font-bold text-white tracking-wide block uppercase drop-shadow leading-none">${a.full_name}</span>
+              <span class="text-[9px] text-emerald-300 uppercase tracking-widest font-semibold block mt-0.5">${a.primary_sport} &bull; Class of ${a.grad_year}</span>
+            </div>
+          </div>
+
+          <div class="relative z-10 w-full pt-1.5 border-t border-emerald-400/30 flex items-center justify-between text-[9px] text-slate-300 font-semibold">
+            <span>PEEL & STICK VINYL</span>
+            <span class="text-emerald-400 font-mono">18"&times;24" &bull; 24"&times;36" &bull; 36"&times;60"</span>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // Slide 2: Custom 3D Athlete Figure & Bobblehead Frame
+  if (figureFrame) {
+    if (isRyder) {
+      figureFrame.innerHTML = '<img id="merch-figure-img" src="/assets/ryder_lyons_custom_figure.jpg" alt="Ryder Lyons Custom Athlete Figure" class="w-full h-full object-contain">';
+    } else {
+      figureFrame.innerHTML = `
+        <div class="relative w-full h-full flex flex-col items-center justify-between p-3 bg-gradient-to-b from-slate-900 via-[#1f0f2f] to-slate-950 text-white rounded-xl border border-purple-500/40 overflow-hidden shadow-inner select-none">
+          <div class="absolute inset-1 rounded-xl bg-gradient-to-tr from-transparent via-white/5 to-purple-400/10 pointer-events-none"></div>
+
+          <div class="relative z-10 w-full flex items-center justify-between border-b border-purple-400/30 pb-1.5">
+            <span class="font-athletic text-xs font-bold text-purple-300 tracking-wider uppercase truncate max-w-[190px]">${a.full_name}</span>
+            <span class="text-[9px] font-mono font-bold text-amber-300 px-1.5 py-0.5 rounded bg-amber-400/20">3D COLLECTIBLE</span>
+          </div>
+
+          <div class="relative z-10 my-auto flex flex-col items-center justify-center w-full max-h-[175px]">
+            <div class="relative p-2 rounded-2xl bg-slate-950/80 border-2 border-purple-400/70 shadow-[0_0_25px_rgba(168,85,247,0.4)]">
+              ${photoSrc ? `
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden bg-slate-900 border border-purple-300/50">
+                  <img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="w-full h-full hidden flex-col items-center justify-center">${renderAthleteAvatar(a)}</div>
+                </div>
+              ` : `
+                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden">
+                  ${renderAthleteAvatar(a)}
+                </div>
+              `}
+              <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-athletic text-[8px] font-bold uppercase tracking-wider shadow whitespace-nowrap">
+                7" Bobblehead Base
+              </div>
+            </div>
+            <div class="mt-3 text-center">
+              <span class="font-athletic text-xs sm:text-sm font-bold text-amber-300 uppercase tracking-wide block leading-none truncate max-w-[200px]">${a.school_name}</span>
+              <span class="text-[9px] text-slate-300 uppercase tracking-widest font-semibold block mt-0.5">Hand-Painted Varsity Jersey ${jerseyNum}</span>
+            </div>
+          </div>
+
+          <div class="relative z-10 w-full pt-1.5 border-t border-purple-400/30 flex items-center justify-between text-[9px] text-slate-300 font-semibold">
+            <span>CLAMSHELL BLISTER PACK</span>
+            <span class="text-purple-300 font-mono">POLYRESIN FIGURE</span>
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // Update Merch Selector Row Thumbnails below Slider
+  if (thumbCard) {
+    if (photoSrc) {
+      thumbCard.innerHTML = `<img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover">`;
+    } else {
+      thumbCard.innerHTML = renderAthleteAvatar(a);
+    }
+  }
+  if (thumbDecal) {
+    if (isRyder) {
+      thumbDecal.innerHTML = '<img src="/assets/ryder_lyons_wall_decal.jpg" alt="Decal" class="w-full h-full object-cover">';
+    } else if (photoSrc) {
+      thumbDecal.innerHTML = `<div class="relative w-full h-full p-1 bg-emerald-950/80"><img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover rounded-md border border-emerald-400/50"></div>`;
+    } else {
+      thumbDecal.innerHTML = `<div class="relative w-full h-full p-1 bg-emerald-950/80"><div class="w-full h-full rounded-md border border-emerald-400/50 overflow-hidden">${renderAthleteAvatar(a)}</div></div>`;
+    }
+  }
+  if (thumbFigure) {
+    if (isRyder) {
+      thumbFigure.innerHTML = '<img src="/assets/ryder_lyons_custom_figure.jpg" alt="Figure" class="w-full h-full object-cover">';
+    } else if (photoSrc) {
+      thumbFigure.innerHTML = `<div class="relative w-full h-full p-1 bg-purple-950/80"><img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover rounded-md border border-purple-400/50"></div>`;
+    } else {
+      thumbFigure.innerHTML = `<div class="relative w-full h-full p-1 bg-purple-950/80"><div class="w-full h-full rounded-md border border-purple-400/50 overflow-hidden">${renderAthleteAvatar(a)}</div></div>`;
+    }
+  }
+}
+
 function openCardModal(id) {
   setMerchSlide(0);
-  const a = ATHLETES.find(x => x.id === id);
+  let a = null;
+  if (id !== undefined && id !== null && id !== '') {
+    a = ATHLETES.find(x => String(x.id) === String(id) || x.id === id || x.player_id === id || (x.slug && x.slug === id));
+  }
+  if (!a) {
+    a = currentCardAthlete || (ATHLETES && ATHLETES.length > 0 ? ATHLETES[0] : null);
+  }
   if (!a) return;
   currentCardAthlete = a;
 
-  // Guarantee Ryder Lyons displays crisp local headshot
-  if (a.full_name && a.full_name.includes('Ryder Lyons')) {
+  // Set crisp local headshot for Ryder Lyons
+  if (a.full_name && a.full_name.includes('Ryder Lyons') && (!a.headshot_url || a.headshot_url.trim() === '')) {
     a.headshot_url = '/assets/ryder_lyons_headshot.jpg';
   }
 
   const cardImg = document.getElementById('card-img');
   const fallback = document.getElementById('card-avatar-fallback');
-  if (a.headshot_url && a.headshot_url.trim() !== '') {
+  cardImg.onerror = null;
+
+  if (a.headshot_url && a.headshot_url.trim() !== '' && !a.headshot_url.includes('unsplash.com')) {
     cardImg.src = a.headshot_url;
+    cardImg.alt = a.full_name;
     cardImg.style.display = 'block';
     if (fallback) fallback.style.display = 'none';
     cardImg.onerror = function() {
@@ -2595,12 +2758,16 @@ function openCardModal(id) {
       }
     };
   } else {
+    cardImg.src = '';
     cardImg.style.display = 'none';
     if (fallback) {
       fallback.innerHTML = renderAthleteAvatar(a);
       fallback.style.display = 'flex';
     }
   }
+
+  // Update dynamic Wall Decal, 3D Bobblehead Figure, and Merch Thumbnails for this player
+  updateMerchSlidesForAthlete(a);
 
   // School name & mascot banner over player photo (fits full name without cutoff + includes mascot)
   const rawSchool = a.school_name || 'LOUISIANA VARSITY';
@@ -2897,40 +3064,54 @@ function openMerchOrder(type) {
   
   document.getElementById('merch-athlete-name').textContent = currentCardAthlete.full_name + ' (' + currentCardAthlete.school_name + ')';
   const optSelect = document.getElementById('merch-option');
+  const iconEl = document.getElementById('merch-icon');
+
+  const isRyder = currentCardAthlete.full_name && currentCardAthlete.full_name.includes('Ryder Lyons');
+  const hasPhoto = currentCardAthlete.headshot_url && currentCardAthlete.headshot_url.trim() !== '' && !currentCardAthlete.headshot_url.includes('unsplash.com');
+  const photoSrc = isRyder ? '/assets/ryder_lyons_headshot.jpg' : (hasPhoto ? currentCardAthlete.headshot_url : '');
+
+  function getThemedMerchBadge(borderClass) {
+    if (photoSrc) {
+      return `<img src="${photoSrc}" alt="${currentCardAthlete.full_name}" class="w-12 h-12 rounded-lg object-cover border ${borderClass} shadow">`;
+    }
+    return `<div class="w-12 h-12 rounded-lg overflow-hidden border ${borderClass} shadow flex items-center justify-center">${renderAthleteAvatar(currentCardAthlete)}</div>`;
+  }
   
+  let defaultPrice = "9.99";
+
   if (type === 'digital-pro') {
+    defaultPrice = "1.00";
     document.getElementById('merch-title').textContent = "UNLOCK ULTRA-HD PRO DIGITAL CARD";
     document.getElementById('merch-subtitle').textContent = "100% Unwatermarked, 4K High-Resolution collector export for social, framing & print";
-    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-crown text-amber-400"></i>';
-    document.getElementById('merch-price-display').textContent = "$1.00";
+    iconEl.innerHTML = '<div class="w-12 h-12 rounded-lg bg-amber-400/20 text-amber-300 border border-amber-400/40 flex items-center justify-center text-xl shadow"><i class="fa-solid fa-crown"></i></div>';
     optSelect.innerHTML = `
       <option value="1.00">Ultra-HD Unwatermarked Pro Card (Instant 4K Download) - $1.00</option>
     `;
   } else if (type === 'card') {
+    defaultPrice = "9.99";
     document.getElementById('merch-title').textContent = "PURCHASE LANIL PLAYER'S COLLECTOR'S CARD";
     document.getElementById('merch-subtitle').textContent = "Printed on 32pt heavy-gauge collector cardstock with high-gloss UV mirror-refractor finish in magnetic acrylic case";
-    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_card.jpg" class="w-12 h-12 rounded-lg object-cover border border-amber-400 shadow">';
-    document.getElementById('merch-price-display').textContent = "$9.99";
+    iconEl.innerHTML = getThemedMerchBadge('border-amber-400');
     optSelect.innerHTML = `
       <option value="9.99">Single Collector's Card (In Acrylic Magnetic Case) - $9.99</option>
       <option value="24.99">5-Pack Family & Booster Bundle (5 Cards + Cases) - $24.99</option>
       <option value="44.99">10-Pack Team / Sponsor Pack (10 Cards + Cases) - $44.99</option>
     `;
   } else if (type === 'bobblehead') {
+    defaultPrice = "65.00";
     document.getElementById('merch-title').textContent = "CUSTOM 3D PRINTED BOBBLEHEAD";
     document.getElementById('merch-subtitle').textContent = "100% custom-crafted 3D figure from athlete's headshot in official team uniform with collectible display";
-    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_custom_figure.jpg" class="w-12 h-12 rounded-lg object-cover border border-purple-400 shadow">';
-    document.getElementById('merch-price-display').textContent = "$65.00";
+    iconEl.innerHTML = getThemedMerchBadge('border-purple-400');
     optSelect.innerHTML = `
       <option value="65.00">Custom 3D Printed Bobblehead (7" Figure in Team Jersey + Base) - $65.00</option>
       <option value="79.99">Collector's Blister Pack Edition (With Accessories & Custom Backing Card) - $79.99</option>
       <option value="119.99">2-Pack Player & Parent Keepsake Bundle - $119.99</option>
     `;
   } else {
+    defaultPrice = "39.99";
     document.getElementById('merch-title').textContent = "PURCHASE CUSTOM PEEL & STICK POSTER (VINYL WALL DECAL)";
     document.getElementById('merch-subtitle').textContent = "Heavy-duty repositionable vinyl wall decal (Fathead style, zero wall damage, safe for drywall & lockers)";
-    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_wall_decal.jpg" class="w-12 h-12 rounded-lg object-cover border border-emerald-400 shadow">';
-    document.getElementById('merch-price-display').textContent = "$39.99";
+    iconEl.innerHTML = getThemedMerchBadge('border-emerald-400');
     optSelect.innerHTML = `
       <option value="39.99">Locker Room Decal (18" × 24") - $39.99</option>
       <option value="49.99">Bedroom Wall Poster Decal (24" × 36") - $49.99</option>
@@ -2938,24 +3119,211 @@ function openMerchOrder(type) {
     `;
   }
 
+  updateMerchPrice(defaultPrice);
   openModal('merch-modal');
 }
 
 function updateMerchPrice(val) {
-  document.getElementById('merch-price-display').textContent = "$" + val;
+  const p = parseFloat(val) || 0;
+  document.getElementById('merch-price-display').textContent = "$" + p.toFixed(2);
+  const player = (p * 0.20).toFixed(2);
+  const school = (p * 0.10).toFixed(2);
+  const platform = (p * 0.70).toFixed(2);
+  const pEl = document.getElementById('merch-player-split');
+  const sEl = document.getElementById('merch-school-split');
+  const pfEl = document.getElementById('merch-platform-split');
+  if (pEl) pEl.textContent = `20% (${player})`;
+  if (sEl) sEl.textContent = `10% (${school})`;
+  if (pfEl) pfEl.textContent = `70% (${platform})`;
 }
 
 function handleMerchCheckout(e) {
   e.preventDefault();
   const price = document.getElementById('merch-price-display').textContent;
+  const numPrice = parseFloat(price.replace(/[^0-9.]/g, '')) || 0;
+  const playerPayout = (numPrice * 0.20).toFixed(2);
+  const schoolPayout = (numPrice * 0.10).toFixed(2);
+  const fulfillmentAndPlatform = (numPrice * 0.70).toFixed(2);
+
+  let item = 'Custom Merch';
+  if (activeMerchType === 'digital-pro') item = 'Ultra-HD Pro Digital Card (4K Unwatermarked)';
+  else if (activeMerchType === 'card') item = 'LANIL Collector Card';
+  else if (activeMerchType === 'poster') item = 'Custom Peel & Stick Poster Decal';
+  else if (activeMerchType === 'bobblehead') item = 'Custom 3D Printed Bobblehead Figure';
+
+  alert('🎉 Order Initialized for ' + currentCardAthlete.full_name + '!' +
+        '\n\nItem: ' + item +
+        '\nTotal Price: ' + price +
+        '\n\n--- GUARANTEED REVENUE SHARE (ACT 810 COMPLIANT) ---' +
+        '\n• Student-Athlete NIL Split (20%): $' + playerPayout + ' deposited to athlete/parent' +
+        '\n• High School Athletic Fund (10%): $' + schoolPayout + ' deposited to ' + currentCardAthlete.school_name +
+        '\n• Production, Fulfillment & Platform: $' + fulfillmentAndPlatform + ' (Profitable zero-inventory on-demand)' +
+        '\n\nFulfillment: ' + (activeMerchType === 'digital-pro' ? 'Instant 4K unwatermarked download enabled upon payment.' : 'Zero-inventory print-on-demand (65%-75% margin, 100% compliant with Louisiana Act 810 minor NIL standards).') +
+        '\n\nRedirecting to secure Stripe Checkout...');
+  closeModal('merch-modal');
+  if (activeMerchType === 'digital-pro') {
+    downloadCard(true);
+    showToast('🌟 Ultra-HD Pro Card (Unwatermarked 4K) Unlocked & Downloaded!');
+  } else {
+    showToast('✅ Order recorded for ' + currentCardAthlete.full_name + '! Check email for fulfillment tracking.');
+  }
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('lanil-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'lanil-toast';
+    toast.className = 'fixed bottom-5 right-5 z-[9999] px-4 py-3 rounded-xl bg-slate-900/95 border border-amber-400/50 text-white text-xs font-semibold shadow-2xl backdrop-blur-md transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2 max-w-sm pointer-events-auto';
+    document.body.appendChild(toast);
+  }
+  toast.innerHTML = msg;
+  toast.classList.remove('translate-y-10', 'opacity-0');
+  toast.classList.add('translate-y-0', 'opacity-100');
+  setTimeout(() => {
+    toast.classList.remove('translate-y-0', 'opacity-100');
+    toast.classList.add('translate-y-10', 'opacity-0');
+  }, 4000);
+}
+
+function updateClass(val) { filterClass = val; currentPage = 1; render(); }
+function updateSport(val) { filterSport = val; currentPage = 1; render(); }
+function updateParish(val) { filterParish = val; currentPage = 1; render(); }
+function updateSearch(val) { searchTerm = val; currentPage = 1; render(); }
+function filterByClass(val) { filterClass = val.toString(); currentView = 'directory'; currentPage = 1; render(); }
+function filterByParish(val) { filterParish = val; currentView = 'directory'; currentPage = 1; render(); }
+
+// Supabase permanently connected
+
+
+
+// Supabase Live Data Connection
+const SUPABASE_URL = 'https://uwnslkzyvmrrycdxvudg.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_VSm_VLdVuFcQHseAssDINA_g9XYQoEW';
+let supabaseClient = null;
+
+if (window.supabase) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+// Automated pull for player images & profiles (Live Real-Time + 60s Polling)
+let autoImagePullInterval = null;
+
+async function loadLiveSupabaseAthletes(isSilent = false) {
+  if (!supabaseClient) return;
+  try {
+    const { data, error } = await supabaseClient
+      .from('athletes')
+      .select('*')
+      .order('est_nil_value', { ascending: false })
+      .limit(1000);
+    
+    if (!error && data && data.length > 0) {
+      ATHLETES = data.map(a => {
+        let headshot = a.headshot_url || "";
+        if (a.full_name && a.full_name.includes('Ryder Lyons') && (!headshot || headshot.includes('on3static'))) {
+          headshot = '/assets/ryder_lyons_headshot.jpg';
+        }
+        return {
+          ...a,
+          player_id: (a.player_id || '').replace(/^ON3-/i, 'LANIL-'),
+          season_stats_summary: cleanScoutingText(a.season_stats_summary || ''),
+          bio: cleanScoutingText(a.bio || ''),
+          headshot_url: headshot
+        };
+      });
+      render();
+      if (!isSilent) {
+        console.log('✅ Automated image pull active: loaded ' + ATHLETES.length + ' live Louisiana athletes with images from database!');
+      }
+    }
+  } catch (err) {
+    if (!isSilent) console.warn('Supabase live fetch note:', err);
+  }
+}
+
+function initAutomatedImagePull() {
+  // 1. Initial automated pull
+  loadLiveSupabaseAthletes();
+
+  // 2. Real-Time WebSocket subscription for live image additions
+  try {
+    if (supabaseClient && supabaseClient.channel) {
+      supabaseClient
+        .channel('public:athletes:images')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'athletes' }, (payload) => {
+          console.log('⚡ Real-time database update detected:', payload);
+          loadLiveSupabaseAthletes(true);
+        })
+        .subscribe((status) => {
+          console.log('📡 Real-time automated image pull channel status:', status);
+        });
+    }
+  } catch (e) {
+    console.warn('Real-time subscription note:', e);
+  }
+
+  // 3. Fallback recurring poll every 60 seconds
+  if (!autoImagePullInterval) {
+    autoImagePullInterval = setInterval(() => {
+      loadLiveSupabaseAthletes(true);
+    }, 60000);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initCardCarouselSwipe();
+  render();
+  initAutomatedImagePull();
+});
+
+</script>
+
+  <!-- Fixed Mobile Bottom Navigation Bar (< md) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-white/10 px-2 py-1 flex items-center justify-around safe-area-bottom shadow-2xl">
+    <button onclick="navigate('directory')" id="bnav-directory" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-amber-400 transition">
+      <i class="fa-solid fa-users text-base"></i>
+      <span class="text-[10px] font-bold mt-0.5">Directory</span>
+    </button>
+    <button onclick="navigate('rankings')" id="bnav-rankings" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
+      <i class="fa-solid fa-trophy text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Rankings</span>
+    </button>
+    <button onclick="openCardModal(currentCardAthlete ? currentCardAthlete.id : '1')" id="bnav-card" class="mobile-bnav -mt-4 flex flex-col items-center justify-center">
+      <div class="w-11 h-11 rounded-full gold-gradient text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/30 border-2 border-slate-950">
+        <i class="fa-solid fa-id-card text-lg"></i>
+      </div>
+      <span class="text-[9px] font-bold text-amber-300 mt-0.5">Share Card</span>
+    </button>
+    <button onclick="navigate('potw')" id="bnav-potw" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition relative">
+      <i class="fa-solid fa-fire text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Fan Vote</span>
+      <span class="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+    </button>
+    <button onclick="openModal('claim-modal')" id="bnav-portal" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
+      <i class="fa-solid fa-user-check text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Portal</span>
+    </button>
+  </div>
+</body>
+</html>, '')) || 0;
+  const playerPayout = (numPrice * 0.20).toFixed(2);
+  const schoolPayout = (numPrice * 0.10).toFixed(2);
+  const fulfillmentAndPlatform = (numPrice * 0.70).toFixed(2);
+
   let item = "Custom Merch";
   if (activeMerchType === 'digital-pro') item = "Ultra-HD Pro Digital Card (4K Unwatermarked)";
   else if (activeMerchType === 'card') item = "LANIL Collector's Card";
   else if (activeMerchType === 'poster') item = "Custom Peel & Stick Poster Decal";
   else if (activeMerchType === 'bobblehead') item = "Custom 3D Printed Bobblehead Figure";
+
   alert("🎉 Order Initialized for " + currentCardAthlete.full_name + "!" +
         "\n\nItem: " + item +
         "\nTotal: " + price +
+        "\n\n--- GUARANTEED REVENUE SHARE (ACT 810 COMPLIANT) ---" +
+        "\n• Student-Athlete NIL Split (20%): $" + playerPayout + " deposited to athlete/parent" +
+        "\n• High School Athletic Fund (10%): $" + schoolPayout + " deposited to " + currentCardAthlete.school_name +
+        "\n• Production, Fulfillment & Platform: $" + fulfillmentAndPlatform + " (Profitable zero-inventory on-demand)" +
         "\n\nFulfillment: " + (activeMerchType === 'digital-pro' ? "Instant 4K unwatermarked download enabled upon payment." : "Zero-inventory print on demand (65%-75% margin, 100% compliant with Louisiana Act 810 minor NIL standards).") +
         "\n\nRedirecting to secure Stripe Checkout...");
   closeModal('merch-modal');
@@ -3087,7 +3455,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <i class="fa-solid fa-trophy text-base"></i>
       <span class="text-[10px] font-medium mt-0.5">Rankings</span>
     </button>
-    <button onclick="openCardModal('1')" id="bnav-card" class="mobile-bnav -mt-4 flex flex-col items-center justify-center">
+    <button onclick="openCardModal(currentCardAthlete ? currentCardAthlete.id : '1')" id="bnav-card" class="mobile-bnav -mt-4 flex flex-col items-center justify-center">
       <div class="w-11 h-11 rounded-full gold-gradient text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/30 border-2 border-slate-950">
         <i class="fa-solid fa-id-card text-lg"></i>
       </div>

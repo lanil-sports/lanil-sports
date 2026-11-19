@@ -1,4 +1,5 @@
 ﻿const { pptx, COLORS, applySlideChrome } = require('./pptx_base');
+const path = require('path');
 
 function buildSlides3() {
   // SLIDE 7: Physical Collector Cards
@@ -39,39 +40,82 @@ function buildSlides3() {
     });
   }
 
-  // SLIDE 8: Custom 3D Athlete Bobblehead Dolls
+  // SLIDE 8: Custom 3D Athlete Bobblehead & Career Action Figures (Ryder Lyons Repurposed)
   {
     const s = pptx.addSlide();
-    applySlideChrome(s, "Physical Merchandise Engine", "Custom Athlete Bobblehead Dolls: Premium 3D Keepsakes");
+    applySlideChrome(s, "Physical Merchandise Engine", "Custom Athlete Figures & 3D Bobbleheads: 100% Custom Made");
 
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 0.8, y: 1.4, w: 6.8, h: 5.3, r: 0.15, fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 } });
-    s.addText("PRODUCT SPECIFICATIONS & ARTISTRY", { x: 1.1, y: 1.6, w: 6.2, h: 0.35, fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.GOLD_ACCENT });
+    const figureImgPath = path.join(__dirname, '..', 'assets', 'ryder_lyons_custom_figure.jpg');
 
-    const bobblePoints = [
-      { title: "Custom 3D Head Sculpt from Player Headshot", desc: "Proprietary photogrammetry workflow translates front and profile headshots into handcrafted 3D caricatured resin portraits." },
-      { title: "Hand-Painted Varsity Uniforms", desc: "Detailed uniforms matching school team colors, jersey numbers, and sport gear (helmets, bats, basketballs)." },
-      { title: "Weighted Ceramic Composite Base", desc: "Includes an engraved metal nameplate: Player Name, School, Graduation Year, and verified serial number." },
-      { title: "High Emotional Value & Keepsake Demand", desc: "Unrivaled gift for Senior Nights, varsity banquets, holiday gifts, and family heirloom collections." }
+    // 1. Figure Blister-Pack Image Container on Left
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 0.8, y: 1.4, w: 4.9, h: 5.3, r: 0.15,
+      fill: { color: '0B0F19' }, line: { color: COLORS.GOLD_ACCENT, width: 1.5 }
+    });
+
+    try {
+      s.addImage({
+        path: figureImgPath,
+        x: 0.9, y: 1.5, w: 4.7, h: 5.1,
+        sizing: { type: 'contain', w: 4.7, h: 5.1 }
+      });
+    } catch (e) {
+      console.error("Figure image add error:", e);
+    }
+
+    // 2. Right Container: Specifications & Artistry
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 5.9, y: 1.4, w: 6.6, h: 5.3, r: 0.15,
+      fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 }
+    });
+    s.addText("CUSTOM ATHLETE FIGURE ARTISTRY & WORKFLOW", {
+      x: 6.15, y: 1.6, w: 6.1, h: 0.35,
+      fontFace: 'Arial', fontSize: 13, bold: true, color: COLORS.GOLD_ACCENT
+    });
+
+    const figurePoints = [
+      { title: "Photo → 3D Polyresin Sculpt", desc: "Proprietary photogrammetry translates student-athlete headshot into custom 3D caricatured face sculpt." },
+      { title: "Authentic Team Uniform & Jersey", desc: "Hand-painted varsity football uniform with accurate school colors, numbers, and cleats." },
+      { title: "Sport Accessories & Blister Pack", desc: "Includes miniature varsity helmet, game football, and MVP trophy encased in a collector's clamshell blister pack." },
+      { title: "Senior Night & Family Keepsake", desc: "Highest emotional gift value for Senior banquets, holiday gifts, and lifelong athletic memorabilia." }
     ];
 
-    bobblePoints.forEach((bp, i) => {
-      s.addText(`★  ${bp.title}`, { x: 1.1, y: 2.15 + (i * 1.1), w: 6.2, h: 0.3, fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE });
-      s.addText(bp.desc, { x: 1.35, y: 2.45 + (i * 1.1), w: 5.9, h: 0.65, fontFace: 'Arial', fontSize: 10, color: COLORS.SLATE_TEXT });
+    figurePoints.forEach((fp, i) => {
+      s.addText(`★  ${fp.title}`, {
+        x: 6.15, y: 2.05 + (i * 0.75), w: 6.1, h: 0.25,
+        fontFace: 'Arial', fontSize: 10.5, bold: true, color: COLORS.WHITE
+      });
+      s.addText(fp.desc, {
+        x: 6.4, y: 2.28 + (i * 0.75), w: 5.85, h: 0.45,
+        fontFace: 'Arial', fontSize: 9.5, color: COLORS.SLATE_TEXT
+      });
     });
 
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 8.0, y: 1.4, w: 4.5, h: 5.3, r: 0.15, fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 } });
-    s.addText("COLLECTOR EDITIONS", { x: 8.3, y: 1.6, w: 3.9, h: 0.35, fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.CYAN, align: 'center' });
-
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 8.3, y: 2.15, w: 3.9, h: 2.1, r: 0.1, fill: { color: '1E293B' }, line: { color: '334155', width: 1 } });
-    s.addText("VARSITY EDITION BOBBLEHEAD", { x: 8.5, y: 2.3, w: 3.5, h: 0.3, fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE });
-    s.addText("Price: $49.99\nHeight: 7.0 Inches\nMaterials: Polyresin & Spring Neck\nBase: Standard Engraved Acrylic\nGross Margin: 62% ($31.00 net)", {
-      x: 8.5, y: 2.65, w: 3.5, h: 1.4, fontFace: 'Arial', fontSize: 9.5, color: COLORS.SLATE_TEXT, lineSpacing: 16
+    // 3. Editions Cards
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 6.15, y: 5.0, w: 2.95, h: 1.5, r: 0.1,
+      fill: { color: '1E293B' }, line: { color: '334155', width: 1 }
+    });
+    s.addText("VARSITY FIGURE PACK", {
+      x: 6.3, y: 5.12, w: 2.6, h: 0.25,
+      fontFace: 'Arial', fontSize: 10.5, bold: true, color: COLORS.WHITE
+    });
+    s.addText("Price: $49.99\nFigure: 7\" Polyresin Athlete\nPack: Custom Blister Backing Card\nGross Margin: 62% ($31 net)", {
+      x: 6.3, y: 5.4, w: 2.6, h: 1.0,
+      fontFace: 'Arial', fontSize: 9, color: COLORS.SLATE_TEXT, lineSpacing: 14
     });
 
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 8.3, y: 4.45, w: 3.9, h: 2.1, r: 0.1, fill: { color: '1E293B' }, line: { color: COLORS.GOLD_ACCENT, width: 1 } });
-    s.addText("LIMITED EDITION COLLECTOR DOME", { x: 8.5, y: 4.6, w: 3.5, h: 0.3, fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.GOLD_ACCENT });
-    s.addText("Price: $79.99\nIncludes: Acrylic UV-resistant display dome\nDetails: Gold foil numbering (e.g. 1 of 50)\nAutograph: Signed certificate card included\nGross Margin: 68% ($54.40 net)", {
-      x: 8.5, y: 4.95, w: 3.5, h: 1.4, fontFace: 'Arial', fontSize: 9.5, color: COLORS.WHITE, lineSpacing: 16
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 9.25, y: 5.0, w: 3.0, h: 1.5, r: 0.1,
+      fill: { color: '1E293B' }, line: { color: COLORS.GOLD_ACCENT, width: 1 }
+    });
+    s.addText("DELUXE DISPLAY EDITION", {
+      x: 9.4, y: 5.12, w: 2.7, h: 0.25,
+      fontFace: 'Arial', fontSize: 10.5, bold: true, color: COLORS.GOLD_ACCENT
+    });
+    s.addText("Price: $79.99\nIncludes: Acrylic UV display box\nDetails: Gold engraved metal base\nGross Margin: 68% ($54 net)", {
+      x: 9.4, y: 5.4, w: 2.7, h: 1.0,
+      fontFace: 'Arial', fontSize: 9, color: COLORS.WHITE, lineSpacing: 14
     });
   }
 

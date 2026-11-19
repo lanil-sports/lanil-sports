@@ -1,4 +1,5 @@
 ﻿const { pptx, COLORS, applySlideChrome } = require('./pptx_base');
+const path = require('path');
 
 function buildSlides2() {
   // SLIDE 4: Core Website Features
@@ -136,72 +137,92 @@ function buildSlides2() {
     });
   }
 
-  // SLIDE 6: Digital Player Card Generator
+  // SLIDE 6: Digital Player Card Generator (Using Official Ryder Lyons Card Image)
   {
     const s = pptx.addSlide();
     applySlideChrome(s, "Product Showcase", "Official 9:16 Authentic Playing Card: Digital & Pro Exports");
 
+    const cardImgPath = path.join(__dirname, '..', 'assets', 'ryder_lyons_card.jpg');
+
+    // 1. Player Card Image Frame on Left
     s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
-      x: 0.8, y: 1.4, w: 6.8, h: 5.3, r: 0.15,
+      x: 0.8, y: 1.4, w: 3.2, h: 5.3, r: 0.15,
+      fill: { color: '0B0F19' }, line: { color: COLORS.GOLD_ACCENT, width: 1.5 }
+    });
+
+    try {
+      s.addImage({
+        path: cardImgPath,
+        x: 0.9, y: 1.5, w: 3.0, h: 5.1,
+        sizing: { type: 'contain', w: 3.0, h: 5.1 }
+      });
+    } catch (e) {
+      console.error("Card image add error:", e);
+    }
+
+    // 2. Middle Container: Features & Specifications
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 4.3, y: 1.4, w: 4.6, h: 5.3, r: 0.15,
       fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 }
     });
     s.addText("AUTHENTIC PHYSICAL-CARD DIGITAL TWIN", {
-      x: 1.1, y: 1.6, w: 6.2, h: 0.35,
-      fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.GOLD_ACCENT
+      x: 4.55, y: 1.6, w: 4.1, h: 0.35,
+      fontFace: 'Arial', fontSize: 13, bold: true, color: COLORS.GOLD_ACCENT
     });
 
     const cardFeatures = [
-      { title: "Metallic Refractor Sheen Overlay", desc: "Dual diagonal linear gradient mimicking a 90s Topps/Bowman chrome finish." },
-      { title: "Official High School & Mascot Banner", desc: "Displays full school name (e.g., JOHN CURTIS CHRISTIAN SCHOOL) + mascot medallion (★ PATRIOTS ★) without text truncation." },
-      { title: "Sport Icon & Verified Serial Number", desc: "Dynamic sport badge (football, basketball, baseball) + unique serial: CARD #LA-2701 derived from player name hash." },
-      { title: "Interactive Signature Canvas", desc: "Touch/mouse signature drawing pad allowing athletes to digitally autograph their own card in custom gold foil ink." },
-      { title: "Centered Authenticity Hologram Footer", desc: "Features LANIL AUTHENTICATED • #LOUISIANABUILT centered at the foot of the card frame." }
+      { title: "Metallic Refractor Sheen", desc: "Dual diagonal gradient mimicking a 90s Topps/Bowman chrome finish." },
+      { title: "High School & Mascot Banner", desc: "Displays full school name (e.g. FOLSOM HIGH SCHOOL ★ BULLDOGS ★) without text truncation." },
+      { title: "Verified Serial & Sport Badge", desc: "Card #LA-27707 serial verification derived from athlete hash + football icon badge." },
+      { title: "Interactive Signature Canvas", desc: "Digitally signed autograph (e.g. Ryder Lyons) in gold foil ink." },
+      { title: "Centered Authenticity Footer", desc: "LANIL AUTHENTICATED • #LOUISIANABUILT centered at bottom of frame." }
     ];
 
     cardFeatures.forEach((cf, idx) => {
       s.addText(`✔  ${cf.title}`, {
-        x: 1.1, y: 2.1 + (idx * 0.95), w: 6.2, h: 0.3,
-        fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE
+        x: 4.55, y: 2.1 + (idx * 0.95), w: 4.1, h: 0.28,
+        fontFace: 'Arial', fontSize: 10.5, bold: true, color: COLORS.WHITE
       });
       s.addText(cf.desc, {
-        x: 1.4, y: 2.4 + (idx * 0.95), w: 5.9, h: 0.55,
-        fontFace: 'Arial', fontSize: 10, color: COLORS.SLATE_TEXT
+        x: 4.8, y: 2.38 + (idx * 0.95), w: 3.85, h: 0.55,
+        fontFace: 'Arial', fontSize: 9.5, color: COLORS.SLATE_TEXT
       });
     });
 
+    // 3. Right Container: Card Tiers
     s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
-      x: 8.0, y: 1.4, w: 4.5, h: 5.3, r: 0.15,
+      x: 9.2, y: 1.4, w: 3.3, h: 5.3, r: 0.15,
       fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 }
     });
     s.addText("DIGITAL CARD TIERS", {
-      x: 8.3, y: 1.6, w: 3.9, h: 0.35,
-      fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.CYAN, align: 'center'
+      x: 9.35, y: 1.6, w: 3.0, h: 0.35,
+      fontFace: 'Arial', fontSize: 13, bold: true, color: COLORS.CYAN, align: 'center'
     });
 
     s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
-      x: 8.3, y: 2.1, w: 3.9, h: 2.0, r: 0.1,
-      fill: { color: '1E293B' }
+      x: 9.4, y: 2.1, w: 2.9, h: 2.05, r: 0.1,
+      fill: { color: '1E293B' }, line: { color: '334155', width: 1 }
     });
     s.addText("FREE SOCIAL CARD", {
-      x: 8.5, y: 2.25, w: 3.5, h: 0.3,
-      fontFace: 'Arial', fontSize: 12, bold: true, color: COLORS.WHITE
+      x: 9.55, y: 2.25, w: 2.6, h: 0.3,
+      fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE
     });
-    s.addText("Format: 9:16 Instagram Story & X\nResolution: Standard Web 2X\nWatermark: #LOUISIANABUILT watermark\nRights: Free personal social sharing", {
-      x: 8.5, y: 2.6, w: 3.5, h: 1.3,
-      fontFace: 'Arial', fontSize: 9.5, color: COLORS.SLATE_TEXT, lineSpacing: 15
+    s.addText("Format: 9:16 Story format\nResolution: Standard Web 2X\nWatermark: #LOUISIANABUILT\nRights: Free personal sharing\nPrice: $0.00 / Free Forever", {
+      x: 9.55, y: 2.6, w: 2.6, h: 1.4,
+      fontFace: 'Arial', fontSize: 9, color: COLORS.SLATE_TEXT, lineSpacing: 15
     });
 
     s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
-      x: 8.3, y: 4.4, w: 3.9, h: 2.0, r: 0.1,
-      fill: { color: '1E293B' }, line: { color: COLORS.GOLD_ACCENT, width: 1 }
+      x: 9.4, y: 4.4, w: 2.9, h: 2.05, r: 0.1,
+      fill: { color: '1E293B' }, line: { color: COLORS.GOLD_ACCENT, width: 1.2 }
     });
-    s.addText("ULTRA-HD PRO CARD ($1.00)", {
-      x: 8.5, y: 4.55, w: 3.5, h: 0.3,
-      fontFace: 'Arial', fontSize: 12, bold: true, color: COLORS.GOLD_ACCENT
+    s.addText("ULTRA-HD PRO (4K)", {
+      x: 9.55, y: 4.55, w: 2.6, h: 0.3,
+      fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.GOLD_ACCENT
     });
-    s.addText("Format: Ultra-HD 4K Export (300 DPI)\nBadge: PRO 4K Crown Badge\nWatermark: 100% Unwatermarked\nRights: Commercial & Personal Print Rights", {
-      x: 8.5, y: 4.9, w: 3.5, h: 1.3,
-      fontFace: 'Arial', fontSize: 9.5, color: COLORS.WHITE, lineSpacing: 15
+    s.addText("Format: Ultra-HD 4K (300 DPI)\nBadge: PRO 4K Crown Badge\nWatermark: 100% Unwatermarked\nRights: Commercial & Print Rights\nPrice: $1.00 Instant Download", {
+      x: 9.55, y: 4.9, w: 2.6, h: 1.4,
+      fontFace: 'Arial', fontSize: 9, color: COLORS.WHITE, lineSpacing: 15
     });
   }
 }

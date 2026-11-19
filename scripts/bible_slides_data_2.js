@@ -87,67 +87,19 @@ module.exports = [
     `
   },
 
-  // SLIDE 6: Digital Player Card Generator
+  // SLIDE 6: Digital Player Card Generator (Using Official Ryder Lyons Card Image)
   {
     num: 6,
     category: "PRODUCT SHOWCASE",
     title: "Official 9:16 Authentic Playing Card: Digital & Pro Exports",
     content: `
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full items-center py-2">
-        <div class="lg:col-span-5 flex justify-center">
-          <!-- CARD PREVIEW CONTAINER -->
-          <div class="relative w-64 aspect-[9/16] rounded-2xl bg-gradient-to-b from-slate-900 via-slate-950 to-black p-3 border-2 border-amber-400/80 shadow-2xl shadow-amber-500/20 overflow-hidden flex flex-col justify-between group">
-            <!-- Shimmer effect -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-
-            <!-- Top Header -->
-            <div class="relative z-10 flex items-center justify-between text-[9px] font-mono border-b border-amber-400/30 pb-1.5">
-              <span class="text-amber-400 font-bold tracking-wider">#LA-2701 • 2027</span>
-              <span class="text-slate-300 font-semibold uppercase">NEVILLE PATRIOTS</span>
-            </div>
-
-            <!-- Photo & Overlay -->
-            <div class="relative z-10 flex-1 my-2 rounded-xl overflow-hidden border border-white/10 relative">
-              <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
-              <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-              
-              <div class="absolute top-2 left-2 bg-amber-400 text-slate-950 font-athletic text-xs font-bold px-2 py-0.5 rounded uppercase">
-                QB • #12
-              </div>
-              <div class="absolute bottom-2 left-2 right-2">
-                <div class="font-athletic text-2xl text-white font-bold uppercase leading-none tracking-wide">
-                  MARCUS THIBODAUX
-                </div>
-                <div class="text-[9px] text-amber-300 font-medium">NEVILLE HIGH • OUACHITA PARISH</div>
-              </div>
-            </div>
-
-            <!-- Stats Bar -->
-            <div class="relative z-10 bg-slate-900/90 rounded-lg p-2 border border-white/10 text-center grid grid-cols-3 gap-1 mb-2">
-              <div>
-                <div class="text-[8px] text-slate-400 uppercase">Pass Yds</div>
-                <div class="font-athletic text-sm font-bold text-white leading-none">2,450</div>
-              </div>
-              <div>
-                <div class="text-[8px] text-slate-400 uppercase">Touchdowns</div>
-                <div class="font-athletic text-sm font-bold text-amber-400 leading-none">28</div>
-              </div>
-              <div>
-                <div class="text-[8px] text-slate-400 uppercase">Laser 40</div>
-                <div class="font-athletic text-sm font-bold text-cyan-400 leading-none">4.52s</div>
-              </div>
-            </div>
-
-            <!-- Signature Line -->
-            <div class="relative z-10 border-t border-dashed border-white/20 pt-1 text-center">
-              <div class="font-serif italic text-amber-300 text-xs tracking-wider opacity-90">Marcus Thibodaux #12</div>
-            </div>
-
-            <!-- Centered Authenticity Footer -->
-            <div class="relative z-10 text-center pt-1.5 border-t border-amber-400/30">
-              <span class="text-[8px] font-bold tracking-widest text-amber-400/90 uppercase">
-                LANIL AUTHENTICATED • #LOUISIANABUILT
-              </span>
+        <!-- ACTUAL RYDER LYONS CARD IMAGE -->
+        <div class="lg:col-span-5 flex justify-center items-center">
+          <div class="relative group">
+            <img src="/assets/ryder_lyons_card.jpg" alt="Ryder Lyons Verified Playing Card" class="max-h-[460px] w-auto rounded-2xl border-2 border-amber-400/80 shadow-2xl shadow-amber-500/20 object-contain group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-bold text-[9px] uppercase px-3 py-0.5 rounded-full shadow tracking-wider whitespace-nowrap">
+              ★ Verified Card #LA-27707 ★
             </div>
           </div>
         </div>
@@ -165,11 +117,11 @@ module.exports = [
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-check text-amber-400 text-xs"></i>
-                <span><strong class="text-white">Full School & Mascot Banner:</strong> Official school name + mascot medallion without truncation.</span>
+                <span><strong class="text-white">Full School & Mascot Banner:</strong> Official school name (FOLSOM HIGH SCHOOL ★ BULLDOGS ★) without truncation.</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-check text-amber-400 text-xs"></i>
-                <span><strong class="text-white">Unique Serial Number:</strong> Deterministic serial (e.g., #LA-2701) based on player ID hash.</span>
+                <span><strong class="text-white">Unique Serial Number:</strong> Deterministic serial (CARD #LA-27707) based on athlete verification hash.</span>
               </div>
               <div class="flex items-center gap-2">
                 <i class="fa-solid fa-check text-amber-400 text-xs"></i>
@@ -281,72 +233,41 @@ module.exports = [
     `
   },
 
-  // SLIDE 8: Custom 3D Athlete Bobblehead Dolls
+  // SLIDE 8: Custom 3D Athlete Bobblehead & Career Action Figures (Ryder Lyons Repurposed)
   {
     num: 8,
     category: "PHYSICAL MERCHANDISE ENGINE",
-    title: "Custom Athlete Bobblehead Dolls: Premium 3D Keepsakes",
+    title: "Custom Athlete Figures & 3D Bobbleheads: 100% Custom Made",
     content: `
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full items-center py-2">
-        <div class="lg:col-span-5 flex flex-col items-center justify-center">
-          <!-- BOBBLEHEAD INTERACTIVE VISUAL -->
-          <div class="relative w-56 aspect-[3/4] rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 p-4 border border-amber-400/40 shadow-2xl flex flex-col items-center justify-between group cursor-pointer hover:border-amber-400 transition" title="Hover to trigger spring bobble animation!">
-            <div class="text-[9px] font-mono text-amber-400 uppercase tracking-widest text-center">
-              ★ 3D POLYRESIN HEAD-SCULPT ★
+        <!-- REPURPOSED CUSTOM FIGURE BLISTER PACK IMAGE -->
+        <div class="lg:col-span-5 flex justify-center items-center">
+          <div class="relative group">
+            <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Ryder Lyons Custom Blister Pack Figure" class="max-h-[460px] w-auto rounded-2xl border-2 border-amber-400/80 shadow-2xl shadow-amber-500/20 object-contain group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 font-bold text-[9px] uppercase px-3 py-0.5 rounded-full shadow tracking-wider whitespace-nowrap">
+              ★ 100% Custom Made Athlete Figure ★
             </div>
-
-            <!-- BOBBLEHEAD FIGURE -->
-            <div class="relative flex flex-col items-center my-auto">
-              <!-- Head with spring bobble animation on hover -->
-              <div class="relative w-24 h-24 rounded-full border-2 border-amber-400/80 overflow-hidden shadow-lg group-hover:animate-bounce transition duration-300 z-20 bg-slate-800">
-                <img src="https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&auto=format&fit=crop&q=80" class="w-full h-full object-cover">
-                <!-- Helmet visor effect -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-amber-500/20 to-transparent"></div>
-              </div>
-              
-              <!-- Spring neck connector -->
-              <div class="w-4 h-3 bg-gradient-to-r from-slate-400 to-slate-600 rounded-sm my-0.5 z-10 flex items-center justify-center">
-                <div class="w-2 h-0.5 bg-amber-400"></div>
-              </div>
-
-              <!-- Body / Varsity Jersey -->
-              <div class="w-20 h-16 bg-gradient-to-b from-slate-800 to-slate-900 rounded-t-xl border border-white/20 flex flex-col items-center justify-center text-center p-1 z-10">
-                <div class="font-athletic text-sm font-bold text-amber-400">#12</div>
-                <div class="text-[7px] text-white font-bold tracking-wider">NEVILLE</div>
-              </div>
-            </div>
-
-            <!-- Weighted Base with Engraved Nameplate -->
-            <div class="w-full bg-slate-900 rounded-lg p-2 border border-amber-400/60 text-center shadow-inner">
-              <div class="font-athletic text-xs font-bold text-amber-300 uppercase tracking-wider leading-none">
-                MARCUS THIBODAUX
-              </div>
-              <div class="text-[8px] text-slate-400 mt-0.5">NEVILLE HIGH • CLASS OF 2027</div>
-            </div>
-          </div>
-          <div class="text-[10px] text-slate-400 mt-2 italic flex items-center gap-1">
-            <i class="fa-solid fa-arrow-pointer text-amber-400"></i> Hover figure to test spring bobble action
           </div>
         </div>
 
         <div class="lg:col-span-7 space-y-4">
           <div class="glass p-5 rounded-2xl border border-white/10">
-            <h3 class="font-athletic text-2xl text-white uppercase tracking-wide mb-2">Artisan 3D Sculpting & Photogrammetry</h3>
+            <h3 class="font-athletic text-2xl text-white uppercase tracking-wide mb-2">Artisan 3D Sculpting & Blister Pack Keepsakes</h3>
             <p class="text-slate-300 text-xs leading-relaxed mb-3">
-              Combines front and side player photographs into accurate 3D hand-painted polyresin caricatures, creating the highest emotional keepsake value of any athletic product:
+              Translates athlete photographs into personalized 3D collectible figures encased in authentic clamshell blister packs with custom equipment and display bases:
             </p>
             <div class="space-y-2 text-xs text-slate-300">
-              <div><strong class="text-amber-400">✔ Custom 3D Likeness:</strong> Sculpted from student-athlete headshots capturing facial features and hairstyle.</div>
-              <div><strong class="text-amber-400">✔ Hand-Painted School Colors:</strong> Authentic jersey styling, school typography, numbers, and varsity equipment.</div>
-              <div><strong class="text-amber-400">✔ Solid Ceramic Weighted Base:</strong> Features laser-engraved metal brass plate with player name, graduation year, and unique serial.</div>
-              <div><strong class="text-amber-400">✔ Senior Night & Banquet Keepsake:</strong> Coveted gift for graduation, award ceremonies, and booster presentations.</div>
+              <div><strong class="text-amber-400">✔ Photo → 3D Head Likeness:</strong> Sculpted from student-athlete headshots capturing hairstyle and facial features.</div>
+              <div><strong class="text-amber-400">✔ Hand-Painted School Uniform:</strong> Authentic varsity jersey styling, colors, player number (#3), and cleats.</div>
+              <div><strong class="text-amber-400">✔ Sport Equipment Accessories:</strong> Includes miniature varsity helmet, Wilson football, and championship MVP trophy.</div>
+              <div><strong class="text-amber-400">✔ Collector's Packaging:</strong> Custom clamshell blister card with student photo, nameplate, and varsity graphics.</div>
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div class="glass p-3 rounded-xl border border-white/10">
-              <div class="text-xs font-bold text-white uppercase">Varsity Edition (7-Inch)</div>
-              <div class="text-[11px] text-slate-400 mt-1">Full polyresin figure, spring neck, custom jersey & engraved plate.</div>
+              <div class="text-xs font-bold text-white uppercase">Varsity Blister Pack Figure</div>
+              <div class="text-[11px] text-slate-400 mt-1">7" Polyresin figure in custom backing card with football accessories.</div>
               <div class="mt-2 flex items-center justify-between">
                 <span class="text-white font-athletic text-xl font-bold">$49.99</span>
                 <span class="text-emerald-400 text-[10px] font-semibold">62% Margin ($31 net)</span>
@@ -355,9 +276,9 @@ module.exports = [
 
             <div class="glass p-3 rounded-xl border border-amber-400/40 bg-amber-500/5">
               <div class="text-xs font-bold text-amber-400 uppercase flex items-center gap-1">
-                <i class="fa-solid fa-crown text-[10px]"></i> Collector Dome Edition
+                <i class="fa-solid fa-crown text-[10px]"></i> Deluxe Display Edition
               </div>
-              <div class="text-[11px] text-slate-300 mt-1">Includes UV-shielded acrylic display dome, gold numbering & certificate.</div>
+              <div class="text-[11px] text-slate-300 mt-1">Includes UV acrylic display box with laser-engraved metal base.</div>
               <div class="mt-2 flex items-center justify-between">
                 <span class="text-amber-300 font-athletic text-xl font-bold">$79.99</span>
                 <span class="text-emerald-400 text-[10px] font-semibold">68% Margin ($54 net)</span>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>LANILSPORTS.COM | Louisiana High School Athlete Directory & NIL Platform</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -39,9 +39,31 @@
     .refractor-sheen {
       background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.06) 25%, rgba(245,183,0,0.2) 48%, rgba(255,255,255,0.18) 52%, rgba(255,255,255,0.05) 75%, rgba(255,255,255,0) 100%);
     }
+
+    /* Mobile Touch & Scroll Optimizations */
+    @supports (padding: max(0px)) {
+      .safe-area-bottom {
+        padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+      }
+    }
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @media (max-width: 640px) {
+      .font-athletic-mobile-tight {
+        letter-spacing: 0.02em;
+      }
+    }
   </style>
 </head>
-<body class="bg-[#0b132b] text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-yellow-400 selection:text-black">
+<body class="bg-[#0b132b] text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full relative">
 
   <!-- Top Announcement Bar -->
   <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-amber-700 px-4 py-2 text-xs text-center font-medium text-amber-200 border-b border-white/10 flex items-center justify-center gap-2">
@@ -79,22 +101,74 @@
         
       </nav>
 
-      <div class="flex items-center gap-3">
-        
-        
-        <button onclick="openModal('claim-modal')" class="text-xs md:text-sm font-bold px-3.5 py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5">
-          <i class="fa-solid fa-user-check"></i>
-          <span>Athlete Portal</span>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <button onclick="openModal('claim-modal')" class="text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5 shrink-0">
+          <i class="fa-solid fa-user-check text-xs"></i>
+          <span class="hidden xs:inline">Athlete Portal</span>
+          <span class="xs:hidden">Portal</span>
+        </button>
+        <!-- Mobile Navigation Hamburger Button -->
+        <button type="button" onclick="toggleMobileNav()" id="mobile-nav-toggle" class="md:hidden p-2 rounded-xl bg-slate-800/80 border border-white/10 text-slate-200 hover:text-amber-400 transition flex items-center justify-center w-9 h-9" aria-label="Toggle Navigation Menu">
+          <i class="fa-solid fa-bars text-sm" id="mobile-nav-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer / Dropdown -->
+    <div id="mobile-nav-menu" class="hidden md:hidden border-t border-white/10 bg-slate-900/98 backdrop-blur-xl px-4 py-3.5 space-y-3 transition-all duration-300 shadow-2xl">
+      <div class="grid grid-cols-2 gap-2">
+        <button onclick="navigate('directory'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
+          <div class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-xs shrink-0">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-bold text-white">Directory</span>
+            <span class="block text-[10px] text-slate-400">All 64 Parishes</span>
+          </div>
+        </button>
+        <button onclick="navigate('rankings'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center text-xs shrink-0">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-bold text-white">Rankings</span>
+            <span class="block text-[10px] text-slate-400">NIL & Recruits</span>
+          </div>
+        </button>
+        <button onclick="navigate('potw'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
+          <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center text-xs shrink-0">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-bold text-white">Fan Vote</span>
+            <span class="block text-[10px] text-red-400 font-semibold">Live Poll</span>
+          </div>
+        </button>
+        <button onclick="navigate('pricing'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xs shrink-0">
+            <i class="fa-solid fa-tag"></i>
+          </div>
+          <div>
+            <span class="block text-xs font-bold text-white">Pricing & NIL</span>
+            <span class="block text-[10px] text-slate-400">Plans & Merch</span>
+          </div>
+        </button>
+      </div>
+
+      <div class="pt-2 border-t border-white/10">
+        <button onclick="openCardModal('1'); closeMobileNav()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400/20 to-yellow-500/20 border border-amber-400/40 text-amber-300 font-bold flex items-center justify-center gap-2 text-xs">
+          <i class="fa-solid fa-id-card"></i>
+          <span>Open Ryder Lyons Share Card</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- Dynamic Main Content -->
-  <main id="app" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8"></main>
+  <main id="app" class="flex-1 max-w-7xl mx-auto w-full px-3 sm:px-6 lg:px-8 py-5 sm:py-8 pb-24 md:pb-8"></main>
 
   <!-- Athlete Profile Modal / Drawer -->
-  <div id="athlete-drawer" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4 overflow-y-auto">
+  <div id="athlete-drawer" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
     <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative">
       <div id="drawer-content"></div>
     </div>
@@ -160,8 +234,8 @@
   </div>
 
   <!-- LANIL Shareable Athlete Playing Card Modal -->
-  <div id="card-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
-    <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-lg w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 relative shadow-2xl text-center">
+  <div id="card-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-2 sm:p-4 overflow-y-auto">
+    <div class="bg-slate-900 border border-white/15 rounded-2xl max-w-lg w-full max-h-[94vh] sm:max-h-[92vh] overflow-y-auto p-3 sm:p-6 relative shadow-2xl text-center">
       <button onclick="closeModal('card-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl z-20">✕</button>
       
       <div class="mb-3">
@@ -192,14 +266,14 @@
       </div>
 
       <!-- Side Slider Wrapper with Nav Arrows -->
-      <div class="relative mx-auto max-w-[340px]">
+      <div class="relative mx-auto w-full max-w-[310px] sm:max-w-[340px] merch-slider-touch-area select-none">
         <!-- Prev Arrow -->
-        <button type="button" onclick="prevMerchSlide()" class="absolute -left-3.5 sm:-left-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Previous Item">
+        <button type="button" onclick="prevMerchSlide()" class="absolute -left-2 sm:-left-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Previous Item">
           <i class="fa-solid fa-chevron-left text-xs"></i>
         </button>
 
         <!-- Next Arrow -->
-        <button type="button" onclick="nextMerchSlide()" class="absolute -right-3.5 sm:-right-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Next Item">
+        <button type="button" onclick="nextMerchSlide()" class="absolute -right-2 sm:-right-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Next Item">
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </button>
 
@@ -621,7 +695,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="mt-16 border-t border-white/10 bg-slate-950/60 py-10 text-xs text-slate-400">
+  <footer class="mt-16 border-t border-white/10 bg-slate-950/60 pt-10 pb-20 md:pb-10 text-xs text-slate-400">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
       <div class="space-y-3">
         <div class="flex items-center gap-2">
@@ -854,6 +928,76 @@ function renderStatPills(sport, activeSort) {
   }).join('');
 }
 
+
+
+// Mobile Navigation Controls
+function toggleMobileNav() {
+  const menu = document.getElementById('mobile-nav-menu');
+  const icon = document.getElementById('mobile-nav-icon');
+  if (!menu) return;
+  const isHidden = menu.classList.contains('hidden');
+  if (isHidden) {
+    menu.classList.remove('hidden');
+    if (icon) icon.className = 'fa-solid fa-xmark text-sm';
+  } else {
+    menu.classList.add('hidden');
+    if (icon) icon.className = 'fa-solid fa-bars text-sm';
+  }
+}
+
+function closeMobileNav() {
+  const menu = document.getElementById('mobile-nav-menu');
+  const icon = document.getElementById('mobile-nav-icon');
+  if (menu && !menu.classList.contains('hidden')) {
+    menu.classList.add('hidden');
+    if (icon) icon.className = 'fa-solid fa-bars text-sm';
+  }
+}
+
+function updateMobileNavActive(view) {
+  const bnavItems = document.querySelectorAll('.mobile-bnav');
+  bnavItems.forEach(btn => {
+    if (btn.id === 'bnav-' + view) {
+      btn.classList.remove('text-slate-400');
+      btn.classList.add('text-amber-400');
+      const span = btn.querySelector('span');
+      if (span) span.className = 'text-[10px] font-bold mt-0.5';
+    } else if (btn.id !== 'bnav-card') {
+      btn.classList.remove('text-amber-400');
+      btn.classList.add('text-slate-400');
+      const span = btn.querySelector('span');
+      if (span) span.className = 'text-[10px] font-medium mt-0.5';
+    }
+  });
+}
+
+// Touch swipe gestures on Card Carousel
+let touchStartX = 0;
+let touchEndX = 0;
+
+function initCardCarouselSwipe() {
+  const area = document.querySelector('.merch-slider-touch-area');
+  if (!area) return;
+  area.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartX = e.touches[0].clientX;
+    }
+  }, { passive: true });
+
+  area.addEventListener('touchend', (e) => {
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      touchEndX = e.changedTouches[0].clientX;
+      const diff = touchEndX - touchStartX;
+      if (Math.abs(diff) > 40) {
+        if (diff < 0) {
+          nextMerchSlide();
+        } else {
+          prevMerchSlide();
+        }
+      }
+    }
+  }, { passive: true });
+}
 
 function navigate(view) {
   currentView = view;
@@ -2869,10 +3013,38 @@ async function loadLiveSupabaseAthletes() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initCardCarouselSwipe();
   render();
   loadLiveSupabaseAthletes();
 });
 
 </script>
+
+  <!-- Fixed Mobile Bottom Navigation Bar (< md) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-white/10 px-2 py-1 flex items-center justify-around safe-area-bottom shadow-2xl">
+    <button onclick="navigate('directory')" id="bnav-directory" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-amber-400 transition">
+      <i class="fa-solid fa-users text-base"></i>
+      <span class="text-[10px] font-bold mt-0.5">Directory</span>
+    </button>
+    <button onclick="navigate('rankings')" id="bnav-rankings" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
+      <i class="fa-solid fa-trophy text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Rankings</span>
+    </button>
+    <button onclick="openCardModal('1')" id="bnav-card" class="mobile-bnav -mt-4 flex flex-col items-center justify-center">
+      <div class="w-11 h-11 rounded-full gold-gradient text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/30 border-2 border-slate-950">
+        <i class="fa-solid fa-id-card text-lg"></i>
+      </div>
+      <span class="text-[9px] font-bold text-amber-300 mt-0.5">Share Card</span>
+    </button>
+    <button onclick="navigate('potw')" id="bnav-potw" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition relative">
+      <i class="fa-solid fa-fire text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Fan Vote</span>
+      <span class="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+    </button>
+    <button onclick="openModal('claim-modal')" id="bnav-portal" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
+      <i class="fa-solid fa-user-check text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Portal</span>
+    </button>
+  </div>
 </body>
 </html>

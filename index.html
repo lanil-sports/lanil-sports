@@ -789,7 +789,7 @@ let currentView = 'directory';
 let filterClass = 'all';
 let filterSport = 'all';
 let filterParish = 'all';
-let filterLevel = 'all'; // 'all', 'high-school', 'college'
+let filterLevel = 'high-school'; // 'high-school', 'college'
 let searchTerm = '';
 let statSort = 'nil';
 let currentPage = 1;
@@ -1043,6 +1043,11 @@ function render() {
 
 function renderDirectory() {
   const filtered = ATHLETES.filter(a => {
+    if (filterLevel === 'college') {
+      if (a.level !== 'college') return false;
+    } else {
+      if (a.level === 'college') return false;
+    }
     if (filterClass !== 'all' && a.grad_year.toString() !== filterClass) return false;
     if (filterSport !== 'all' && a.primary_sport !== filterSport) return false;
     if (filterParish !== 'all' && !a.parish_city.toLowerCase().includes(filterParish.toLowerCase())) return false;
@@ -1079,9 +1084,6 @@ function renderDirectory() {
             <i class="fa-solid fa-layer-group"></i> Athlete Level:
           </span>
           <div class="inline-flex p-0.5 rounded-xl bg-slate-900/90 border border-white/10">
-            <button type="button" onclick="updateLevel('all')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${filterLevel==='all' ? 'bg-amber-400 text-slate-950 shadow-sm' : 'text-slate-300 hover:text-white'}">
-              All (Preps & College)
-            </button>
             <button type="button" onclick="updateLevel('high-school')" class="px-3 py-1 rounded-lg text-xs font-bold transition ${filterLevel==='high-school' ? 'bg-amber-400 text-slate-950 shadow-sm' : 'text-slate-300 hover:text-white'}">
               <i class="fa-solid fa-school mr-1"></i> High School (LHSAA)
             </button>

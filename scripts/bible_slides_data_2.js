@@ -264,6 +264,33 @@ module.exports = [
             </div>
           </div>
 
+          <!-- NIL & SCHOOL REVENUE SHARING SPLIT -->
+          <div class="glass p-3 rounded-xl border border-emerald-400/30 bg-emerald-500/5">
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span class="text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <i class="fa-solid fa-hand-holding-dollar"></i> Guaranteed Revenue Sharing Split
+              </span>
+              <span class="text-[10px] text-slate-400 font-mono">100% Act 810 Compliant</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="p-2 rounded-lg bg-slate-900/80 border border-white/5">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">Player / Parent</div>
+                <div class="font-athletic text-lg font-bold text-amber-400 leading-none my-0.5">20% NIL Royalty</div>
+                <div class="text-[9px] text-slate-400">Direct deposit ($10–$16/unit)</div>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-900/80 border border-white/5">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">School / Booster</div>
+                <div class="font-athletic text-lg font-bold text-cyan-400 leading-none my-0.5">10% Team Fund</div>
+                <div class="text-[9px] text-slate-400">Athletic gear & banquets</div>
+              </div>
+              <div class="p-2 rounded-lg bg-slate-900/80 border border-white/5">
+                <div class="text-[10px] text-slate-400 uppercase font-semibold">LANIL Sports</div>
+                <div class="font-athletic text-lg font-bold text-emerald-400 leading-none my-0.5">70% Production</div>
+                <div class="text-[9px] text-slate-400">3D sculpt, packing & profit</div>
+              </div>
+            </div>
+          </div>
+
           <div class="grid grid-cols-2 gap-3">
             <div class="glass p-3 rounded-xl border border-white/10">
               <div class="text-xs font-bold text-white uppercase">Varsity Blister Pack Figure</div>

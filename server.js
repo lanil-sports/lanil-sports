@@ -1,4 +1,4 @@
-const http = require('http');
+﻿const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
@@ -10,6 +10,7 @@ const MIME_TYPES = {
   '.json': 'application/json',
   '.xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   '.docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  '.pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
   '.csv': 'text/csv',
   '.md': 'application/octet-stream',
   '.png': 'image/png',
@@ -20,8 +21,9 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   let safePath = decodeURIComponent(req.url.split('?')[0]);
+  if (safePath === '/bible' || safePath === '/deck') safePath = '/bible.html';
   if (safePath === '/walkthrough') safePath = '/walkthrough.html';
-  if (safePath === '/master-blueprint') safePath = '/master-blueprint.html';
+  if (safePath === '/master-blueprint' || safePath === '/blueprint') safePath = '/master-blueprint.html';
 
   let filePath = path.join(__dirname, safePath === '/' ? 'index.html' : safePath);
 
@@ -50,17 +52,17 @@ const server = http.createServer((req, res) => {
         'Referrer-Policy': 'strict-origin-when-cross-origin'
       };
 
+      if (ext === '.pptx') {
+        const fname = path.basename(filePath);
+        headers['Content-Disposition'] = `attachment; filename="${fname}"`;
+      }
       if (ext === '.zip') {
         headers['Content-Disposition'] = 'attachment; filename="lanil-sports.zip"';
       }
       if (ext === '.xlsx') {
         headers['Content-Disposition'] = 'attachment; filename="LA_High_School_Yearbook_NIL_Directory_2026_2027.xlsx"';
       }
-      if (ext === '.docx') {
-        const fname = path.basename(filePath);
-        headers['Content-Disposition'] = `attachment; filename="${fname}"`;
-      }
-      if (ext === '.md') {
+      if (ext === '.docx' || ext === '.md') {
         const fname = path.basename(filePath);
         headers['Content-Disposition'] = `attachment; filename="${fname}"`;
       }

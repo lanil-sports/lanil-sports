@@ -58,7 +58,7 @@
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <span class="font-athletic text-2xl tracking-wider font-bold text-white leading-none">LANIL<span class="text-amber-400">SPORTS</span></span>
+            <span class="font-athletic text-2xl tracking-wider font-bold text-white leading-none inline-flex items-center">LANIL<span class="text-amber-400 text-[16px] font-bold tracking-widest uppercase self-center ml-0.5" style="line-height:1;margin-top:0">SPORTS</span></span>
             <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">LHSAA</span>
           </div>
           <p class="text-[10px] text-slate-400 -mt-1 tracking-tight">Louisiana Athlete Intelligence & Directory</p>
@@ -76,10 +76,12 @@
           </span>
         </button>
         <button onclick="navigate('pricing')" class="nav-link text-slate-300 hover:text-amber-400 transition">Pricing & NIL</button>
+        <a href="/bible" class="nav-link text-amber-300 hover:text-amber-200 transition flex items-center gap-1 font-semibold"><i class="fa-solid fa-book-bookmark text-xs"></i> Platform Bible</a>
       </nav>
 
       <div class="flex items-center gap-3">
         
+        <a href="/bible" class="hidden sm:flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 transition"><i class="fa-solid fa-file-powerpoint text-amber-400"></i> Pitch Deck</a>
         <button onclick="openModal('claim-modal')" class="text-xs md:text-sm font-bold px-3.5 py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5">
           <i class="fa-solid fa-user-check"></i>
           <span>Athlete Portal</span>
@@ -359,6 +361,29 @@
             <i class="fa-solid fa-tape"></i> Order Decal
           </button>
         </div>
+
+        <!-- Option C: Custom 3D Printed Bobblehead ($65.00) -->
+        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl shrink-0">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h5 class="font-bold text-white text-xs">Custom 3D Printed Bobblehead</h5>
+                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Popular</span>
+              </div>
+              <p class="text-[11px] text-slate-400">100% custom made from athlete's photo &bull; Team jersey &bull; Blister pack or weighted base</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-xs font-bold text-emerald-400">$65.00</span>
+                <span class="text-[10px] text-slate-500">| 7" Height &bull; Hand-Detailed &bull; Collector's Box</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="openMerchOrder('bobblehead')" class="px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md shadow-purple-900/30">
+            <i class="fa-solid fa-cube"></i> Order Figure
+          </button>
+        </div>
       </div>
 
     </div>
@@ -517,6 +542,12 @@
           LANIL Sports is an independent media & statistics intelligence platform. Not affiliated with LHSAA. All minor NIL profiles adhere strictly to Louisiana Act 810 (La. R.S. 17:3705).
         </p>
         
+        <div class="pt-3 border-t border-white/5 space-y-1.5 text-[11px] mb-3">
+          <a href="/bible" class="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1.5"><i class="fa-solid fa-book-bookmark"></i> LANIL Sports Bible & Pitch Deck</a>
+          <a href="/LANIL_SPORTS_BIBLE.pptx" download class="text-slate-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-file-powerpoint text-amber-400"></i> Download PowerPoint (.PPTX)</a>
+          <a href="/master-blueprint" class="text-slate-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-file-lines text-amber-400"></i> Master Blueprint</a>
+          <a href="/walkthrough" class="text-slate-400 hover:text-white flex items-center gap-1.5"><i class="fa-solid fa-code text-cyan-400"></i> Backend Walkthrough</a>
+        </div>
         <div class="pt-2 flex gap-3 text-sm">
           <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fa-brands fa-x-twitter"></i></a>
           <a href="#" class="text-slate-400 hover:text-amber-400"><i class="fa-brands fa-instagram"></i></a>
@@ -2534,6 +2565,16 @@ function openMerchOrder(type) {
       <option value="24.99">5-Pack Family & Booster Bundle (5 Cards + Cases) - $24.99</option>
       <option value="44.99">10-Pack Team / Sponsor Pack (10 Cards + Cases) - $44.99</option>
     `;
+  } else if (type === 'bobblehead') {
+    document.getElementById('merch-title').textContent = "CUSTOM 3D PRINTED BOBBLEHEAD";
+    document.getElementById('merch-subtitle').textContent = "100% custom-crafted 3D figure from athlete's headshot in official team uniform with collectible display";
+    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-cube text-purple-400"></i>';
+    document.getElementById('merch-price-display').textContent = "$65.00";
+    optSelect.innerHTML = `
+      <option value="65.00">Custom 3D Printed Bobblehead (7" Figure in Team Jersey + Base) - $65.00</option>
+      <option value="79.99">Collector's Blister Pack Edition (With Accessories & Custom Backing Card) - $79.99</option>
+      <option value="119.99">2-Pack Player & Parent Keepsake Bundle - $119.99</option>
+    `;
   } else {
     document.getElementById('merch-title').textContent = "PURCHASE CUSTOM PEEL & STICK POSTER (VINYL WALL DECAL)";
     document.getElementById('merch-subtitle').textContent = "Heavy-duty repositionable vinyl wall decal (Fathead style, zero wall damage, safe for drywall & lockers)";
@@ -2556,7 +2597,11 @@ function updateMerchPrice(val) {
 function handleMerchCheckout(e) {
   e.preventDefault();
   const price = document.getElementById('merch-price-display').textContent;
-  const item = activeMerchType === 'digital-pro' ? "Ultra-HD Pro Digital Card (4K Unwatermarked)" : (activeMerchType === 'card' ? "LANIL Collector's Card" : "Custom Peel & Stick Poster Decal");
+  let item = "Custom Merch";
+  if (activeMerchType === 'digital-pro') item = "Ultra-HD Pro Digital Card (4K Unwatermarked)";
+  else if (activeMerchType === 'card') item = "LANIL Collector's Card";
+  else if (activeMerchType === 'poster') item = "Custom Peel & Stick Poster Decal";
+  else if (activeMerchType === 'bobblehead') item = "Custom 3D Printed Bobblehead Figure";
   alert("🎉 Order Initialized for " + currentCardAthlete.full_name + "!" +
         "\n\nItem: " + item +
         "\nTotal: " + price +

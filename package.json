@@ -13,7 +13,8 @@
   "type": "commonjs",
   "dependencies": {
     "docx": "^9.15.4",
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "pptxgenjs": "^4.0.1"
   },
   "devDependencies": {
     "cheerio": "^1.2.0",

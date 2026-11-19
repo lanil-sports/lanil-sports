@@ -311,7 +311,7 @@
                 </div>
 
                 <!-- Sport Icon Emblem (Bottom Right Corner of Photo - Replaces black circle with official sport emoji) -->
-                <div id="card-sport-badge" class="absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-slate-950/95 border-2 border-amber-400 flex items-center justify-center text-sm sm:text-base shadow-[0_2px_10px_rgba(0,0,0,0.9)] select-none" title="Primary Sport">
+                <div id="card-sport-badge" class="absolute bottom-2.5 right-2.5 z-20 flex items-center justify-center text-lg sm:text-xl select-none pointer-events-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]" title="Primary Sport">
                   <span id="card-sport-emoji" class="leading-none select-none">🏈</span>
                 </div>
               </div>
@@ -3004,7 +3004,10 @@ if (window.supabase) {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
-async function loadLiveSupabaseAthletes() {
+// Automated pull for player images & profiles (Live Real-Time + 60s Polling)
+let autoImagePullInterval = null;
+
+async function loadLiveSupabaseAthletes(isSilent = false) {
   if (!supabaseClient) return;
   try {
     const { data, error } = await supabaseClient
@@ -3014,25 +3017,62 @@ async function loadLiveSupabaseAthletes() {
       .limit(1000);
     
     if (!error && data && data.length > 0) {
-      ATHLETES = data.map(a => ({
-        ...a,
-        player_id: (a.player_id || '').replace(/^ON3-/i, 'LANIL-'),
-        season_stats_summary: cleanScoutingText(a.season_stats_summary || ''),
-        bio: cleanScoutingText(a.bio || ''),
-        headshot_url: a.headshot_url || ""
-      }));
+      ATHLETES = data.map(a => {
+        let headshot = a.headshot_url || "";
+        if (a.full_name && a.full_name.includes('Ryder Lyons') && (!headshot || headshot.includes('on3static'))) {
+          headshot = '/assets/ryder_lyons_headshot.jpg';
+        }
+        return {
+          ...a,
+          player_id: (a.player_id || '').replace(/^ON3-/i, 'LANIL-'),
+          season_stats_summary: cleanScoutingText(a.season_stats_summary || ''),
+          bio: cleanScoutingText(a.bio || ''),
+          headshot_url: headshot
+        };
+      });
       render();
-      console.log('✅ Loaded ' + ATHLETES.length + ' live Louisiana athletes from Supabase!');
+      if (!isSilent) {
+        console.log('✅ Automated image pull active: loaded ' + ATHLETES.length + ' live Louisiana athletes with images from database!');
+      }
     }
   } catch (err) {
-    console.warn('Supabase live fetch note:', err);
+    if (!isSilent) console.warn('Supabase live fetch note:', err);
+  }
+}
+
+function initAutomatedImagePull() {
+  // 1. Initial automated pull
+  loadLiveSupabaseAthletes();
+
+  // 2. Real-Time WebSocket subscription for live image additions
+  try {
+    if (supabaseClient && supabaseClient.channel) {
+      supabaseClient
+        .channel('public:athletes:images')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'athletes' }, (payload) => {
+          console.log('⚡ Real-time database update detected:', payload);
+          loadLiveSupabaseAthletes(true);
+        })
+        .subscribe((status) => {
+          console.log('📡 Real-time automated image pull channel status:', status);
+        });
+    }
+  } catch (e) {
+    console.warn('Real-time subscription note:', e);
+  }
+
+  // 3. Fallback recurring poll every 60 seconds
+  if (!autoImagePullInterval) {
+    autoImagePullInterval = setInterval(() => {
+      loadLiveSupabaseAthletes(true);
+    }, 60000);
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   initCardCarouselSwipe();
   render();
-  loadLiveSupabaseAthletes();
+  initAutomatedImagePull();
 });
 
 </script>

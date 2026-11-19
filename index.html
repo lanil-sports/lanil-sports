@@ -175,18 +175,19 @@
       </div>
 
       <!-- The Authentic LANIL Physical Card Frame -->
-      <!-- Product Slider Switcher Tabs -->
+      <!-- Product Slider Switcher Tabs (Ordered by Price: $9.99 -> $39.99 -> $65.00) -->
       <div class="flex items-center justify-center gap-1.5 sm:gap-2 mb-3">
         <button type="button" onclick="setMerchSlide(0)" id="merch-tab-0" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold text-[11px] sm:text-xs transition flex items-center gap-1.5 shadow">
           <span>🎴 Playing Card</span>
+          <span class="px-1 py-0.2 rounded bg-black/20 text-slate-950 text-[8px] font-bold uppercase">$9.99</span>
         </button>
         <button type="button" onclick="setMerchSlide(1)" id="merch-tab-1" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] sm:text-xs transition flex items-center gap-1.5 border border-white/5">
-          <span>🧍 3D Figure</span>
-          <span class="px-1 py-0.2 rounded bg-purple-500/30 text-purple-300 text-[8px] font-bold uppercase">Option 2</span>
+          <span>🏷️ Wall Decal</span>
+          <span class="px-1 py-0.2 rounded bg-emerald-500/30 text-emerald-300 text-[8px] font-bold uppercase">$39.99</span>
         </button>
         <button type="button" onclick="setMerchSlide(2)" id="merch-tab-2" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] sm:text-xs transition flex items-center gap-1.5 border border-white/5">
-          <span>🖼️ Wall Decal</span>
-          <span class="px-1 py-0.2 rounded bg-emerald-500/30 text-emerald-300 text-[8px] font-bold uppercase">Option 3</span>
+          <span>🧍 3D Figure</span>
+          <span class="px-1 py-0.2 rounded bg-purple-500/30 text-purple-300 text-[8px] font-bold uppercase">$65.00</span>
         </button>
       </div>
 
@@ -202,141 +203,111 @@
           <i class="fa-solid fa-chevron-right text-xs"></i>
         </button>
 
-        <!-- SLIDE 1: The Authentic LANIL Physical Card Frame -->
+        <!-- SLIDE 1: The Authentic LANIL Physical Card Frame ($9.99) -->
         <div id="merch-slide-0" class="merch-slide block shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
           <div id="shareable-card" class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-slate-200 shadow-2xl">
           
-          <!-- Inner Card Foil Border -->
-          <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-amber-400/80 p-3.5 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
-            
-            <!-- Metallic Refractor Sheen Overlay -->
-            <div class="absolute inset-0 refractor-sheen pointer-events-none"></div>
-
-            <!-- Top Header: Arched School Name & LANIL Refractor Badge -->
-            <div>
-              <div class="flex items-center justify-between border-b border-amber-400/30 pb-2 mb-2 relative z-10">
-                <!-- LANIL Refractor Emblem (Official LA Insignia) -->
-                <div class="flex items-center gap-1.5">
-                  <div class="w-6 h-6 rounded bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-600 text-slate-950 font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-yellow-200">LA</div>
-                  <div>
-                    <span class="font-athletic text-xs font-bold text-amber-400 tracking-wider block leading-none">LANIL &bull; ATHLETICS</span>
-                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">2026 1st Edition</span>
-                  </div>
-                </div>
-
-                <!-- Card Serial Number -->
-                <div class="text-right">
-                  <span id="lanil-card-num" class="font-mono text-[9px] text-amber-300 font-bold block">CARD #LA-2701</span>
-                  <span class="text-[8px] text-emerald-400 font-semibold uppercase block">Verified Prospect</span>
-                </div>
-              </div>
-
-              <!-- Arched School & Mascot Banner over Player Photo -->
-              <div class="py-1.5 px-3 bg-gradient-to-r from-amber-400/15 via-amber-400/25 to-amber-400/15 rounded-lg border border-amber-400/40 mb-2 relative z-10 flex items-center justify-center gap-2 shadow-inner">
-                <img id="lanil-logo" src="" alt="Mascot Logo" class="w-6 h-6 rounded-full object-contain shrink-0 bg-slate-900/90 p-0.5 border border-amber-400/50 shadow-sm hidden">
-                <div class="text-center min-w-0 flex-1 leading-tight">
-                  <div id="lanil-school" class="font-athletic text-xs sm:text-sm tracking-wider text-white uppercase font-bold drop-shadow-sm leading-tight text-center"></div>
-                  <div id="lanil-mascot" class="font-athletic text-[11px] sm:text-xs tracking-widest text-amber-300 uppercase font-extrabold leading-none mt-0.5"></div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Main Athlete Photo Area -->
-            <div class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-amber-400/60 bg-slate-950 shadow-inner my-1">
-              <img id="card-img" src="" alt="Athlete Photo" class="w-full h-full object-cover">
+            <!-- Inner Card Foil Border -->
+            <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-amber-400/80 p-3.5 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
               
-              <div id="card-avatar-fallback" class="w-full h-full hidden items-center justify-center bg-slate-900">
-              </div>
+              <!-- Metallic Refractor Sheen Overlay -->
+              <div class="absolute inset-0 refractor-sheen pointer-events-none"></div>
 
-              <!-- Dedicated Player Signature (Directly on Face of Card across lower photo) -->
-              <div class="absolute bottom-2.5 left-2.5 right-12 z-20 pointer-events-auto">
-                <div class="bg-black/65 backdrop-blur-md border border-amber-400/40 rounded-lg px-2.5 py-1 flex items-center justify-between shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
-                  <div class="flex-1 text-left flex items-center gap-1.5 truncate">
-                    <span class="text-[9px] font-mono text-amber-400 font-black">✍</span>
-                    <span id="lanil-sig" class="font-signature italic text-amber-200 text-lg sm:text-xl font-bold tracking-wider drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)] leading-none truncate"></span>
-                    <img id="lanil-sig-img" src="" alt="Drawn Autograph" class="h-6 object-contain hidden filter drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)]">
+              <!-- Top Header: Arched School Name & LANIL Refractor Badge -->
+              <div>
+                <div class="flex items-center justify-between border-b border-amber-400/30 pb-2 mb-2 relative z-10">
+                  <!-- LANIL Refractor Emblem (Official LA Insignia) -->
+                  <div class="flex items-center gap-1.5">
+                    <div class="w-6 h-6 rounded bg-gradient-to-br from-amber-300 via-amber-500 to-yellow-600 text-slate-950 font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-yellow-200">LA</div>
+                    <div>
+                      <span class="font-athletic text-xs font-bold text-amber-400 tracking-wider block leading-none">LANIL &bull; ATHLETICS</span>
+                      <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">2026 1st Edition</span>
+                    </div>
                   </div>
-                  <button type="button" onclick="openSignaturePad()" title="Draw your own autograph or customize signature" class="px-2 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[9px] font-bold uppercase tracking-wider transition flex items-center gap-1 shrink-0 ml-1">
-                    <i class="fa-solid fa-signature"></i> Sign
-                  </button>
+
+                  <!-- Card Serial Number -->
+                  <div class="text-right">
+                    <span id="lanil-card-num" class="font-mono text-[9px] text-amber-300 font-bold block">CARD #LA-2701</span>
+                    <span class="text-[8px] text-emerald-400 font-semibold uppercase block">Verified Prospect</span>
+                  </div>
+                </div>
+
+                <!-- Arched School & Mascot Banner over Player Photo -->
+                <div class="py-1.5 px-3 bg-gradient-to-r from-amber-400/15 via-amber-400/25 to-amber-400/15 rounded-lg border border-amber-400/40 mb-2 relative z-10 flex items-center justify-center gap-2 shadow-inner">
+                  <img id="lanil-logo" src="" alt="Mascot Logo" class="w-6 h-6 rounded-full object-contain shrink-0 bg-slate-900/90 p-0.5 border border-amber-400/50 shadow-sm hidden">
+                  <div class="text-center min-w-0 flex-1 leading-tight">
+                    <div id="lanil-school" class="font-athletic text-xs sm:text-sm tracking-wider text-white uppercase font-bold drop-shadow-sm leading-tight text-center"></div>
+                    <div id="lanil-mascot" class="font-athletic text-[11px] sm:text-xs tracking-widest text-amber-300 uppercase font-extrabold leading-none mt-0.5"></div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Sport Icon Emblem (Bottom Right Corner of Photo - Replaces black circle with official sport emoji) -->
-              <div id="card-sport-badge" class="absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-slate-950/95 border-2 border-amber-400 flex items-center justify-center text-sm sm:text-base shadow-[0_2px_10px_rgba(0,0,0,0.9)] select-none" title="Primary Sport">
-                <span id="card-sport-emoji" class="leading-none select-none">🏈</span>
+              <!-- Main Athlete Photo Area -->
+              <div class="relative w-full aspect-square rounded-xl overflow-hidden border-2 border-amber-400/60 bg-slate-950 shadow-inner my-1">
+                <img id="card-img" src="" alt="Athlete Photo" class="w-full h-full object-cover">
+                
+                <div id="card-avatar-fallback" class="w-full h-full hidden items-center justify-center bg-slate-900">
+                </div>
+
+                <!-- Dedicated Player Signature (Directly on Face of Card across lower photo) -->
+                <div class="absolute bottom-2.5 left-2.5 right-12 z-20 pointer-events-auto">
+                  <div class="bg-black/65 backdrop-blur-md border border-amber-400/40 rounded-lg px-2.5 py-1 flex items-center justify-between shadow-[0_4px_16px_rgba(0,0,0,0.9)]">
+                    <div class="flex-1 text-left flex items-center gap-1.5 truncate">
+                      <span class="text-[9px] font-mono text-amber-400 font-black">✍</span>
+                      <span id="lanil-sig" class="font-signature italic text-amber-200 text-lg sm:text-xl font-bold tracking-wider drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)] leading-none truncate"></span>
+                      <img id="lanil-sig-img" src="" alt="Drawn Autograph" class="h-6 object-contain hidden filter drop-shadow-[0_1px_6px_rgba(245,183,0,0.7)]">
+                    </div>
+                    <button type="button" onclick="openSignaturePad()" title="Draw your own autograph or customize signature" class="px-2 py-0.5 rounded bg-amber-400/20 hover:bg-amber-400/30 text-amber-300 border border-amber-400/40 text-[9px] font-bold uppercase tracking-wider transition flex items-center gap-1 shrink-0 ml-1">
+                      <i class="fa-solid fa-signature"></i> Sign
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Sport Icon Emblem (Bottom Right Corner of Photo - Replaces black circle with official sport emoji) -->
+                <div id="card-sport-badge" class="absolute bottom-2.5 right-2.5 z-20 w-8 h-8 rounded-full bg-slate-950/95 border-2 border-amber-400 flex items-center justify-center text-sm sm:text-base shadow-[0_2px_10px_rgba(0,0,0,0.9)] select-none" title="Primary Sport">
+                  <span id="card-sport-emoji" class="leading-none select-none">🏈</span>
+                </div>
               </div>
+
+              <!-- Bottom Nameplate & Card Dossier -->
+              <div class="relative z-10 mt-1">
+                <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-400/40 rounded-lg p-2.5 shadow-md">
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <h4 id="card-name" class="font-athletic text-2xl font-bold text-white tracking-wide leading-none truncate"></h4>
+                      <!-- Full Position Title directly under Name -->
+                      <p id="card-pos-full" class="font-athletic text-sm uppercase tracking-wider text-amber-300 font-bold mt-1 leading-none"></p>
+                    </div>
+                    <div class="text-right shrink-0">
+                      <span class="text-[9px] uppercase font-bold text-slate-400 block">Class</span>
+                      <span id="card-grad" class="font-athletic text-xl font-bold text-white leading-none"></span>
+                    </div>
+                  </div>
+
+                  <!-- Micro Stat Line Highlight (Centered) -->
+                  <div class="mt-1.5 pt-1.5 border-t border-white/10 text-[10px] text-slate-300 font-mono leading-tight text-center" id="card-stats">
+                  </div>
+                </div>
+
+                <!-- Authenticity Hologram Footer (Centered at Foot of Card) -->
+                <div class="mt-2.5 w-full flex items-center justify-center gap-1.5 text-[8.5px] text-slate-400 font-bold uppercase tracking-wider text-center">
+                  <span class="inline-flex items-center gap-1 text-amber-400 font-bold">
+                    <i class="fa-solid fa-shield-halved text-[9px]"></i> LANIL AUTHENTICATED
+                  </span>
+                  <span class="text-slate-500 font-bold">&bull;</span>
+                  <span id="card-watermark-text" class="text-amber-300 font-extrabold tracking-wider">#LOUISIANABUILT</span>
+                  <span id="card-pro-badge" class="hidden items-center gap-1 text-amber-300 font-extrabold tracking-widest text-[8px] ml-1">
+                    <i class="fa-solid fa-crown text-[8px]"></i> PRO 4K
+                  </span>
+                </div>
+              </div>
+
             </div>
-
-            <!-- Bottom Nameplate & Card Dossier -->
-            <div class="relative z-10 mt-1">
-              <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-amber-400/40 rounded-lg p-2.5 shadow-md">
-                <div class="flex items-center justify-between">
-                  <div>
-                    <h4 id="card-name" class="font-athletic text-2xl font-bold text-white tracking-wide leading-none truncate"></h4>
-                    <!-- Full Position Title directly under Name (Replaces National Showcase / Folsom & removes QB *) -->
-                    <p id="card-pos-full" class="font-athletic text-sm uppercase tracking-wider text-amber-300 font-bold mt-1 leading-none"></p>
-                  </div>
-                  <div class="text-right shrink-0">
-                    <span class="text-[9px] uppercase font-bold text-slate-400 block">Class</span>
-                    <span id="card-grad" class="font-athletic text-xl font-bold text-white leading-none"></span>
-                  </div>
-                </div>
-
-                <!-- Micro Stat Line Highlight (Centered) -->
-                <div class="mt-1.5 pt-1.5 border-t border-white/10 text-[10px] text-slate-300 font-mono leading-tight text-center" id="card-stats">
-                </div>
-              </div>
-
-              <!-- Authenticity Hologram Footer (Centered at Foot of Card) -->
-              <div class="mt-2.5 w-full flex items-center justify-center gap-1.5 text-[8.5px] text-slate-400 font-bold uppercase tracking-wider text-center">
-                <span class="inline-flex items-center gap-1 text-amber-400 font-bold">
-                  <i class="fa-solid fa-shield-halved text-[9px]"></i> LANIL AUTHENTICATED
-                </span>
-                <span class="text-slate-500 font-bold">&bull;</span>
-                <span id="card-watermark-text" class="text-amber-300 font-extrabold tracking-wider">#LOUISIANABUILT</span>
-                <span id="card-pro-badge" class="hidden items-center gap-1 text-amber-300 font-extrabold tracking-widest text-[8px] ml-1">
-                  <i class="fa-solid fa-crown text-[8px]"></i> PRO 4K
-                </span>
-              </div>
-            </div>
-
           </div>
-        </div>
-      </div>
+        </div><!-- End of #merch-slide-0 -->
 
-              </div><!-- End of #merch-slide-0 -->
-
-        <!-- SLIDE 2: Custom 3D Athlete Figure & Bobblehead (Slide 8 Blister Pack) -->
+        <!-- SLIDE 2: Reusable Peel & Stick Wall Decal (Fathead Style) ($39.99) -->
         <div id="merch-slide-1" class="merch-slide hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
-          <div class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-purple-500/70 shadow-2xl">
-            <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-purple-400/80 p-3 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
-              <div class="flex items-center justify-between border-b border-purple-400/30 pb-2 mb-2 relative z-10">
-                <div class="flex items-center gap-1.5">
-                  <div class="w-6 h-6 rounded bg-gradient-to-br from-purple-400 to-indigo-600 text-white font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-purple-300">3D</div>
-                  <div>
-                    <span class="font-athletic text-xs font-bold text-purple-300 tracking-wider block leading-none">CUSTOM ATHLETE FIGURE</span>
-                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">Blister Pack Keepsake</span>
-                  </div>
-                </div>
-                <span class="text-[8px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/40 uppercase">★ 100% Custom ★</span>
-              </div>
-              
-              <!-- 3D Figure Photo Frame -->
-              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1">
-                <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
-              </div>
-
-              <div class="pt-2 border-t border-purple-400/30 text-center relative z-10">
-                <div class="font-athletic text-sm font-bold text-purple-300 uppercase leading-none">PHOTO → 3D POLYRESIN ACTION FIGURE</div>
-                <div class="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">Includes Varsity Uniform, Helmet & MVP Trophy</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- SLIDE 3: Reusable Peel & Stick Wall Decal (Fathead Style) -->
-        <div id="merch-slide-2" class="merch-slide hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
           <div class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-emerald-500/70 shadow-2xl">
             <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-emerald-400/80 p-3 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
               <div class="flex items-center justify-between border-b border-emerald-400/30 pb-2 mb-2 relative z-10">
@@ -351,7 +322,7 @@
               </div>
               
               <!-- Wall Decal Photo Frame -->
-              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1">
+              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
                 <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-contain">
               </div>
 
@@ -361,7 +332,36 @@
               </div>
             </div>
           </div>
-        </div>
+        </div><!-- End of #merch-slide-1 -->
+
+        <!-- SLIDE 3: Custom 3D Athlete Figure & Bobblehead (Slide 8 Blister Pack) ($65.00) -->
+        <div id="merch-slide-2" class="merch-slide hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          <div class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-purple-500/70 shadow-2xl">
+            <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-purple-400/80 p-3 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
+              <div class="flex items-center justify-between border-b border-purple-400/30 pb-2 mb-2 relative z-10">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-6 h-6 rounded bg-gradient-to-br from-purple-400 to-indigo-600 text-white font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-purple-300">3D</div>
+                  <div>
+                    <span class="font-athletic text-xs font-bold text-purple-300 tracking-wider block leading-none">CUSTOM ATHLETE FIGURE</span>
+                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">Blister Pack Keepsake</span>
+                  </div>
+                </div>
+                <span class="text-[8px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/40 uppercase">★ 100% Custom ★</span>
+              </div>
+              
+              <!-- 3D Figure Photo Frame -->
+              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
+                <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
+              </div>
+
+              <div class="pt-2 border-t border-purple-400/30 text-center relative z-10">
+                <div class="font-athletic text-sm font-bold text-purple-300 uppercase leading-none">PHOTO → 3D POLYRESIN ACTION FIGURE</div>
+                <div class="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">Includes Varsity Uniform, Helmet & MVP Trophy</div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End of #merch-slide-2 -->
+
       </div><!-- End of .relative.mx-auto.max-w-[340px] -->
 
       <!-- Slide Indicator & Caption -->
@@ -371,10 +371,10 @@
           <span onclick="setMerchSlide(1)" class="merch-dot w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500 transition cursor-pointer"></span>
           <span onclick="setMerchSlide(2)" class="merch-dot w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500 transition cursor-pointer"></span>
         </div>
-        <span id="merch-slide-caption" class="text-[11px] font-medium text-amber-300">1 of 3: Authentic Playing Card</span>
+        <span id="merch-slide-caption" class="text-[11px] font-medium text-amber-300">1 of 3: Authentic Playing Card ($9.99)</span>
       </div>
 
-      <!-- Action Buttons for Slide 0 (Playing Card) -->
+      <!-- Action Buttons for Slide 0 (Playing Card $9.99) -->
       <div id="merch-action-0" class="merch-action-panel block mt-4 space-y-2.5">
         <!-- Option 1: Free Social Card (9:16 Story format with lanilsports.com watermark) -->
         <button id="btn-download-card" onclick="downloadCard(false)" class="w-full py-3 px-4 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
@@ -409,21 +409,8 @@
         </div>
       </div>
 
-
-      <!-- Action Panel for Slide 1 (Custom 3D Athlete Figure) -->
+      <!-- Action Panel for Slide 1 (Wall Decal $39.99) -->
       <div id="merch-action-1" class="merch-action-panel hidden mt-4 space-y-2.5">
-        <button onclick="openMerchOrder('bobblehead')" class="w-full py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition flex items-center justify-center gap-2">
-          <i class="fa-solid fa-cube text-sm"></i>
-          <span>Order Custom 3D Athlete Figure & Bobblehead ($65.00)</span>
-        </button>
-        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-purple-500/30 text-[11px] text-slate-300 flex items-center justify-between">
-          <span class="text-purple-300 font-semibold"><i class="fa-solid fa-hand-holding-dollar"></i> Rev-Share:</span>
-          <span>20% Direct Athlete Royalty + 10% School Booster Fund</span>
-        </div>
-      </div>
-
-      <!-- Action Panel for Slide 2 (Wall Decal) -->
-      <div id="merch-action-2" class="merch-action-panel hidden mt-4 space-y-2.5">
         <button onclick="openMerchOrder('poster')" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/30 transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-tape text-sm"></i>
           <span>Order Reusable Peel & Stick Wall Decal ($39.99)</span>
@@ -434,7 +421,19 @@
         </div>
       </div>
 
-      <!-- Premium Merchandising & Physical Purchases -->
+      <!-- Action Panel for Slide 2 (Custom 3D Athlete Figure $65.00) -->
+      <div id="merch-action-2" class="merch-action-panel hidden mt-4 space-y-2.5">
+        <button onclick="openMerchOrder('bobblehead')" class="w-full py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cube text-sm"></i>
+          <span>Order Custom 3D Athlete Figure & Bobblehead ($65.00)</span>
+        </button>
+        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-purple-500/30 text-[11px] text-slate-300 flex items-center justify-between">
+          <span class="text-purple-300 font-semibold"><i class="fa-solid fa-hand-holding-dollar"></i> Rev-Share:</span>
+          <span>20% Direct Athlete Royalty + 10% School Booster Fund</span>
+        </div>
+      </div>
+
+      <!-- Premium Merchandising & Physical Purchases (Ordered by Price: $9.99 -> $39.99 -> $65.00) -->
       <div class="mt-6 pt-5 border-t border-white/10 text-left space-y-3">
         <div class="flex items-center justify-between">
           <h4 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
@@ -444,12 +443,15 @@
           <span class="text-[10px] text-slate-400 font-medium">Zero Inventory &bull; Print on Demand</span>
         </div>
 
-        <!-- Option A: Purchase LANIL Players Collector's Card ($9.99) -->
+        <!-- Option A: LANIL Players Collector's Card ($9.99) -->
         <div onclick="setMerchSlide(0)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3">
             <img src="/assets/ryder_lyons_card.jpg" alt="LANIL Player Card" class="w-14 h-14 rounded-xl object-cover border border-amber-400/50 shadow-md shrink-0 group-hover:scale-105 transition">
             <div>
-              <h5 class="font-bold text-white text-xs group-hover:text-amber-300 transition">LANIL Players Collector's Card</h5>
+              <div class="flex items-center gap-2">
+                <h5 class="font-bold text-white text-xs group-hover:text-amber-300 transition">LANIL Players Collector's Card</h5>
+                <span class="px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[9px] font-bold uppercase leading-none">Option 1</span>
+              </div>
               <p class="text-[11px] text-slate-400">32pt heavy-gauge cardstock &bull; UV mirror-refractor &bull; Acrylic magnetic case</p>
               <div class="flex items-center gap-2 mt-1">
                 <span class="text-xs font-bold text-emerald-400">$9.99</span>
@@ -462,14 +464,35 @@
           </button>
         </div>
 
-        <!-- Option B: Custom 3D Printed Bobblehead / Custom Athlete Figure ($65.00) -->
-        <div onclick="setMerchSlide(1)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-purple-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
+        <!-- Option B: LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
+        <div onclick="setMerchSlide(1)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-emerald-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-14 h-14 rounded-xl object-cover border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
+            <div>
+              <div class="flex items-center gap-2">
+                <h5 class="font-bold text-white text-xs group-hover:text-emerald-300 transition">LANIL Players Custom Peel & Stick Poster (Vinyl Wall Decal)</h5>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold uppercase leading-none">Option 2</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Fathead-style reusable vinyl decal &bull; Zero paint damage &bull; Drywall & locker safe</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-xs font-bold text-emerald-400">$39.99</span>
+                <span class="text-[10px] text-slate-500">| Locker 18"&times;24": $39.99 &bull; Wall 24"&times;36": $49.99 &bull; Life-Size: $69.99</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="event.stopPropagation(); openMerchOrder('poster')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md">
+            <i class="fa-solid fa-tape"></i> Order Decal
+          </button>
+        </div>
+
+        <!-- Option C: Custom 3D Athlete Figure & Bobblehead ($65.00) -->
+        <div onclick="setMerchSlide(2)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-purple-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3">
             <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-14 h-14 rounded-xl object-cover border border-purple-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
             <div>
               <div class="flex items-center gap-2">
                 <h5 class="font-bold text-white text-xs group-hover:text-purple-300 transition">Custom 3D Athlete Figure & Bobblehead</h5>
-                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Option 2</span>
+                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Option 3</span>
               </div>
               <p class="text-[11px] text-slate-400">100% custom made from athlete photo &bull; Team jersey &bull; Blister pack or weighted base</p>
               <div class="flex items-center gap-2 mt-1">
@@ -482,29 +505,7 @@
             <i class="fa-solid fa-cube"></i> Order Figure
           </button>
         </div>
-
-        <!-- Option C: LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
-        <div onclick="setMerchSlide(2)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-emerald-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
-          <div class="flex items-center gap-3">
-            <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-14 h-14 rounded-xl object-cover border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
-            <div>
-              <div class="flex items-center gap-2">
-                <h5 class="font-bold text-white text-xs group-hover:text-emerald-300 transition">LANIL Players Custom Peel & Stick Poster (Vinyl Wall Decal)</h5>
-                <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold uppercase leading-none">Option 3</span>
-              </div>
-              <p class="text-[11px] text-slate-400">Fathead-style reusable vinyl decal &bull; Zero paint damage &bull; Drywall & locker safe</p>
-              <div class="flex items-center gap-2 mt-1">
-                <span class="text-xs font-bold text-emerald-400">$39.99</span>
-                <span class="text-[10px] text-slate-500">| Locker 18"×24": $39.99 &bull; Wall 24"×36": $49.99 &bull; Life-Size: $69.99</span>
-              </div>
-            </div>
-          </div>
-          <button onclick="event.stopPropagation(); openMerchOrder('poster')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md">
-            <i class="fa-solid fa-tape"></i> Order Decal
-          </button>
-        </div>
       </div>
-
     </div>
   </div>
 
@@ -673,7 +674,7 @@
 
 <script>
 // Louisiana High School Athletes Seed Data (2026-2027)
-window.INITIAL_ATHLETES = [{"player_id":"LANIL-2027-0099","full_name":"Ryder Lyons","slug":"ryder-lyons-2027","grad_year":2027,"current_grade":"Senior","school_id":"folsom","school_name":"Folsom High School","parish_city":"National Showcase / Folsom","primary_sport":"Football","position":"QB","secondary_sports":["Basketball"],"season_stats_summary":"2026: 3,578 pass yds, 38 TD, 5 INT; 640 rush yds, 14 TD","newspaper_mentions":[{"source":"MaxPreps National","title":"Ryder Lyons leads explosive offense with 5 total touchdowns","date":"2026-10-18"}],"social_handles":{"instagram":"@ryder_lyons"},"total_followers":42000,"est_nil_value":115000,"potential_colleges":["USC","Oregon","LSU","Ohio State","Georgia","Texas"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=320,width=320,format=auto,metadata=none/uploads/assets/803/335/335803.jpg","bio":"5-star dual-threat quarterback. Elite arm talent with exceptional off-schedule playmaking ability. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.8,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"1"},{"player_id":"LANIL-2027-0001","full_name":"Harlem Berry","slug":"harlem-berry-2027","grad_year":2027,"current_grade":"Senior","school_id":"destrehan","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","position":"WR","secondary_sports":[],"season_stats_summary":"2026: 72 rec, 1,240 yds, 14 TD","newspaper_mentions":[{"source":"The Advocate","title":"Berry dazzles with 3-touchdown performance for Destrehan","date":"2026-10-12"}],"social_handles":{"instagram":"@harlem_berry5"},"total_followers":28500,"est_nil_value":95000,"potential_colleges":["LSU","Alabama","Ohio State","Georgia","Texas A&M"],"headshot_url":"https://on3static.com/cdn-cgi/image/width=480,format=auto,metadata=none/uploads/assets/74/320/320074.jpg","bio":"5-star WR, #1 player in Louisiana. Destrehan HS. LANIL Consensus top-10 nationally.","hudl_url":"","youtube_url":"","gpa":3.6,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"2"},{"player_id":"LANIL-2027-0002","full_name":"Kaleb Jackson","slug":"kaleb-jackson-2027","grad_year":2027,"current_grade":"Senior","school_id":"john-curtis-christian","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Football","position":"QB","secondary_sports":[],"season_stats_summary":"2026: 2,890 pass yds, 34 TD, 3 INT","newspaper_mentions":[{"source":"NOLA.com","title":"Jackson leads Curtis aerial attack in rivalry victory","date":"2026-10-24"}],"social_handles":{"instagram":"@kalebj_1"},"total_followers":12400,"est_nil_value":52000,"potential_colleges":["LSU","Texas","Florida State","Ole Miss"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=320,width=320,format=auto,metadata=none/uploads/assets/111/717/717111.jpg","bio":"4-star QB, John Curtis Christian School. LHSAA District powerhouse program.","hudl_url":"","youtube_url":"","gpa":3.4,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"3"},{"player_id":"LANIL-2028-0099","full_name":"Maxx Jones","slug":"maxx-jones-2028","grad_year":2028,"current_grade":"Freshman","school_id":"allen","school_name":"Allen High School","parish_city":"National Showcase / Allen","primary_sport":"Football","position":"IOL","secondary_sports":["Track & Field"],"season_stats_summary":"2026: 38 pancake blocks, 0 sacks allowed | 6'3 295 lbs","newspaper_mentions":[{"source":"Recruiting News","title":"Freshman Maxx Jones dominates trenches with elite power","date":"2026-11-05"}],"social_handles":{"instagram":"@maxx_jones_iol"},"total_followers":8600,"est_nil_value":34000,"potential_colleges":["Texas","Texas A&M","LSU","Oklahoma","Florida","Oregon"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=420,width=800,quality=90,fit=cover,gravity=0.5x0.5,format=auto,metadata=none/uploads/dev/assets/cms/2025/06/16065752/2028-FL-OL-Maxx-Jones.jpg","bio":"4-star interior offensive lineman from Allen High School. 6'3, 295 lbs with dominant anchoring and leverage. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.7,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"4"},{"player_id":"LA-2027-0001","full_name":"Marcus Thibodaux","slug":"marcus-thibodaux-2027","grad_year":2027,"current_grade":"Senior","school_name":"Neville High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"QB","season_stats_summary":"2026: 2,450 pass yds, 28 TD, 4 INT; 410 rush yds, 6 TD","newspaper_mentions":[{"source":"The News-Star","title":"Thibodaux leads Neville to district championship","date":"2026-10-18"}],"social_handles":{"instagram":"@mthibodaux_12","twitter":"@MarcusThib12"},"total_followers":4850,"est_nil_value":7050,"potential_colleges":["LSU","Louisiana Tech","Tulane","ULM"],"headshot_url":"","bio":"Dual-threat QB with 4.52 laser 40 time. 3.8 GPA, 2x All-District selection.","claimed":true,"verified":true,"tier":"plus","id":"5"},{"player_id":"LA-2027-0002","full_name":"DeShawn Broussard","slug":"deshawn-broussard-2027","grad_year":2027,"current_grade":"Senior","school_name":"Edna Karr High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Basketball"],"position":"WR / CB","season_stats_summary":"2026: 64 rec, 1,180 yds, 15 TD; 4 INT on defense","newspaper_mentions":[{"source":"NOLA.com","title":"Broussard flashes 5-star speed in Edna Karr playoff run","date":"2026-11-02"}],"social_handles":{"instagram":"@shawn_broussard","twitter":"@DBroussard9"},"total_followers":8920,"est_nil_value":8400,"potential_colleges":["LSU","Texas A&M","Ole Miss","Florida State"],"headshot_url":"","bio":"Dynamic perimeter playmaker with 4.41 speed. 2026 Class 5A Offensive MVP candidate.","claimed":true,"verified":true,"tier":"plus","id":"6"},{"player_id":"LA-2027-0003","full_name":"Caleb Guitreau","slug":"caleb-guitreau-2027","grad_year":2027,"current_grade":"Senior","school_name":"Ruston High School","parish_city":"Lincoln Parish / Ruston","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB","season_stats_summary":"2026: 1,840 rush yds, 24 TD; 7.2 yds per carry","newspaper_mentions":[{"source":"The Shreveport Times","title":"Guitreau powers Ruston backfield to undefeated regular season","date":"2026-11-08"}],"social_handles":{"instagram":"@caleb_guitreau_24","twitter":"@CGuitreau24"},"total_followers":3400,"est_nil_value":4600,"potential_colleges":["Louisiana Tech","ULM","Southern Miss","Memphis"],"headshot_url":"","bio":"Power back with breakaway speed (4.50 40). 3x All-State academic honors.","claimed":false,"verified":true,"tier":"free","id":"7"},{"player_id":"LA-2027-0004","full_name":"Brianna Deshotel","slug":"brianna-deshotel-2027","grad_year":2027,"current_grade":"Senior","school_name":"Barbe High School","parish_city":"Calcasieu Parish / Lake Charles","primary_sport":"Softball","secondary_sports":["Volleyball"],"position":"P / 1B","season_stats_summary":"2026: 22-2 record, 0.84 ERA, 248 strikeouts; .445 AVG at the plate","newspaper_mentions":[{"source":"American Press","title":"Deshotel tosses perfect game in regional semifinals","date":"2026-04-22"}],"social_handles":{"instagram":"@bree_deshotel_softball","tiktok":"@bree.fastpitch"},"total_followers":6700,"est_nil_value":3800,"potential_colleges":["LSU","Louisiana Ragin Cajuns","McNeese","Texas"],"headshot_url":"","bio":"Dominant right-handed ace with 68 mph riseball. 2026 Louisiana Gatorade Player of the Year candidate.","claimed":true,"verified":true,"tier":"plus","id":"8"},{"player_id":"LA-2027-0005","full_name":"Kameron Delahoussaye","slug":"kameron-delahoussaye-2027","grad_year":2027,"current_grade":"Senior","school_name":"St. Thomas More High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Football","secondary_sports":["Baseball"],"position":"DE / EDGE","season_stats_summary":"2026: 14.5 sacks, 68 tackles, 22 TFL, 3 forced fumbles","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Delahoussaye terrorizes opposing backfields for STM Cougars","date":"2026-10-25"}],"social_handles":{"instagram":"@kam_delahoussaye","twitter":"@KamDelaEdge"},"total_followers":5100,"est_nil_value":5800,"potential_colleges":["LSU","Tulane","Auburn","Baylor"],"headshot_url":"","bio":"6-foot-4, 245-pound explosive edge rusher. First-Team All-Acadiana.","claimed":false,"verified":true,"tier":"free","id":"9"},{"player_id":"LA-2027-0006","full_name":"Jordan Batiste","slug":"jordan-batiste-2027","grad_year":2027,"current_grade":"Senior","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"OT","season_stats_summary":"2026: 48 pancake blocks; zero sacks allowed in 10 games","newspaper_mentions":[{"source":"The Advocate","title":"Batiste anchors Destrehan offensive line to state crown","date":"2026-11-14"}],"social_handles":{"instagram":"@jordan_batiste77","twitter":"@JBatiste77"},"total_followers":2800,"est_nil_value":3900,"potential_colleges":["LSU","Florida","Tulane","Houston"],"headshot_url":"","bio":"6-foot-6, 310-pound offensive tackle with 82-inch wingspan. Academic All-District.","claimed":true,"verified":true,"tier":"free","id":"10"},{"player_id":"LA-2028-0001","full_name":"Jaylen Landry","slug":"jaylen-landry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Catholic High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"SS / RHP","season_stats_summary":"2026: .412 AVG, 8 HR, 34 RBI; 93 mph fastball on mound","newspaper_mentions":[{"source":"The Advocate","title":"Landry commits to two-sport dominance at Catholic High","date":"2026-05-14"}],"social_handles":{"instagram":"@jaylen.landry.9","twitter":"@JLandryBaseball"},"total_followers":3100,"est_nil_value":4200,"potential_colleges":["LSU","Vanderbilt","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Premier middle infielder and closer. 2026 Underclass All-American.","claimed":true,"verified":true,"tier":"plus","id":"11"},{"player_id":"LA-2028-0002","full_name":"Aaliyah Washington","slug":"aaliyah-washington-2028","grad_year":2028,"current_grade":"Junior","school_name":"Ouachita Parish High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2025-26: 22.4 PPG, 6.8 APG, 4.2 SPG; State Champion in 100m hurdles","newspaper_mentions":[{"source":"The News-Star","title":"Washington puts Ouachita on the map with 38-point night","date":"2026-01-20"}],"social_handles":{"instagram":"@aaliyahhoops_3","tiktok":"@aaliyah.wash"},"total_followers":14200,"est_nil_value":7800,"potential_colleges":["LSU","South Carolina","UConn","Baylor"],"headshot_url":"","bio":"Top-ranked point guard in Louisiana Class of 2028. State track champion, honors student.","claimed":true,"verified":true,"tier":"plus","id":"12"},{"player_id":"LA-2028-0003","full_name":"Malik Davenport","slug":"malik-davenport-2028","grad_year":2028,"current_grade":"Junior","school_name":"Alexandria Senior High (ASH)","parish_city":"Rapides Parish / Alexandria","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"SG / SF","season_stats_summary":"2026: 24.8 PPG, 8.4 RPG, 3.2 BPG; 42% from three-point line","newspaper_mentions":[{"source":"The Town Talk","title":"Davenport carries ASH to District 2-5A championship","date":"2026-02-18"}],"social_handles":{"instagram":"@malik_davenport_hoops"},"total_followers":3900,"est_nil_value":3750,"potential_colleges":["LSU","Northwestern State","Louisiana Tech","Houston"],"headshot_url":"","bio":"Athletic 6-foot-6 wing with 40-inch vertical leap. CenLA Player of the Year.","claimed":true,"verified":true,"tier":"free","id":"13"},{"player_id":"LA-2028-0004","full_name":"Tanner Guidry","slug":"tanner-guidry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Mandeville High School","parish_city":"St. Tammany Parish / Mandeville","primary_sport":"Baseball","secondary_sports":["Football"],"position":"C","season_stats_summary":"2026: .395 AVG, 6 HR, 28 RBI; 1.88 pop time behind the plate","newspaper_mentions":[{"source":"The Times-Picayune","title":"Guidry shuts down running game in Northshore tournament","date":"2026-03-30"}],"social_handles":{"instagram":"@tanner_guidry_c"},"total_followers":2100,"est_nil_value":2600,"potential_colleges":["LSU","Tulane","Southeastern Louisiana"],"headshot_url":"","bio":"Elite defensive catcher and line-drive hitter. Top-ranked catcher on the Northshore.","claimed":false,"verified":true,"tier":"free","id":"14"},{"player_id":"LA-2028-0005","full_name":"Chloe Boudreaux","slug":"chloe-boudreaux-2028","grad_year":2028,"current_grade":"Junior","school_name":"University Lab High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Track & Field","secondary_sports":["Volleyball"],"position":"Sprints / Long Jump","season_stats_summary":"2026: 11.64s in 100m (LHSAA 3A Record); 19-ft 4-in long jump","newspaper_mentions":[{"source":"The Advocate","title":"Boudreaux shatters LHSAA state sprint mark","date":"2026-05-02"}],"social_handles":{"instagram":"@chloe_boudreaux_speed","tiktok":"@chloesprints"},"total_followers":11500,"est_nil_value":5200,"potential_colleges":["LSU","Arkansas","Texas A&M","USC"],"headshot_url":"","bio":"USATF Junior Olympian. Reigning Louisiana 3A State Champion in 100m, 200m, and Long Jump.","claimed":true,"verified":true,"tier":"plus","id":"15"},{"player_id":"LA-2028-0006","full_name":"Darius Jefferson","slug":"darius-jefferson-2028","grad_year":2028,"current_grade":"Junior","school_name":"West Monroe High School","parish_city":"Ouachita Parish / West Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"DT / NT","season_stats_summary":"2026: 54 tackles, 11 TFL, 6 sacks, 2 fumble recoveries","newspaper_mentions":[{"source":"The News-Star","title":"Jefferson anchors West Monroe defensive front in playoff shutout","date":"2026-11-10"}],"social_handles":{"instagram":"@darius_jefferson99"},"total_followers":1950,"est_nil_value":2900,"potential_colleges":["Louisiana Tech","ULM","Arkansas State","Grambling"],"headshot_url":"","bio":"6-foot-2, 290-pound run-stopper. 450 lb bench press, Ouachita Parish First-Team defense.","claimed":false,"verified":true,"tier":"free","id":"16"},{"player_id":"LA-2029-0001","full_name":"Trevor Fontenot","slug":"trevor-fontenot-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Westgate High School","parish_city":"Iberia Parish / New Iberia","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB / ATH","season_stats_summary":"2026: 1,380 rush yds, 19 TD as sophomore varsity starter","newspaper_mentions":[{"source":"The Daily Iberian","title":"Fontenot breakout season turns heads in Iberia Parish","date":"2026-10-30"}],"social_handles":{"instagram":"@trev_fontenot"},"total_followers":1850,"est_nil_value":3100,"potential_colleges":["LSU","Tulane","Houston"],"headshot_url":"","bio":"Dynamic running back with vision and balance. 4.54 laser 40 time.","claimed":true,"verified":true,"tier":"plus","id":"17"},{"player_id":"LA-2029-0002","full_name":"Zion Washington","slug":"zion-washington-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Captain Shreve High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Football","secondary_sports":["Basketball"],"position":"QB","season_stats_summary":"2026: 1,920 pass yds, 21 TD, 6 INT; 340 rush yds","newspaper_mentions":[{"source":"The Shreveport Times","title":"Sophomore Washington shines under Friday night lights for Shreve","date":"2026-10-14"}],"social_handles":{"instagram":"@zion_qb1_shreve"},"total_followers":2400,"est_nil_value":3850,"potential_colleges":["Louisiana Tech","Northwestern State","Ole Miss"],"headshot_url":"","bio":"Strong-armed sophomore quarterback with quick release and pocket poise.","claimed":false,"verified":true,"tier":"free","id":"18"},{"player_id":"LA-2029-0003","full_name":"Madison Hebert","slug":"madison-hebert-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Lafayette High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Volleyball","secondary_sports":["Track & Field"],"position":"Outside Hitter","season_stats_summary":"2026: 380 kills, 240 digs, 52 service aces","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Hebert powers Lafayette High to regional volleyball final","date":"2026-10-22"}],"social_handles":{"instagram":"@madi_hebert_vb"},"total_followers":3200,"est_nil_value":2200,"potential_colleges":["Louisiana Ragin Cajuns","McNeese","Southeastern Louisiana"],"headshot_url":"","bio":"All-District sophomore outside hitter. 10-foot touch approach.","claimed":true,"verified":false,"tier":"free","id":"19"},{"player_id":"LA-2029-0004","full_name":"Derrick Boutte","slug":"derrick-boutte-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"St. Augustine High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"PG","season_stats_summary":"2026: 18.2 PPG, 6.1 APG, 3.4 SPG; 88% free throw percentage","newspaper_mentions":[{"source":"NOLA.com","title":"Boutte orchestrates St. Aug offense with veteran maturity","date":"2026-11-04"}],"social_handles":{"instagram":"@dboutte_handles"},"total_followers":4100,"est_nil_value":3600,"potential_colleges":["Tulane","Southern","New Orleans (UNO)","LSU"],"headshot_url":"","bio":"Crafty New Orleans point guard with elite court vision and lock-down defense.","claimed":false,"verified":true,"tier":"free","id":"20"},{"player_id":"LA-2029-0005","full_name":"Austin LeBlanc","slug":"austin-leblanc-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"OF / RHP","season_stats_summary":"2026: .380 AVG, 5 HR, 24 RBI; 6.6 60-yard dash","newspaper_mentions":[{"source":"The Advocate","title":"Curtis sophomore LeBlanc delivers walk-off hit in state playoffs","date":"2026-05-10"}],"social_handles":{"instagram":"@austin_leblanc_jc"},"total_followers":1800,"est_nil_value":2300,"potential_colleges":["LSU","Tulane","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Five-tool outfielder with plus arm and speed. John Curtis baseball state champion starter.","claimed":true,"verified":true,"tier":"plus","id":"21"},{"player_id":"LA-2030-0001","full_name":"Kobe Arceneaux","slug":"kobe-arceneaux-2030","grad_year":2030,"current_grade":"Freshman","school_name":"C.E. Byrd High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"SG","season_stats_summary":"2026: Averaging 16.5 PPG in freshman varsity debut season","newspaper_mentions":[{"source":"The Shreveport Times","title":"Freshman Arceneaux sparks Byrd fourth-quarter comeback","date":"2026-11-12"}],"social_handles":{"instagram":"@kobe_arceneaux_0"},"total_followers":1100,"est_nil_value":1850,"potential_colleges":["Louisiana Tech","Northwestern State"],"headshot_url":"","bio":"Sharp-shooting freshman guard with deep 3-point range and high basketball IQ.","claimed":false,"verified":false,"tier":"free","id":"22"},{"player_id":"LA-2030-0002","full_name":"Treyson Montgomery","slug":"treyson-montgomery-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Scotlandville Magnet High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2026: 14.8 PPG, 5.5 APG, 2.8 SPG as freshman starting point guard","newspaper_mentions":[{"source":"The Advocate","title":"Montgomery handles freshman spotlight at Scotlandville with poise","date":"2026-11-15"}],"social_handles":{"instagram":"@trey_montgomery_point"},"total_followers":2100,"est_nil_value":2400,"potential_colleges":["Southern","LSU","Memphis"],"headshot_url":"","bio":"Elite playmaker and ball-handler out of Baton Rouge. High ceiling prospect.","claimed":true,"verified":true,"tier":"plus","id":"23"},{"player_id":"LA-2030-0003","full_name":"Jayceon Walker","slug":"jayceon-walker-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Warren Easton High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"WR / ATH","season_stats_summary":"2026: 28 receptions, 510 yards, 6 TD in freshman campaign","newspaper_mentions":[{"source":"NOLA.com","title":"Easton freshman Walker flashes electric playmaking speed","date":"2026-10-28"}],"social_handles":{"instagram":"@jayceon_walker_speed"},"total_followers":1650,"est_nil_value":2100,"potential_colleges":["Tulane","LSU","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Speedy freshman wideout with 4.51 speed and clean route-running.","claimed":false,"verified":false,"tier":"free","id":"24"},{"player_id":"LA-2030-0004","full_name":"Camryn Duplechain","slug":"camryn-duplechain-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Carencro High School","parish_city":"Lafayette Parish / Carencro","primary_sport":"Softball","secondary_sports":["Track & Field"],"position":"SS / OF","season_stats_summary":"2026: .420 batting average on freshman varsity squad","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Duplechain ignites Carencro offense with multi-hit games","date":"2026-04-18"}],"social_handles":{"instagram":"@cam_duplechain_softball"},"total_followers":1200,"est_nil_value":1600,"potential_colleges":["Louisiana Ragin Cajuns","McNeese"],"headshot_url":"","bio":"Freshman infielder with quick hands, range, and high contact rate at the plate.","claimed":true,"verified":false,"tier":"free","id":"25"}];
+window.INITIAL_ATHLETES = [{"player_id":"LANIL-2027-0099","full_name":"Ryder Lyons","slug":"ryder-lyons-2027","grad_year":2027,"current_grade":"Senior","school_id":"folsom","school_name":"Folsom High School","parish_city":"National Showcase / Folsom","primary_sport":"Football","position":"QB","secondary_sports":["Basketball"],"season_stats_summary":"2026: 3,578 pass yds, 38 TD, 5 INT; 640 rush yds, 14 TD","newspaper_mentions":[{"source":"MaxPreps National","title":"Ryder Lyons leads explosive offense with 5 total touchdowns","date":"2026-10-18"}],"social_handles":{"instagram":"@ryder_lyons"},"total_followers":42000,"est_nil_value":115000,"potential_colleges":["USC","Oregon","LSU","Ohio State","Georgia","Texas"],"headshot_url":"/assets/ryder_lyons_headshot.jpg","bio":"5-star dual-threat quarterback. Elite arm talent with exceptional off-schedule playmaking ability. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.8,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"1"},{"player_id":"LANIL-2027-0001","full_name":"Harlem Berry","slug":"harlem-berry-2027","grad_year":2027,"current_grade":"Senior","school_id":"destrehan","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","position":"WR","secondary_sports":[],"season_stats_summary":"2026: 72 rec, 1,240 yds, 14 TD","newspaper_mentions":[{"source":"The Advocate","title":"Berry dazzles with 3-touchdown performance for Destrehan","date":"2026-10-12"}],"social_handles":{"instagram":"@harlem_berry5"},"total_followers":28500,"est_nil_value":95000,"potential_colleges":["LSU","Alabama","Ohio State","Georgia","Texas A&M"],"headshot_url":"https://on3static.com/cdn-cgi/image/width=480,format=auto,metadata=none/uploads/assets/74/320/320074.jpg","bio":"5-star WR, #1 player in Louisiana. Destrehan HS. LANIL Consensus top-10 nationally.","hudl_url":"","youtube_url":"","gpa":3.6,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"2"},{"player_id":"LANIL-2027-0002","full_name":"Kaleb Jackson","slug":"kaleb-jackson-2027","grad_year":2027,"current_grade":"Senior","school_id":"john-curtis-christian","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Football","position":"QB","secondary_sports":[],"season_stats_summary":"2026: 2,890 pass yds, 34 TD, 3 INT","newspaper_mentions":[{"source":"NOLA.com","title":"Jackson leads Curtis aerial attack in rivalry victory","date":"2026-10-24"}],"social_handles":{"instagram":"@kalebj_1"},"total_followers":12400,"est_nil_value":52000,"potential_colleges":["LSU","Texas","Florida State","Ole Miss"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=320,width=320,format=auto,metadata=none/uploads/assets/111/717/717111.jpg","bio":"4-star QB, John Curtis Christian School. LHSAA District powerhouse program.","hudl_url":"","youtube_url":"","gpa":3.4,"claimed":false,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"3"},{"player_id":"LANIL-2028-0099","full_name":"Maxx Jones","slug":"maxx-jones-2028","grad_year":2028,"current_grade":"Freshman","school_id":"allen","school_name":"Allen High School","parish_city":"National Showcase / Allen","primary_sport":"Football","position":"IOL","secondary_sports":["Track & Field"],"season_stats_summary":"2026: 38 pancake blocks, 0 sacks allowed | 6'3 295 lbs","newspaper_mentions":[{"source":"Recruiting News","title":"Freshman Maxx Jones dominates trenches with elite power","date":"2026-11-05"}],"social_handles":{"instagram":"@maxx_jones_iol"},"total_followers":8600,"est_nil_value":34000,"potential_colleges":["Texas","Texas A&M","LSU","Oklahoma","Florida","Oregon"],"headshot_url":"https://on3static.com/cdn-cgi/image/height=420,width=800,quality=90,fit=cover,gravity=0.5x0.5,format=auto,metadata=none/uploads/dev/assets/cms/2025/06/16065752/2028-FL-OL-Maxx-Jones.jpg","bio":"4-star interior offensive lineman from Allen High School. 6'3, 295 lbs with dominant anchoring and leverage. Top national recruit.","hudl_url":"","youtube_url":"","gpa":3.7,"claimed":true,"tier":"plus","verified":true,"parent_consent_verified":true,"id":"4"},{"player_id":"LA-2027-0001","full_name":"Marcus Thibodaux","slug":"marcus-thibodaux-2027","grad_year":2027,"current_grade":"Senior","school_name":"Neville High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"QB","season_stats_summary":"2026: 2,450 pass yds, 28 TD, 4 INT; 410 rush yds, 6 TD","newspaper_mentions":[{"source":"The News-Star","title":"Thibodaux leads Neville to district championship","date":"2026-10-18"}],"social_handles":{"instagram":"@mthibodaux_12","twitter":"@MarcusThib12"},"total_followers":4850,"est_nil_value":7050,"potential_colleges":["LSU","Louisiana Tech","Tulane","ULM"],"headshot_url":"","bio":"Dual-threat QB with 4.52 laser 40 time. 3.8 GPA, 2x All-District selection.","claimed":true,"verified":true,"tier":"plus","id":"5"},{"player_id":"LA-2027-0002","full_name":"DeShawn Broussard","slug":"deshawn-broussard-2027","grad_year":2027,"current_grade":"Senior","school_name":"Edna Karr High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Basketball"],"position":"WR / CB","season_stats_summary":"2026: 64 rec, 1,180 yds, 15 TD; 4 INT on defense","newspaper_mentions":[{"source":"NOLA.com","title":"Broussard flashes 5-star speed in Edna Karr playoff run","date":"2026-11-02"}],"social_handles":{"instagram":"@shawn_broussard","twitter":"@DBroussard9"},"total_followers":8920,"est_nil_value":8400,"potential_colleges":["LSU","Texas A&M","Ole Miss","Florida State"],"headshot_url":"","bio":"Dynamic perimeter playmaker with 4.41 speed. 2026 Class 5A Offensive MVP candidate.","claimed":true,"verified":true,"tier":"plus","id":"6"},{"player_id":"LA-2027-0003","full_name":"Caleb Guitreau","slug":"caleb-guitreau-2027","grad_year":2027,"current_grade":"Senior","school_name":"Ruston High School","parish_city":"Lincoln Parish / Ruston","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB","season_stats_summary":"2026: 1,840 rush yds, 24 TD; 7.2 yds per carry","newspaper_mentions":[{"source":"The Shreveport Times","title":"Guitreau powers Ruston backfield to undefeated regular season","date":"2026-11-08"}],"social_handles":{"instagram":"@caleb_guitreau_24","twitter":"@CGuitreau24"},"total_followers":3400,"est_nil_value":4600,"potential_colleges":["Louisiana Tech","ULM","Southern Miss","Memphis"],"headshot_url":"","bio":"Power back with breakaway speed (4.50 40). 3x All-State academic honors.","claimed":false,"verified":true,"tier":"free","id":"7"},{"player_id":"LA-2027-0004","full_name":"Brianna Deshotel","slug":"brianna-deshotel-2027","grad_year":2027,"current_grade":"Senior","school_name":"Barbe High School","parish_city":"Calcasieu Parish / Lake Charles","primary_sport":"Softball","secondary_sports":["Volleyball"],"position":"P / 1B","season_stats_summary":"2026: 22-2 record, 0.84 ERA, 248 strikeouts; .445 AVG at the plate","newspaper_mentions":[{"source":"American Press","title":"Deshotel tosses perfect game in regional semifinals","date":"2026-04-22"}],"social_handles":{"instagram":"@bree_deshotel_softball","tiktok":"@bree.fastpitch"},"total_followers":6700,"est_nil_value":3800,"potential_colleges":["LSU","Louisiana Ragin Cajuns","McNeese","Texas"],"headshot_url":"","bio":"Dominant right-handed ace with 68 mph riseball. 2026 Louisiana Gatorade Player of the Year candidate.","claimed":true,"verified":true,"tier":"plus","id":"8"},{"player_id":"LA-2027-0005","full_name":"Kameron Delahoussaye","slug":"kameron-delahoussaye-2027","grad_year":2027,"current_grade":"Senior","school_name":"St. Thomas More High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Football","secondary_sports":["Baseball"],"position":"DE / EDGE","season_stats_summary":"2026: 14.5 sacks, 68 tackles, 22 TFL, 3 forced fumbles","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Delahoussaye terrorizes opposing backfields for STM Cougars","date":"2026-10-25"}],"social_handles":{"instagram":"@kam_delahoussaye","twitter":"@KamDelaEdge"},"total_followers":5100,"est_nil_value":5800,"potential_colleges":["LSU","Tulane","Auburn","Baylor"],"headshot_url":"","bio":"6-foot-4, 245-pound explosive edge rusher. First-Team All-Acadiana.","claimed":false,"verified":true,"tier":"free","id":"9"},{"player_id":"LA-2027-0006","full_name":"Jordan Batiste","slug":"jordan-batiste-2027","grad_year":2027,"current_grade":"Senior","school_name":"Destrehan High School","parish_city":"St. Charles Parish / Destrehan","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"OT","season_stats_summary":"2026: 48 pancake blocks; zero sacks allowed in 10 games","newspaper_mentions":[{"source":"The Advocate","title":"Batiste anchors Destrehan offensive line to state crown","date":"2026-11-14"}],"social_handles":{"instagram":"@jordan_batiste77","twitter":"@JBatiste77"},"total_followers":2800,"est_nil_value":3900,"potential_colleges":["LSU","Florida","Tulane","Houston"],"headshot_url":"","bio":"6-foot-6, 310-pound offensive tackle with 82-inch wingspan. Academic All-District.","claimed":true,"verified":true,"tier":"free","id":"10"},{"player_id":"LA-2028-0001","full_name":"Jaylen Landry","slug":"jaylen-landry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Catholic High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"SS / RHP","season_stats_summary":"2026: .412 AVG, 8 HR, 34 RBI; 93 mph fastball on mound","newspaper_mentions":[{"source":"The Advocate","title":"Landry commits to two-sport dominance at Catholic High","date":"2026-05-14"}],"social_handles":{"instagram":"@jaylen.landry.9","twitter":"@JLandryBaseball"},"total_followers":3100,"est_nil_value":4200,"potential_colleges":["LSU","Vanderbilt","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Premier middle infielder and closer. 2026 Underclass All-American.","claimed":true,"verified":true,"tier":"plus","id":"11"},{"player_id":"LA-2028-0002","full_name":"Aaliyah Washington","slug":"aaliyah-washington-2028","grad_year":2028,"current_grade":"Junior","school_name":"Ouachita Parish High School","parish_city":"Ouachita Parish / Monroe","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2025-26: 22.4 PPG, 6.8 APG, 4.2 SPG; State Champion in 100m hurdles","newspaper_mentions":[{"source":"The News-Star","title":"Washington puts Ouachita on the map with 38-point night","date":"2026-01-20"}],"social_handles":{"instagram":"@aaliyahhoops_3","tiktok":"@aaliyah.wash"},"total_followers":14200,"est_nil_value":7800,"potential_colleges":["LSU","South Carolina","UConn","Baylor"],"headshot_url":"","bio":"Top-ranked point guard in Louisiana Class of 2028. State track champion, honors student.","claimed":true,"verified":true,"tier":"plus","id":"12"},{"player_id":"LA-2028-0003","full_name":"Malik Davenport","slug":"malik-davenport-2028","grad_year":2028,"current_grade":"Junior","school_name":"Alexandria Senior High (ASH)","parish_city":"Rapides Parish / Alexandria","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"SG / SF","season_stats_summary":"2026: 24.8 PPG, 8.4 RPG, 3.2 BPG; 42% from three-point line","newspaper_mentions":[{"source":"The Town Talk","title":"Davenport carries ASH to District 2-5A championship","date":"2026-02-18"}],"social_handles":{"instagram":"@malik_davenport_hoops"},"total_followers":3900,"est_nil_value":3750,"potential_colleges":["LSU","Northwestern State","Louisiana Tech","Houston"],"headshot_url":"","bio":"Athletic 6-foot-6 wing with 40-inch vertical leap. CenLA Player of the Year.","claimed":true,"verified":true,"tier":"free","id":"13"},{"player_id":"LA-2028-0004","full_name":"Tanner Guidry","slug":"tanner-guidry-2028","grad_year":2028,"current_grade":"Junior","school_name":"Mandeville High School","parish_city":"St. Tammany Parish / Mandeville","primary_sport":"Baseball","secondary_sports":["Football"],"position":"C","season_stats_summary":"2026: .395 AVG, 6 HR, 28 RBI; 1.88 pop time behind the plate","newspaper_mentions":[{"source":"The Times-Picayune","title":"Guidry shuts down running game in Northshore tournament","date":"2026-03-30"}],"social_handles":{"instagram":"@tanner_guidry_c"},"total_followers":2100,"est_nil_value":2600,"potential_colleges":["LSU","Tulane","Southeastern Louisiana"],"headshot_url":"","bio":"Elite defensive catcher and line-drive hitter. Top-ranked catcher on the Northshore.","claimed":false,"verified":true,"tier":"free","id":"14"},{"player_id":"LA-2028-0005","full_name":"Chloe Boudreaux","slug":"chloe-boudreaux-2028","grad_year":2028,"current_grade":"Junior","school_name":"University Lab High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Track & Field","secondary_sports":["Volleyball"],"position":"Sprints / Long Jump","season_stats_summary":"2026: 11.64s in 100m (LHSAA 3A Record); 19-ft 4-in long jump","newspaper_mentions":[{"source":"The Advocate","title":"Boudreaux shatters LHSAA state sprint mark","date":"2026-05-02"}],"social_handles":{"instagram":"@chloe_boudreaux_speed","tiktok":"@chloesprints"},"total_followers":11500,"est_nil_value":5200,"potential_colleges":["LSU","Arkansas","Texas A&M","USC"],"headshot_url":"","bio":"USATF Junior Olympian. Reigning Louisiana 3A State Champion in 100m, 200m, and Long Jump.","claimed":true,"verified":true,"tier":"plus","id":"15"},{"player_id":"LA-2028-0006","full_name":"Darius Jefferson","slug":"darius-jefferson-2028","grad_year":2028,"current_grade":"Junior","school_name":"West Monroe High School","parish_city":"Ouachita Parish / West Monroe","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"DT / NT","season_stats_summary":"2026: 54 tackles, 11 TFL, 6 sacks, 2 fumble recoveries","newspaper_mentions":[{"source":"The News-Star","title":"Jefferson anchors West Monroe defensive front in playoff shutout","date":"2026-11-10"}],"social_handles":{"instagram":"@darius_jefferson99"},"total_followers":1950,"est_nil_value":2900,"potential_colleges":["Louisiana Tech","ULM","Arkansas State","Grambling"],"headshot_url":"","bio":"6-foot-2, 290-pound run-stopper. 450 lb bench press, Ouachita Parish First-Team defense.","claimed":false,"verified":true,"tier":"free","id":"16"},{"player_id":"LA-2029-0001","full_name":"Trevor Fontenot","slug":"trevor-fontenot-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Westgate High School","parish_city":"Iberia Parish / New Iberia","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"RB / ATH","season_stats_summary":"2026: 1,380 rush yds, 19 TD as sophomore varsity starter","newspaper_mentions":[{"source":"The Daily Iberian","title":"Fontenot breakout season turns heads in Iberia Parish","date":"2026-10-30"}],"social_handles":{"instagram":"@trev_fontenot"},"total_followers":1850,"est_nil_value":3100,"potential_colleges":["LSU","Tulane","Houston"],"headshot_url":"","bio":"Dynamic running back with vision and balance. 4.54 laser 40 time.","claimed":true,"verified":true,"tier":"plus","id":"17"},{"player_id":"LA-2029-0002","full_name":"Zion Washington","slug":"zion-washington-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Captain Shreve High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Football","secondary_sports":["Basketball"],"position":"QB","season_stats_summary":"2026: 1,920 pass yds, 21 TD, 6 INT; 340 rush yds","newspaper_mentions":[{"source":"The Shreveport Times","title":"Sophomore Washington shines under Friday night lights for Shreve","date":"2026-10-14"}],"social_handles":{"instagram":"@zion_qb1_shreve"},"total_followers":2400,"est_nil_value":3850,"potential_colleges":["Louisiana Tech","Northwestern State","Ole Miss"],"headshot_url":"","bio":"Strong-armed sophomore quarterback with quick release and pocket poise.","claimed":false,"verified":true,"tier":"free","id":"18"},{"player_id":"LA-2029-0003","full_name":"Madison Hebert","slug":"madison-hebert-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"Lafayette High School","parish_city":"Lafayette Parish / Lafayette","primary_sport":"Volleyball","secondary_sports":["Track & Field"],"position":"Outside Hitter","season_stats_summary":"2026: 380 kills, 240 digs, 52 service aces","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Hebert powers Lafayette High to regional volleyball final","date":"2026-10-22"}],"social_handles":{"instagram":"@madi_hebert_vb"},"total_followers":3200,"est_nil_value":2200,"potential_colleges":["Louisiana Ragin Cajuns","McNeese","Southeastern Louisiana"],"headshot_url":"","bio":"All-District sophomore outside hitter. 10-foot touch approach.","claimed":true,"verified":false,"tier":"free","id":"19"},{"player_id":"LA-2029-0004","full_name":"Derrick Boutte","slug":"derrick-boutte-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"St. Augustine High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"PG","season_stats_summary":"2026: 18.2 PPG, 6.1 APG, 3.4 SPG; 88% free throw percentage","newspaper_mentions":[{"source":"NOLA.com","title":"Boutte orchestrates St. Aug offense with veteran maturity","date":"2026-11-04"}],"social_handles":{"instagram":"@dboutte_handles"},"total_followers":4100,"est_nil_value":3600,"potential_colleges":["Tulane","Southern","New Orleans (UNO)","LSU"],"headshot_url":"","bio":"Crafty New Orleans point guard with elite court vision and lock-down defense.","claimed":false,"verified":true,"tier":"free","id":"20"},{"player_id":"LA-2029-0005","full_name":"Austin LeBlanc","slug":"austin-leblanc-2029","grad_year":2029,"current_grade":"Sophomore","school_name":"John Curtis Christian School","parish_city":"Jefferson Parish / River Ridge","primary_sport":"Baseball","secondary_sports":["Football"],"position":"OF / RHP","season_stats_summary":"2026: .380 AVG, 5 HR, 24 RBI; 6.6 60-yard dash","newspaper_mentions":[{"source":"The Advocate","title":"Curtis sophomore LeBlanc delivers walk-off hit in state playoffs","date":"2026-05-10"}],"social_handles":{"instagram":"@austin_leblanc_jc"},"total_followers":1800,"est_nil_value":2300,"potential_colleges":["LSU","Tulane","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Five-tool outfielder with plus arm and speed. John Curtis baseball state champion starter.","claimed":true,"verified":true,"tier":"plus","id":"21"},{"player_id":"LA-2030-0001","full_name":"Kobe Arceneaux","slug":"kobe-arceneaux-2030","grad_year":2030,"current_grade":"Freshman","school_name":"C.E. Byrd High School","parish_city":"Caddo Parish / Shreveport","primary_sport":"Basketball","secondary_sports":["Baseball"],"position":"SG","season_stats_summary":"2026: Averaging 16.5 PPG in freshman varsity debut season","newspaper_mentions":[{"source":"The Shreveport Times","title":"Freshman Arceneaux sparks Byrd fourth-quarter comeback","date":"2026-11-12"}],"social_handles":{"instagram":"@kobe_arceneaux_0"},"total_followers":1100,"est_nil_value":1850,"potential_colleges":["Louisiana Tech","Northwestern State"],"headshot_url":"","bio":"Sharp-shooting freshman guard with deep 3-point range and high basketball IQ.","claimed":false,"verified":false,"tier":"free","id":"22"},{"player_id":"LA-2030-0002","full_name":"Treyson Montgomery","slug":"treyson-montgomery-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Scotlandville Magnet High School","parish_city":"East Baton Rouge Parish / Baton Rouge","primary_sport":"Basketball","secondary_sports":["Track & Field"],"position":"PG","season_stats_summary":"2026: 14.8 PPG, 5.5 APG, 2.8 SPG as freshman starting point guard","newspaper_mentions":[{"source":"The Advocate","title":"Montgomery handles freshman spotlight at Scotlandville with poise","date":"2026-11-15"}],"social_handles":{"instagram":"@trey_montgomery_point"},"total_followers":2100,"est_nil_value":2400,"potential_colleges":["Southern","LSU","Memphis"],"headshot_url":"","bio":"Elite playmaker and ball-handler out of Baton Rouge. High ceiling prospect.","claimed":true,"verified":true,"tier":"plus","id":"23"},{"player_id":"LA-2030-0003","full_name":"Jayceon Walker","slug":"jayceon-walker-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Warren Easton High School","parish_city":"Orleans Parish / New Orleans","primary_sport":"Football","secondary_sports":["Track & Field"],"position":"WR / ATH","season_stats_summary":"2026: 28 receptions, 510 yards, 6 TD in freshman campaign","newspaper_mentions":[{"source":"NOLA.com","title":"Easton freshman Walker flashes electric playmaking speed","date":"2026-10-28"}],"social_handles":{"instagram":"@jayceon_walker_speed"},"total_followers":1650,"est_nil_value":2100,"potential_colleges":["Tulane","LSU","Louisiana Ragin Cajuns"],"headshot_url":"","bio":"Speedy freshman wideout with 4.51 speed and clean route-running.","claimed":false,"verified":false,"tier":"free","id":"24"},{"player_id":"LA-2030-0004","full_name":"Camryn Duplechain","slug":"camryn-duplechain-2030","grad_year":2030,"current_grade":"Freshman","school_name":"Carencro High School","parish_city":"Lafayette Parish / Carencro","primary_sport":"Softball","secondary_sports":["Track & Field"],"position":"SS / OF","season_stats_summary":"2026: .420 batting average on freshman varsity squad","newspaper_mentions":[{"source":"The Daily Advertiser","title":"Duplechain ignites Carencro offense with multi-hit games","date":"2026-04-18"}],"social_handles":{"instagram":"@cam_duplechain_softball"},"total_followers":1200,"est_nil_value":1600,"potential_colleges":["Louisiana Ragin Cajuns","McNeese"],"headshot_url":"","bio":"Freshman infielder with quick hands, range, and high contact rate at the plate.","claimed":true,"verified":false,"tier":"free","id":"25"}];
 
 // LANILSPORTS.COM Core Application Logic (Part 1)
 
@@ -2356,9 +2357,9 @@ function setMerchSlide(idx) {
   const captionEl = document.getElementById('merch-slide-caption');
 
   const titles = [
-    "1 of 3: Authentic Playing Card",
-    "2 of 3: Custom 3D Athlete Figure & Bobblehead",
-    "3 of 3: Reusable Peel & Stick Vinyl Wall Decal"
+    "1 of 3: Authentic Playing Card ($9.99)",
+    "2 of 3: Reusable Peel & Stick Wall Decal ($39.99)",
+    "3 of 3: Custom 3D Athlete Figure & Bobblehead ($65.00)"
   ];
 
   slides.forEach((s, i) => {
@@ -2414,12 +2415,24 @@ function openCardModal(id) {
   if (!a) return;
   currentCardAthlete = a;
 
+  // Guarantee Ryder Lyons displays crisp local headshot
+  if (a.full_name && a.full_name.includes('Ryder Lyons')) {
+    a.headshot_url = '/assets/ryder_lyons_headshot.jpg';
+  }
+
   const cardImg = document.getElementById('card-img');
   const fallback = document.getElementById('card-avatar-fallback');
   if (a.headshot_url && a.headshot_url.trim() !== '') {
     cardImg.src = a.headshot_url;
     cardImg.style.display = 'block';
     if (fallback) fallback.style.display = 'none';
+    cardImg.onerror = function() {
+      cardImg.style.display = 'none';
+      if (fallback) {
+        fallback.innerHTML = renderAthleteAvatar(a);
+        fallback.style.display = 'flex';
+      }
+    };
   } else {
     cardImg.style.display = 'none';
     if (fallback) {
@@ -2735,7 +2748,7 @@ function openMerchOrder(type) {
   } else if (type === 'card') {
     document.getElementById('merch-title').textContent = "PURCHASE LANIL PLAYER'S COLLECTOR'S CARD";
     document.getElementById('merch-subtitle').textContent = "Printed on 32pt heavy-gauge collector cardstock with high-gloss UV mirror-refractor finish in magnetic acrylic case";
-    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-id-card"></i>';
+    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_card.jpg" class="w-12 h-12 rounded-lg object-cover border border-amber-400 shadow">';
     document.getElementById('merch-price-display').textContent = "$9.99";
     optSelect.innerHTML = `
       <option value="9.99">Single Collector's Card (In Acrylic Magnetic Case) - $9.99</option>
@@ -2755,7 +2768,7 @@ function openMerchOrder(type) {
   } else {
     document.getElementById('merch-title').textContent = "PURCHASE CUSTOM PEEL & STICK POSTER (VINYL WALL DECAL)";
     document.getElementById('merch-subtitle').textContent = "Heavy-duty repositionable vinyl wall decal (Fathead style, zero wall damage, safe for drywall & lockers)";
-    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-tape"></i>';
+    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_wall_decal.jpg" class="w-12 h-12 rounded-lg object-cover border border-emerald-400 shadow">';
     document.getElementById('merch-price-display').textContent = "$39.99";
     optSelect.innerHTML = `
       <option value="39.99">Locker Room Decal (18" × 24") - $39.99</option>

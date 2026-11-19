@@ -15,6 +15,7 @@ const MIME_TYPES = {
   '.md': 'application/octet-stream',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
+  '.webp': 'image/webp',
   '.ico': 'image/x-icon',
   '.zip': 'application/zip'
 };

@@ -175,8 +175,36 @@
       </div>
 
       <!-- The Authentic LANIL Physical Card Frame -->
-      <div class="mx-auto max-w-[340px] shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
-        <div id="shareable-card" class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-slate-200 shadow-2xl">
+      <!-- Product Slider Switcher Tabs -->
+      <div class="flex items-center justify-center gap-1.5 sm:gap-2 mb-3">
+        <button type="button" onclick="setMerchSlide(0)" id="merch-tab-0" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold text-[11px] sm:text-xs transition flex items-center gap-1.5 shadow">
+          <span>🎴 Playing Card</span>
+        </button>
+        <button type="button" onclick="setMerchSlide(1)" id="merch-tab-1" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] sm:text-xs transition flex items-center gap-1.5 border border-white/5">
+          <span>🧍 3D Figure</span>
+          <span class="px-1 py-0.2 rounded bg-purple-500/30 text-purple-300 text-[8px] font-bold uppercase">Option 2</span>
+        </button>
+        <button type="button" onclick="setMerchSlide(2)" id="merch-tab-2" class="merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] sm:text-xs transition flex items-center gap-1.5 border border-white/5">
+          <span>🖼️ Wall Decal</span>
+          <span class="px-1 py-0.2 rounded bg-emerald-500/30 text-emerald-300 text-[8px] font-bold uppercase">Option 3</span>
+        </button>
+      </div>
+
+      <!-- Side Slider Wrapper with Nav Arrows -->
+      <div class="relative mx-auto max-w-[340px]">
+        <!-- Prev Arrow -->
+        <button type="button" onclick="prevMerchSlide()" class="absolute -left-3.5 sm:-left-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Previous Item">
+          <i class="fa-solid fa-chevron-left text-xs"></i>
+        </button>
+
+        <!-- Next Arrow -->
+        <button type="button" onclick="nextMerchSlide()" class="absolute -right-3.5 sm:-right-5 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-slate-950/90 hover:bg-amber-400 hover:text-slate-950 text-white border border-white/10 flex items-center justify-center transition z-30 shadow-xl" title="Next Item">
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </button>
+
+        <!-- SLIDE 1: The Authentic LANIL Physical Card Frame -->
+        <div id="merch-slide-0" class="merch-slide block shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          <div id="shareable-card" class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-slate-200 shadow-2xl">
           
           <!-- Inner Card Foil Border -->
           <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-amber-400/80 p-3.5 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
@@ -277,8 +305,77 @@
         </div>
       </div>
 
-      <!-- Digital Card Options: Free Watermarked Social vs $1.00 Unwatermarked Pro -->
-      <div class="mt-5 space-y-2.5">
+              </div><!-- End of #merch-slide-0 -->
+
+        <!-- SLIDE 2: Custom 3D Athlete Figure & Bobblehead (Slide 8 Blister Pack) -->
+        <div id="merch-slide-1" class="merch-slide hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          <div class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-purple-500/70 shadow-2xl">
+            <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-purple-400/80 p-3 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
+              <div class="flex items-center justify-between border-b border-purple-400/30 pb-2 mb-2 relative z-10">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-6 h-6 rounded bg-gradient-to-br from-purple-400 to-indigo-600 text-white font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-purple-300">3D</div>
+                  <div>
+                    <span class="font-athletic text-xs font-bold text-purple-300 tracking-wider block leading-none">CUSTOM ATHLETE FIGURE</span>
+                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">Blister Pack Keepsake</span>
+                  </div>
+                </div>
+                <span class="text-[8px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/40 uppercase">★ 100% Custom ★</span>
+              </div>
+              
+              <!-- 3D Figure Photo Frame -->
+              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1">
+                <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
+              </div>
+
+              <div class="pt-2 border-t border-purple-400/30 text-center relative z-10">
+                <div class="font-athletic text-sm font-bold text-purple-300 uppercase leading-none">PHOTO → 3D POLYRESIN ACTION FIGURE</div>
+                <div class="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">Includes Varsity Uniform, Helmet & MVP Trophy</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3: Reusable Peel & Stick Wall Decal (Fathead Style) -->
+        <div id="merch-slide-2" class="merch-slide hidden shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
+          <div class="relative rounded-2xl bg-gradient-to-b from-[#f8fafc] via-[#f1f5f9] to-[#e2e8f0] p-3 text-left border-[5px] border-emerald-500/70 shadow-2xl">
+            <div class="relative rounded-xl bg-gradient-to-b from-[#090d16] via-[#10172a] to-[#040711] border-2 border-emerald-400/80 p-3 overflow-hidden flex flex-col justify-between aspect-[9/14] text-white">
+              <div class="flex items-center justify-between border-b border-emerald-400/30 pb-2 mb-2 relative z-10">
+                <div class="flex items-center gap-1.5">
+                  <div class="w-6 h-6 rounded bg-gradient-to-br from-emerald-400 to-teal-600 text-slate-950 font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-emerald-300">VINYL</div>
+                  <div>
+                    <span class="font-athletic text-xs font-bold text-emerald-300 tracking-wider block leading-none">PEEL & STICK WALL DECAL</span>
+                    <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">Fathead-Style Graphic</span>
+                  </div>
+                </div>
+                <span class="text-[8px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/40 uppercase">Drywall Safe</span>
+              </div>
+              
+              <!-- Wall Decal Photo Frame -->
+              <div class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1">
+                <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-contain">
+              </div>
+
+              <div class="pt-2 border-t border-emerald-400/30 text-center relative z-10">
+                <div class="font-athletic text-sm font-bold text-emerald-300 uppercase leading-none">REPOSITIONABLE 6-MIL MATTE VINYL</div>
+                <div class="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">Zero Drywall Damage &bull; Gym Locker & Bedroom Ready</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!-- End of .relative.mx-auto.max-w-[340px] -->
+
+      <!-- Slide Indicator & Caption -->
+      <div class="mt-2.5 flex items-center justify-between text-xs text-slate-400 px-2 max-w-[340px] mx-auto">
+        <div class="flex items-center gap-1.5">
+          <span onclick="setMerchSlide(0)" class="merch-dot w-2.5 h-2.5 rounded-full bg-amber-400 transition cursor-pointer"></span>
+          <span onclick="setMerchSlide(1)" class="merch-dot w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500 transition cursor-pointer"></span>
+          <span onclick="setMerchSlide(2)" class="merch-dot w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500 transition cursor-pointer"></span>
+        </div>
+        <span id="merch-slide-caption" class="text-[11px] font-medium text-amber-300">1 of 3: Authentic Playing Card</span>
+      </div>
+
+      <!-- Action Buttons for Slide 0 (Playing Card) -->
+      <div id="merch-action-0" class="merch-action-panel block mt-4 space-y-2.5">
         <!-- Option 1: Free Social Card (9:16 Story format with lanilsports.com watermark) -->
         <button id="btn-download-card" onclick="downloadCard(false)" class="w-full py-3 px-4 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2">
           <i class="fa-solid fa-arrow-down-to-bracket text-sm"></i>
@@ -312,6 +409,31 @@
         </div>
       </div>
 
+
+      <!-- Action Panel for Slide 1 (Custom 3D Athlete Figure) -->
+      <div id="merch-action-1" class="merch-action-panel hidden mt-4 space-y-2.5">
+        <button onclick="openMerchOrder('bobblehead')" class="w-full py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-900/30 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cube text-sm"></i>
+          <span>Order Custom 3D Athlete Figure & Bobblehead ($65.00)</span>
+        </button>
+        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-purple-500/30 text-[11px] text-slate-300 flex items-center justify-between">
+          <span class="text-purple-300 font-semibold"><i class="fa-solid fa-hand-holding-dollar"></i> Rev-Share:</span>
+          <span>20% Direct Athlete Royalty + 10% School Booster Fund</span>
+        </div>
+      </div>
+
+      <!-- Action Panel for Slide 2 (Wall Decal) -->
+      <div id="merch-action-2" class="merch-action-panel hidden mt-4 space-y-2.5">
+        <button onclick="openMerchOrder('poster')" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-lg shadow-emerald-900/30 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-tape text-sm"></i>
+          <span>Order Reusable Peel & Stick Wall Decal ($39.99)</span>
+        </button>
+        <div class="p-2.5 rounded-xl bg-slate-800/80 border border-emerald-500/30 text-[11px] text-slate-300 flex items-center justify-between">
+          <span class="text-emerald-300 font-semibold"><i class="fa-solid fa-shield-halved"></i> Drywall Safe:</span>
+          <span>Zero wall or paint peel &bull; 100% reusable on gym lockers</span>
+        </div>
+      </div>
+
       <!-- Premium Merchandising & Physical Purchases -->
       <div class="mt-6 pt-5 border-t border-white/10 text-left space-y-3">
         <div class="flex items-center justify-between">
@@ -323,13 +445,11 @@
         </div>
 
         <!-- Option A: Purchase LANIL Players Collector's Card ($9.99) -->
-        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
+        <div onclick="setMerchSlide(0)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-lg bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400 text-xl shrink-0">
-              <i class="fa-solid fa-id-card"></i>
-            </div>
+            <img src="/assets/ryder_lyons_card.jpg" alt="LANIL Player Card" class="w-14 h-14 rounded-xl object-cover border border-amber-400/50 shadow-md shrink-0 group-hover:scale-105 transition">
             <div>
-              <h5 class="font-bold text-white text-xs">Purchase LANIL Players Collector's Card</h5>
+              <h5 class="font-bold text-white text-xs group-hover:text-amber-300 transition">LANIL Players Collector's Card</h5>
               <p class="text-[11px] text-slate-400">32pt heavy-gauge cardstock &bull; UV mirror-refractor &bull; Acrylic magnetic case</p>
               <div class="flex items-center gap-2 mt-1">
                 <span class="text-xs font-bold text-emerald-400">$9.99</span>
@@ -337,19 +457,41 @@
               </div>
             </div>
           </div>
-          <button onclick="openMerchOrder('card')" class="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5">
+          <button onclick="event.stopPropagation(); openMerchOrder('card')" class="px-3.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md">
             <i class="fa-solid fa-cart-plus"></i> Order Card
           </button>
         </div>
 
-        <!-- Option B: Purchase LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
-        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
+        <!-- Option B: Custom 3D Printed Bobblehead / Custom Athlete Figure ($65.00) -->
+        <div onclick="setMerchSlide(1)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-purple-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl shrink-0">
-              <i class="fa-solid fa-tape"></i>
-            </div>
+            <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-14 h-14 rounded-xl object-cover border border-purple-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
             <div>
-              <h5 class="font-bold text-white text-xs">Purchase LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal)</h5>
+              <div class="flex items-center gap-2">
+                <h5 class="font-bold text-white text-xs group-hover:text-purple-300 transition">Custom 3D Athlete Figure & Bobblehead</h5>
+                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Option 2</span>
+              </div>
+              <p class="text-[11px] text-slate-400">100% custom made from athlete photo &bull; Team jersey &bull; Blister pack or weighted base</p>
+              <div class="flex items-center gap-2 mt-1">
+                <span class="text-xs font-bold text-emerald-400">$65.00</span>
+                <span class="text-[10px] text-slate-500">| 7" Polyresin &bull; Hand-Detailed &bull; Collector's Box</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="event.stopPropagation(); openMerchOrder('bobblehead')" class="px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md shadow-purple-900/30">
+            <i class="fa-solid fa-cube"></i> Order Figure
+          </button>
+        </div>
+
+        <!-- Option C: LANIL Players Custom Peel & Stick Poster (Reusable Vinyl Wall Decal) ($39.99) -->
+        <div onclick="setMerchSlide(2)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-emerald-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
+          <div class="flex items-center gap-3">
+            <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-14 h-14 rounded-xl object-cover border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition">
+            <div>
+              <div class="flex items-center gap-2">
+                <h5 class="font-bold text-white text-xs group-hover:text-emerald-300 transition">LANIL Players Custom Peel & Stick Poster (Vinyl Wall Decal)</h5>
+                <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[9px] font-bold uppercase leading-none">Option 3</span>
+              </div>
               <p class="text-[11px] text-slate-400">Fathead-style reusable vinyl decal &bull; Zero paint damage &bull; Drywall & locker safe</p>
               <div class="flex items-center gap-2 mt-1">
                 <span class="text-xs font-bold text-emerald-400">$39.99</span>
@@ -357,31 +499,8 @@
               </div>
             </div>
           </div>
-          <button onclick="openMerchOrder('poster')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5">
+          <button onclick="event.stopPropagation(); openMerchOrder('poster')" class="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md">
             <i class="fa-solid fa-tape"></i> Order Decal
-          </button>
-        </div>
-
-        <!-- Option C: Custom 3D Printed Bobblehead ($65.00) -->
-        <div class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-amber-400/40 transition flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl shrink-0">
-              <i class="fa-solid fa-cube"></i>
-            </div>
-            <div>
-              <div class="flex items-center gap-2">
-                <h5 class="font-bold text-white text-xs">Custom 3D Printed Bobblehead</h5>
-                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Popular</span>
-              </div>
-              <p class="text-[11px] text-slate-400">100% custom made from athlete's photo &bull; Team jersey &bull; Blister pack or weighted base</p>
-              <div class="flex items-center gap-2 mt-1">
-                <span class="text-xs font-bold text-emerald-400">$65.00</span>
-                <span class="text-[10px] text-slate-500">| 7" Height &bull; Hand-Detailed &bull; Collector's Box</span>
-              </div>
-            </div>
-          </div>
-          <button onclick="openMerchOrder('bobblehead')" class="px-3.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition shrink-0 flex items-center gap-1.5 shadow-md shadow-purple-900/30">
-            <i class="fa-solid fa-cube"></i> Order Figure
           </button>
         </div>
       </div>
@@ -2227,7 +2346,70 @@ function formatCardStats(str) {
     .trim();
 }
 
+let currentMerchSlide = 0;
+function setMerchSlide(idx) {
+  currentMerchSlide = idx;
+  const slides = document.querySelectorAll('.merch-slide');
+  const tabs = document.querySelectorAll('.merch-tab-btn');
+  const dots = document.querySelectorAll('.merch-dot');
+  const actionPanels = document.querySelectorAll('.merch-action-panel');
+  const captionEl = document.getElementById('merch-slide-caption');
+
+  const titles = [
+    "1 of 3: Authentic Playing Card",
+    "2 of 3: Custom 3D Athlete Figure & Bobblehead",
+    "3 of 3: Reusable Peel & Stick Vinyl Wall Decal"
+  ];
+
+  slides.forEach((s, i) => {
+    if (i === idx) {
+      s.classList.remove('hidden');
+      s.classList.add('block');
+    } else {
+      s.classList.remove('block');
+      s.classList.add('hidden');
+    }
+  });
+
+  tabs.forEach((t, i) => {
+    if (i === idx) {
+      t.className = 'merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-bold text-[11px] sm:text-xs transition flex items-center gap-1.5 shadow';
+    } else {
+      t.className = 'merch-tab-btn px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800 text-slate-300 hover:text-white font-medium text-[11px] sm:text-xs transition flex items-center gap-1.5 border border-white/5';
+    }
+  });
+
+  dots.forEach((d, i) => {
+    if (i === idx) {
+      d.className = 'merch-dot w-2.5 h-2.5 rounded-full bg-amber-400 transition cursor-pointer';
+    } else {
+      d.className = 'merch-dot w-2 h-2 rounded-full bg-slate-600 hover:bg-slate-500 transition cursor-pointer';
+    }
+  });
+
+  actionPanels.forEach((p, i) => {
+    if (i === idx) {
+      p.classList.remove('hidden');
+      p.classList.add('block');
+    } else {
+      p.classList.remove('block');
+      p.classList.add('hidden');
+    }
+  });
+
+  if (captionEl) captionEl.textContent = titles[idx];
+}
+
+function nextMerchSlide() {
+  setMerchSlide((currentMerchSlide + 1) % 3);
+}
+
+function prevMerchSlide() {
+  setMerchSlide((currentMerchSlide + 2) % 3);
+}
+
 function openCardModal(id) {
+  setMerchSlide(0);
   const a = ATHLETES.find(x => x.id === id);
   if (!a) return;
   currentCardAthlete = a;
@@ -2563,7 +2745,7 @@ function openMerchOrder(type) {
   } else if (type === 'bobblehead') {
     document.getElementById('merch-title').textContent = "CUSTOM 3D PRINTED BOBBLEHEAD";
     document.getElementById('merch-subtitle').textContent = "100% custom-crafted 3D figure from athlete's headshot in official team uniform with collectible display";
-    document.getElementById('merch-icon').innerHTML = '<i class="fa-solid fa-cube text-purple-400"></i>';
+    document.getElementById('merch-icon').innerHTML = '<img src="/assets/ryder_lyons_custom_figure.jpg" class="w-12 h-12 rounded-lg object-cover border border-purple-400 shadow">';
     document.getElementById('merch-price-display').textContent = "$65.00";
     optSelect.innerHTML = `
       <option value="65.00">Custom 3D Printed Bobblehead (7" Figure in Team Jersey + Base) - $65.00</option>

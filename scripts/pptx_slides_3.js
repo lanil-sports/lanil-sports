@@ -137,28 +137,38 @@ function buildSlides3() {
     });
   }
 
-  // SLIDE 9: Custom Wall Decals (Fathead Style)
+  // SLIDE 9: Custom Wall Decals (Fathead Style with Decal Image)
   {
     const s = pptx.addSlide();
     applySlideChrome(s, "Physical Merchandise Engine", "Custom Peel & Stick Vinyl Wall Decals (Fathead Style)");
 
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 0.8, y: 1.4, w: 5.6, h: 5.3, r: 0.15, fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 } });
-    s.addText("VINYL WALL DECAL TECHNOLOGY", { x: 1.1, y: 1.6, w: 5.0, h: 0.35, fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.GOLD_ACCENT });
+    const decalImgPath = path.join(__dirname, '..', 'assets', 'ryder_lyons_wall_decal.jpg');
 
-    const decalFeatures = [
-      { title: "Heavy-Duty Repositionable Vinyl", desc: "Thick 6-mil matte vinyl that peels on and off with zero drywall or locker damage." },
-      { title: "Precision Silhouette Die-Cut", desc: "Automated contour cutting around athlete action silhouettes, school logos, and jersey numbers." },
-      { title: "Fade-Resistant UV Inks", desc: "Vibrant high-contrast pigment inks guaranteed not to fade for 5+ years indoors." },
-      { title: "Locker & Bedroom Ready", desc: "Adheres perfectly to painted drywall, concrete blocks, glass, wood, and metal lockers." }
-    ];
-
-    decalFeatures.forEach((df, i) => {
-      s.addText(`◆  ${df.title}`, { x: 1.1, y: 2.15 + (i * 1.1), w: 5.0, h: 0.3, fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE });
-      s.addText(df.desc, { x: 1.35, y: 2.45 + (i * 1.1), w: 4.75, h: 0.7, fontFace: 'Arial', fontSize: 10, color: COLORS.SLATE_TEXT });
+    // 1. Decal Image Container on Left
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 0.8, y: 1.4, w: 4.9, h: 5.3, r: 0.15,
+      fill: { color: '0B0F19' }, line: { color: COLORS.EMERALD, width: 1.5 }
     });
 
-    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 6.8, y: 1.4, w: 5.7, h: 5.3, r: 0.15, fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 } });
-    s.addText("SIZES, PRICING & MARGINS", { x: 7.1, y: 1.6, w: 5.0, h: 0.35, fontFace: 'Arial', fontSize: 14, bold: true, color: COLORS.CYAN });
+    try {
+      s.addImage({
+        path: decalImgPath,
+        x: 0.9, y: 1.5, w: 4.7, h: 5.1,
+        sizing: { type: 'contain', w: 4.7, h: 5.1 }
+      });
+    } catch (e) {
+      console.error("Decal image add error:", e);
+    }
+
+    // 2. Right Container: Sizing, Technology & Pricing
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 5.9, y: 1.4, w: 6.6, h: 5.3, r: 0.15,
+      fill: { color: COLORS.SLATE_CARD }, line: { color: '334155', width: 1 }
+    });
+    s.addText("REPOSITIONABLE VINYL TECHNOLOGY & SIZING", {
+      x: 6.15, y: 1.55, w: 6.1, h: 0.35,
+      fontFace: 'Arial', fontSize: 13, bold: true, color: COLORS.EMERALD
+    });
 
     const decalSizes = [
       { title: 'Locker Room Decal (18" × 24")', price: '$39.99', desc: 'Custom size designed specifically to fit on standard high school gym and athletic lockers.', margin: '71% Gross Margin' },
@@ -167,11 +177,21 @@ function buildSlides3() {
     ];
 
     decalSizes.forEach((ds, idx) => {
-      s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 7.1, y: 2.1 + (idx * 1.55), w: 5.1, h: 1.4, r: 0.1, fill: { color: '1E293B' }, line: { color: '334155', width: 1 } });
-      s.addText(ds.title, { x: 7.3, y: 2.2 + (idx * 1.55), w: 3.6, h: 0.3, fontFace: 'Arial', fontSize: 11, bold: true, color: COLORS.WHITE });
-      s.addText(ds.price, { x: 10.9, y: 2.2 + (idx * 1.55), w: 1.1, h: 0.3, fontFace: 'Arial', fontSize: 13, bold: true, color: COLORS.GOLD_ACCENT, align: 'right' });
-      s.addText(ds.desc, { x: 7.3, y: 2.55 + (idx * 1.55), w: 4.7, h: 0.5, fontFace: 'Arial', fontSize: 9.5, color: COLORS.SLATE_TEXT });
-      s.addText(ds.margin, { x: 7.3, y: 3.1 + (idx * 1.55), w: 4.7, h: 0.25, fontFace: 'Arial', fontSize: 8.5, bold: true, color: COLORS.EMERALD });
+      s.addShape(pptx.shapes.ROUNDED_RECTANGLE, { x: 6.15, y: 2.05 + (idx * 1.25), w: 6.1, h: 1.12, r: 0.1, fill: { color: '1E293B' }, line: { color: '334155', width: 1 } });
+      s.addText(ds.title, { x: 6.3, y: 2.15 + (idx * 1.25), w: 4.5, h: 0.28, fontFace: 'Arial', fontSize: 10.5, bold: true, color: COLORS.WHITE });
+      s.addText(ds.price, { x: 10.9, y: 2.15 + (idx * 1.25), w: 1.1, h: 0.28, fontFace: 'Arial', fontSize: 12, bold: true, color: COLORS.GOLD_ACCENT, align: 'right' });
+      s.addText(ds.desc, { x: 6.3, y: 2.45 + (idx * 1.25), w: 5.7, h: 0.42, fontFace: 'Arial', fontSize: 9, color: COLORS.SLATE_TEXT });
+      s.addText(ds.margin, { x: 6.3, y: 2.88 + (idx * 1.25), w: 5.7, h: 0.22, fontFace: 'Arial', fontSize: 8, bold: true, color: COLORS.EMERALD });
+    });
+
+    // Technology badge
+    s.addShape(pptx.shapes.ROUNDED_RECTANGLE, {
+      x: 6.15, y: 5.9, w: 6.1, h: 0.65, r: 0.08,
+      fill: { color: '0A231C' }, line: { color: COLORS.EMERALD, width: 1 }
+    });
+    s.addText("🛡️ 100% REPOSITIONABLE: 6-mil low-tack vinyl &bull; Zero paint peeling &bull; Athletic locker safe", {
+      x: 6.25, y: 6.02, w: 5.9, h: 0.4,
+      fontFace: 'Arial', fontSize: 9, bold: true, color: COLORS.EMERALD
     });
   }
 }

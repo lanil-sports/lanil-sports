@@ -7,40 +7,17 @@ module.exports = [
     title: "Custom Peel & Stick Vinyl Wall Decals (Fathead Style)",
     content: `
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full items-center py-2">
-        <div class="lg:col-span-6 glass p-5 rounded-2xl border border-white/10 space-y-4">
-          <div class="flex items-center gap-2 text-amber-400 font-bold text-xs uppercase tracking-wider">
-            <i class="fa-solid fa-layer-group"></i> Precision Die-Cut Vinyl Technology
-          </div>
-          <h3 class="font-athletic text-2xl text-white uppercase tracking-wide">Locker & Bedroom Safe Adhesive Graphics</h3>
-          <p class="text-slate-300 text-xs leading-relaxed">
-            High-grade repositionable wall graphics that stick firmly to gym lockers, painted drywall, concrete blocks, glass, and wood without leaving sticky residue or peeling paint:
-          </p>
-
-          <div class="space-y-3">
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/5">
-              <div class="text-white font-bold text-xs flex items-center gap-1.5">
-                <span class="text-amber-400">◆</span> 6-Mil Heavyweight Low-Tack Vinyl
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Thick, tear-resistant vinyl engineered specifically for repeated peeling, repositioning, and seasonal re-application.</p>
-            </div>
-
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/5">
-              <div class="text-white font-bold text-xs flex items-center gap-1.5">
-                <span class="text-amber-400">◆</span> Precision Contour Silhouette Cut
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">Automated die-cut machinery traces the exact outline of the athlete in mid-action, plus companion logo badges.</p>
-            </div>
-
-            <div class="p-3 bg-slate-900/80 rounded-xl border border-white/5">
-              <div class="text-white font-bold text-xs flex items-center gap-1.5">
-                <span class="text-amber-400">◆</span> 5-Year Fade-Proof UV Inks
-              </div>
-              <p class="text-[11px] text-slate-400 mt-0.5">High-gamut eco-solvent pigment inks resist fluorescent locker-room lighting and direct sunlight.</p>
+        <!-- WALL DECAL MOCKUP IMAGE -->
+        <div class="lg:col-span-5 flex justify-center items-center">
+          <div class="relative group">
+            <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Ryder Lyons Custom Wall Decal" class="max-h-[460px] w-auto rounded-2xl border-2 border-emerald-400/80 shadow-2xl shadow-emerald-500/20 object-contain group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-emerald-400 text-slate-950 font-bold text-[9px] uppercase px-3 py-0.5 rounded-full shadow tracking-wider whitespace-nowrap">
+              ★ 100% Repositionable Vinyl ★
             </div>
           </div>
         </div>
 
-        <div class="lg:col-span-6 space-y-3.5">
+        <div class="lg:col-span-7 space-y-3.5">
           <div class="glass p-4 rounded-xl border border-white/10 flex items-center justify-between hover:border-amber-400/40 transition">
             <div>
               <div class="text-white font-bold text-sm">Locker Room Decal (18" × 24")</div>
@@ -71,9 +48,9 @@ module.exports = [
             <div class="font-athletic text-3xl font-bold text-cyan-400">$69.99</div>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-900 border border-white/5 text-[11px] text-slate-400 flex items-center gap-2">
-            <i class="fa-solid fa-shield-halved text-emerald-400 text-xs"></i>
-            <span>Guaranteed zero wall damage: Approved by high school athletic directors for school lockers.</span>
+          <div class="p-3 rounded-xl bg-slate-900 border border-emerald-400/30 text-[11px] text-slate-300 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-emerald-400 text-sm"></i>
+            <span>Guaranteed zero wall damage: 6-mil low-tack repositionable vinyl safe for painted drywall and athletic lockers.</span>
           </div>
         </div>
       </div>

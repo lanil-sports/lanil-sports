@@ -72,25 +72,28 @@
   </div>
 
   <!-- Main Navigation -->
-  <header class="sticky top-0 z-40 glass border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer" onclick="navigate('directory')">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-athletic text-2xl text-black font-bold shadow-lg shadow-amber-500/20">
+  <header class="sticky top-0 z-40 glass border-b border-white/10 shadow-xl">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="navigate('directory')">
+        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-athletic text-xl sm:text-2xl text-black font-bold shadow-lg shadow-amber-500/20">
           LA
         </div>
         <div>
-          <div class="flex items-center gap-1.5">
-            <span class="font-athletic text-2xl tracking-wider font-bold text-white leading-none inline-flex items-center">LANIL<span class="text-amber-400 text-[16px] font-bold tracking-widest uppercase self-center ml-0.5" style="line-height:1;margin-top:0">SPORTS</span></span>
-            <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">LHSAA</span>
+          <div class="flex items-center gap-1 sm:gap-1.5">
+            <span class="font-athletic text-xl sm:text-2xl tracking-wider font-bold text-white leading-none inline-flex items-center">LANIL<span class="text-amber-400 text-sm sm:text-[16px] font-bold tracking-widest uppercase self-center ml-0.5" style="line-height:1;margin-top:0">SPORTS</span></span>
+            <span class="text-[8px] sm:text-[9px] uppercase px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">LHSAA</span>
           </div>
-          <p class="text-[10px] text-slate-400 -mt-1 tracking-tight">Louisiana Athlete Intelligence & Directory</p>
+          <p class="text-[9px] sm:text-[10px] text-slate-400 -mt-0.5 tracking-tight hidden sm:block">Louisiana Athlete Intelligence & Directory</p>
         </div>
       </div>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <!-- Desktop Navigation (>= md) -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
         <button onclick="navigate('directory')" class="nav-link text-white hover:text-amber-400 transition">Directory</button>
         <button onclick="navigate('rankings')" class="nav-link text-slate-300 hover:text-amber-400 transition">Rankings</button>
         <button onclick="navigate('potw')" class="nav-link text-slate-300 hover:text-amber-400 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-heart text-red-500 text-xs animate-pulse"></i>
           <span>Fan Vote</span>
           <span class="flex h-2 w-2 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -98,70 +101,40 @@
           </span>
         </button>
         <button onclick="navigate('pricing')" class="nav-link text-slate-300 hover:text-amber-400 transition">Pricing & NIL</button>
-        
       </nav>
 
+      <!-- Header Actions: LARGE FAN VOTE WITH HEART & Athlete Portal -->
       <div class="flex items-center gap-2 sm:gap-3">
-        <button onclick="openModal('claim-modal')" class="text-xs sm:text-sm font-bold px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5 shrink-0">
+        <!-- LARGE FAN VOTE BUTTON WITH HEART (Prominently featured in menu header) -->
+        <button onclick="navigate('potw')" class="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-athletic text-base sm:text-2xl font-bold tracking-wider uppercase shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition flex items-center gap-1.5 sm:gap-2 border-2 border-red-400/60 shrink-0 animate-pulse" title="Vote for Louisiana Athlete of the Week">
+          <i class="fa-solid fa-heart text-white text-base sm:text-xl drop-shadow"></i>
+          <span class="leading-none mt-0.5">FAN VOTE</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping hidden sm:inline-block"></span>
+        </button>
+
+        <button onclick="openModal('claim-modal')" class="text-xs sm:text-sm font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5 shrink-0">
           <i class="fa-solid fa-user-check text-xs"></i>
-          <span class="hidden xs:inline">Athlete Portal</span>
-          <span class="xs:hidden">Portal</span>
-        </button>
-        <!-- Mobile Navigation Hamburger Button -->
-        <button type="button" onclick="toggleMobileNav()" id="mobile-nav-toggle" class="md:hidden p-2 rounded-xl bg-slate-800/80 border border-white/10 text-slate-200 hover:text-amber-400 transition flex items-center justify-center w-9 h-9" aria-label="Toggle Navigation Menu">
-          <i class="fa-solid fa-bars text-sm" id="mobile-nav-icon"></i>
+          <span class="hidden sm:inline">Athlete Portal</span>
+          <span class="sm:hidden">Portal</span>
         </button>
       </div>
     </div>
 
-    <!-- Mobile Navigation Drawer / Dropdown -->
-    <div id="mobile-nav-menu" class="hidden md:hidden border-t border-white/10 bg-slate-900/98 backdrop-blur-xl px-4 py-3.5 space-y-3 transition-all duration-300 shadow-2xl">
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="navigate('directory'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
-          <div class="w-8 h-8 rounded-lg bg-amber-400/20 text-amber-300 flex items-center justify-center text-xs shrink-0">
-            <i class="fa-solid fa-users"></i>
-          </div>
-          <div>
-            <span class="block text-xs font-bold text-white">Directory</span>
-            <span class="block text-[10px] text-slate-400">All 64 Parishes</span>
-          </div>
-        </button>
-        <button onclick="navigate('rankings'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
-          <div class="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-300 flex items-center justify-center text-xs shrink-0">
-            <i class="fa-solid fa-trophy"></i>
-          </div>
-          <div>
-            <span class="block text-xs font-bold text-white">Rankings</span>
-            <span class="block text-[10px] text-slate-400">NIL & Recruits</span>
-          </div>
-        </button>
-        <button onclick="navigate('potw'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
-          <div class="w-8 h-8 rounded-lg bg-red-500/20 text-red-300 flex items-center justify-center text-xs shrink-0">
-            <i class="fa-solid fa-fire"></i>
-          </div>
-          <div>
-            <span class="block text-xs font-bold text-white">Fan Vote</span>
-            <span class="block text-[10px] text-red-400 font-semibold">Live Poll</span>
-          </div>
-        </button>
-        <button onclick="navigate('pricing'); closeMobileNav()" class="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-800/70 hover:bg-slate-800 text-left border border-white/5 transition">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-300 flex items-center justify-center text-xs shrink-0">
-            <i class="fa-solid fa-tag"></i>
-          </div>
-          <div>
-            <span class="block text-xs font-bold text-white">Pricing & NIL</span>
-            <span class="block text-[10px] text-slate-400">Plans & Merch</span>
-          </div>
-        </button>
-      </div>
-
-      <div class="pt-2 border-t border-white/10">
-        <button onclick="openCardModal('1'); closeMobileNav()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-400/20 to-yellow-500/20 border border-amber-400/40 text-amber-300 font-bold flex items-center justify-center gap-2 text-xs">
-          <i class="fa-solid fa-id-card"></i>
-          <span>Open Ryder Lyons Share Card</span>
-        </button>
-      </div>
-    </div>
+    <!-- Mobile Sticky Navigation Bar (< md) - ALWAYS VISIBLE ON MOBILE -->
+    <nav class="md:hidden bg-slate-900/98 backdrop-blur-md border-t border-white/10 px-2 py-1.5 flex items-center justify-between gap-1 overflow-x-auto no-scrollbar shadow-inner">
+      <button onclick="navigate('directory')" id="mnav-directory" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-amber-400 text-slate-950 font-bold text-xs shadow flex items-center justify-center gap-1">
+        <i class="fa-solid fa-users text-xs"></i> Directory
+      </button>
+      <button onclick="navigate('rankings')" id="mnav-rankings" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1">
+        <i class="fa-solid fa-trophy text-xs text-purple-400"></i> Rankings
+      </button>
+      <button onclick="navigate('potw')" id="mnav-potw" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1">
+        <i class="fa-solid fa-heart text-xs text-red-500 animate-pulse"></i> Fan Vote
+      </button>
+      <button onclick="navigate('pricing')" id="mnav-pricing" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1">
+        <i class="fa-solid fa-tag text-xs text-emerald-400"></i> Pricing & NIL
+      </button>
+    </nav>
   </header>
 
   <!-- Dynamic Main Content -->
@@ -788,6 +761,8 @@ let filterSport = 'all';
 let filterParish = 'all';
 let searchTerm = '';
 let statSort = 'nil';
+let currentPage = 1;
+const PAGE_SIZE = 25;
 let unlockedAthletes = new Set();
 
 function getAthleteStatValue(a, sortKey) {
@@ -865,6 +840,7 @@ function getAthleteStatValue(a, sortKey) {
 
 function updateStatSort(val) {
   statSort = val;
+  currentPage = 1;
   render();
 }
 
@@ -955,15 +931,30 @@ function closeMobileNav() {
 }
 
 function updateMobileNavActive(view) {
+  // Update Sticky Top Sub-Nav Buttons (< md)
+  const subnavBtns = document.querySelectorAll('.mobile-subnav-btn');
+  subnavBtns.forEach(btn => {
+    if (btn.id === 'mnav-' + view) {
+      if (view === 'potw') {
+        btn.className = 'mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-red-600 text-white font-bold text-xs shadow-md shadow-red-600/30 flex items-center justify-center gap-1';
+      } else {
+        btn.className = 'mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-amber-400 text-slate-950 font-bold text-xs shadow flex items-center justify-center gap-1';
+      }
+    } else {
+      btn.className = 'mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1';
+    }
+  });
+
+  // Update Bottom App Bar Buttons
   const bnavItems = document.querySelectorAll('.mobile-bnav');
   bnavItems.forEach(btn => {
     if (btn.id === 'bnav-' + view) {
       btn.classList.remove('text-slate-400');
-      btn.classList.add('text-amber-400');
+      btn.classList.add(view === 'potw' ? 'text-red-400' : 'text-amber-400');
       const span = btn.querySelector('span');
       if (span) span.className = 'text-[10px] font-bold mt-0.5';
     } else if (btn.id !== 'bnav-card') {
-      btn.classList.remove('text-amber-400');
+      btn.classList.remove('text-amber-400', 'text-red-400');
       btn.classList.add('text-slate-400');
       const span = btn.querySelector('span');
       if (span) span.className = 'text-[10px] font-medium mt-0.5';
@@ -1456,6 +1447,32 @@ function getSportDesign(sport) {
       <path d="M 13 65 C 35 55, 65 55, 87 65" stroke="#2563eb" stroke-width="3" fill="none"/>
     </svg>`
   };
+}
+
+
+function renderPageNumbers(curr, total) {
+  let pages = [];
+  const start = Math.max(1, curr - 2);
+  const end = Math.min(total, curr + 2);
+  for (let p = start; p <= end; p++) {
+    pages.push(`
+      <button onclick="goToPage(${p})" class="w-8 h-8 rounded-lg text-xs font-bold transition flex items-center justify-center ${p === curr ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20' : 'bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border border-white/5'}">
+        ${p}
+      </button>
+    `);
+  }
+  return pages.join('');
+}
+
+function goToPage(page) {
+  currentPage = page;
+  render();
+  const gridEl = document.getElementById('athlete-grid');
+  if (gridEl) {
+    gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    window.scrollTo({ top: 350, behavior: 'smooth' });
+  }
 }
 
 function renderAthleteAvatar(a, extraClasses = '') {
@@ -2967,12 +2984,12 @@ function showToast(msg) {
   }, 4000);
 }
 
-function updateClass(val) { filterClass = val; render(); }
-function updateSport(val) { filterSport = val; render(); }
-function updateParish(val) { filterParish = val; render(); }
-function updateSearch(val) { searchTerm = val; render(); }
-function filterByClass(val) { filterClass = val.toString(); currentView = 'directory'; render(); }
-function filterByParish(val) { filterParish = val; currentView = 'directory'; render(); }
+function updateClass(val) { filterClass = val; currentPage = 1; render(); }
+function updateSport(val) { filterSport = val; currentPage = 1; render(); }
+function updateParish(val) { filterParish = val; currentPage = 1; render(); }
+function updateSearch(val) { searchTerm = val; currentPage = 1; render(); }
+function filterByClass(val) { filterClass = val.toString(); currentView = 'directory'; currentPage = 1; render(); }
+function filterByParish(val) { filterParish = val; currentView = 'directory'; currentPage = 1; render(); }
 
 // Supabase permanently connected
 

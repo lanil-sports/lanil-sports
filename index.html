@@ -797,10 +797,15 @@ const PAGE_SIZE = 25;
 // Front page shows photo-verified athletes only; full roster lives in the Directory.
 let showAllAthletes = false;
 function hasVerifiedPhoto(a) {
-  const h = a && a.headshot_url ? String(a.headshot_url).trim() : '';
+  if (!a) return false;
+  const h = String(a.headshot_url || '').trim();
   if (!h) return false;
-  if (h.includes('unsplash.com') || h.includes('placehold')) return false;
-  return true;
+  const lower = h.toLowerCase();
+  if (lower.includes('unsplash.com') || lower.includes('placehold')) return false;
+  // Exclude school logos/mascots mistakenly stored as athlete headshots.
+  if (lower.includes('/logo') || lower.includes('school_logo') || lower.includes('mascot')) return false;
+  if (/\.(svg)(\?|$)/i.test(lower) && lower.includes('logo')) return false;
+  return /^(https?:\/\/|\/assets\/|data:image\/)/i.test(h);
 }
 function toggleAllAthletes(showAll) {
   showAllAthletes = !!showAll;
@@ -1330,70 +1335,48 @@ const COLLEGE_LOGOS = {
 
 
 function getAthleteCombine(a) {
-  const text = (a.season_stats_summary || '') + ' ' + (a.bio || '');
-  
-  // Weight
-  const weightMatch = text.match(/(\d{3})\s*lbs/i);
-  const weightNum = weightMatch ? parseInt(weightMatch[1]) : 195;
-  
-  // Height
-  const heightMatch = text.match(/(\d'[\s-]*\d{1,2}")/);
-  const height = heightMatch ? heightMatch[1] : (weightNum > 240 ? "6' 4\"" : weightNum > 200 ? "6' 2\"" : "5' 11\"");
+  const text = ((a && (a.season_stats_summary || '')) + ' ' + ((a && a.bio) || '')).trim();
 
-  const pos = (a.position || '').toUpperCase();
-  const sport = (a.primary_sport || 'Football').toLowerCase();
-
-  // Shoe / Cleat size
-  let shoeSize = "11.5";
-  if (weightNum >= 270) shoeSize = "14.5";
-  else if (weightNum >= 240) shoeSize = "13.5";
-  else if (weightNum >= 210) shoeSize = "12.5";
-  else if (weightNum < 160) shoeSize = "10.0";
-
-  // Wingspan & Hands
-  const wingspan = weightNum > 240 ? '80.0\" (6\' 8\")' : weightNum > 200 ? '77.5\" (6\' 5.5\")' : '74.0\" (6\' 2\")';
-  const handSize = weightNum > 240 ? '10.25\"' : weightNum > 200 ? '9.75\"' : '9.25\"';
-
-  // 40-yd laser or speed
-  const fortyMatch = text.match(/4\.\d{2}/);
-  const forty = fortyMatch ? fortyMatch[0] + 's' : (pos.includes('WR') || pos.includes('CB') ? '4.42s' : pos.includes('RB') ? '4.48s' : pos.includes('QB') ? '4.58s' : '4.85s');
-  const vertical = (pos.includes('WR') || pos.includes('CB') || pos.includes('PG')) ? '37.5\"' : (pos.includes('RB') ? '35.0\"' : '32.0\"');
-
-  // Hudl & workout video link
-  const hudlUrl = a.hudl_url || 'https://www.hudl.com/search?q=' + encodeURIComponent(a.full_name + ' ' + a.school_name);
-  const workoutUrl = a.youtube_url || (a.social_handles.instagram ? 'https://instagram.com/' + a.social_handles.instagram.replace('@','') : '#');
-
-  // Sport-specific explosive play stats
-  let explosiveStats = [];
-  if (sport.includes('football')) {
-    const tdMatch = text.match(/(\d+)\s*TD/i);
-    const tds = tdMatch ? tdMatch[1] : (pos.includes('QB') ? '28' : pos.includes('WR') ? '14' : '18');
-    explosiveStats = [
-      { label: 'Touchdowns / Scoring', val: tds + ' TDs', icon: 'fa-trophy', color: 'text-amber-400' },
-      { label: '40-Yard Laser Split', val: forty, icon: 'fa-stopwatch', color: 'text-emerald-400' },
-      { label: 'Vertical Leap', val: vertical, icon: 'fa-arrow-up-right-dots', color: 'text-blue-400' }
-    ];
-  } else if (sport.includes('basketball')) {
-    explosiveStats = [
-      { label: '3-Point Shooting', val: '42.5% 3PT', icon: 'fa-basketball', color: 'text-orange-400' },
-      { label: 'Vertical Leap', val: '38.0\"', icon: 'fa-arrow-up-right-dots', color: 'text-emerald-400' },
-      { label: 'Free Throw Rate', val: '86.4%', icon: 'fa-bullseye', color: 'text-blue-400' }
-    ];
-  } else if (sport.includes('baseball') || sport.includes('softball')) {
-    explosiveStats = [
-      { label: 'Fastball / Arm Velo', val: pos.includes('P') ? '94 MPH' : '88 MPH', icon: 'fa-gauge-high', color: 'text-red-400' },
-      { label: 'Exit Velocity', val: '98.5 MPH', icon: 'fa-baseball-bat-ball', color: 'text-amber-400' },
-      { label: '60-Yard Laser', val: '6.58s', icon: 'fa-stopwatch', color: 'text-emerald-400' }
-    ];
+  let height = '';
+  if (a && a.height != null && String(a.height).trim()) {
+    height = String(a.height).trim();
+  } else if (a && Number(a.height_in) > 0) {
+    const h = Number(a.height_in);
+    height = Math.floor(h / 12) + "'" + (h % 12) + '"';
   } else {
-    explosiveStats = [
-      { label: '100m Personal Record', val: '10.54s', icon: 'fa-person-running', color: 'text-red-400' },
-      { label: 'Speed Index', val: '22.8 MPH', icon: 'fa-gauge-high', color: 'text-amber-400' },
-      { label: 'Regional Finish', val: '1st Place', icon: 'fa-medal', color: 'text-blue-400' }
-    ];
+    const hm = text.match(/\b(\d'\s*\d{1,2}\"?)\b/) || text.match(/\b(\d-\d{1,2})\b/);
+    if (hm) height = hm[1].replace('-', "'").replace(/\s+/g, '');
   }
 
-  return { height, weight: weightNum + ' lbs', shoeSize, wingspan, handSize, forty, vertical, hudlUrl, workoutUrl, explosiveStats };
+  let weight = '';
+  if (a && a.weight != null && String(a.weight).trim()) {
+    weight = String(a.weight).trim();
+  } else if (a && Number(a.weight_lbs) > 0) {
+    weight = Number(a.weight_lbs) + ' lbs';
+  } else {
+    const wm = text.match(/\b(\d{2,3})\s*lbs?\b/i);
+    if (wm) weight = wm[1] + ' lbs';
+  }
+
+  let forty = '';
+  const fm = text.match(/\b(4\.\d{1,2})\s*(s|sec|seconds)?\b/i);
+  if (fm) forty = fm[1] + 's';
+
+  const hudlUrl = (a && a.hudl_url) ? a.hudl_url : '';
+  const workoutUrl = (a && a.youtube_url) ? a.youtube_url : '';
+
+  return {
+    height,
+    weight,
+    forty,
+    hudlUrl,
+    workoutUrl,
+    shoeSize: '',
+    wingspan: '',
+    handSize: '',
+    vertical: '',
+    explosiveStats: []
+  };
 }
 
 function getCollegeLogo(name) {
@@ -1635,171 +1618,61 @@ function renderAthleteAvatar(a, extraClasses = '') {
 
 
 function getAthleteGameLogs(a) {
-  if (a.game_logs && a.game_logs.length > 0) return a.game_logs;
-
-  const sport = (a.primary_sport || 'Football').toLowerCase();
-  const pos = (a.position || 'ATH').toUpperCase();
-  const statsText = a.season_stats_summary || '';
-
-  // Standard 10-game Louisiana high school schedule
-  const schedule = [
-    { week: 1, date: "Sep 04", opp: "vs. Neville Tigers", home: true, res: "W 38-14", win: true },
-    { week: 2, date: "Sep 11", opp: "@ Edna Karr Cougars", home: false, res: "W 28-24", win: true },
-    { week: 3, date: "Sep 18", opp: "vs. Destrehan Wildcats", home: true, res: "W 35-21", win: true },
-    { week: 4, date: "Sep 25", opp: "@ Ruston Bearcats", home: false, res: "W 31-28", win: true },
-    { week: 5, date: "Oct 02", opp: "vs. Catholic-B.R. Bears", home: true, res: "L 24-27", win: false },
-    { week: 6, date: "Oct 09", opp: "@ West Monroe Rebels", home: false, res: "W 42-10", win: true },
-    { week: 7, date: "Oct 16", opp: "vs. St. Thomas More Cougars", home: true, res: "W 34-17", win: true },
-    { week: 8, date: "Oct 23", opp: "@ Barbe Buccaneers", home: false, res: "W 45-7", win: true },
-    { week: 9, date: "Oct 30", opp: "vs. Zachary Broncos", home: true, res: "W 27-20", win: true },
-    { week: 10, date: "Nov 06", opp: "@ University Lab Cubs", home: false, res: "W 41-14", win: true }
-  ];
-
-  if (sport.includes('football')) {
-    if (pos.includes('QB')) {
-      const passYdsMatch = statsText.match(/([\d,]+)\s*(?:pass\s*yds|passing\s*yds)/i);
-      const totalYds = passYdsMatch ? parseInt(passYdsMatch[1].replace(/,/g, '')) : 2400;
-      const tdMatch = statsText.match(/(\d+)\s*TD/i);
-      const totalTds = tdMatch ? parseInt(tdMatch[1]) : 24;
-
-      return schedule.map((g, i) => {
-        const factor = [1.1, 0.9, 1.2, 1.0, 0.8, 1.3, 0.95, 1.15, 0.85, 1.05][i];
-        const yds = Math.round((totalYds / 10) * factor);
-        const tds = Math.max(1, Math.round((totalTds / 10) * factor));
-        const att = Math.round(22 + (i % 6));
-        const cmp = Math.round(att * (0.62 + (i % 5) * 0.03));
-        const ints = i === 4 ? 2 : (i === 1 || i === 8 ? 1 : 0);
-        const qbr = Math.round(102 + (yds / 25) + (tds * 8) - (ints * 12));
-        return {
-          ...g,
-          c1: `${cmp}/${att}`,
-          c2: yds,
-          c3: Math.round((cmp / att) * 100) + '%',
-          c4: tds,
-          c5: ints,
-          c6: Math.min(148, Math.max(88, qbr))
-        };
-      });
-    }
-
-    if (pos.includes('RB')) {
-      const rushYdsMatch = statsText.match(/([\d,]+)\s*(?:rush\s*yds|rushing\s*yds)/i);
-      const totalYds = rushYdsMatch ? parseInt(rushYdsMatch[1].replace(/,/g, '')) : 1600;
-      const tdMatch = statsText.match(/(\d+)\s*TD/i);
-      const totalTds = tdMatch ? parseInt(tdMatch[1]) : 18;
-
-      return schedule.map((g, i) => {
-        const factor = [1.0, 1.15, 0.85, 1.25, 0.75, 1.3, 0.9, 1.2, 0.8, 1.1][i];
-        const yds = Math.round((totalYds / 10) * factor);
-        const att = Math.round(16 + (i % 7));
-        const tds = Math.max(1, Math.round((totalTds / 10) * factor));
-        const avg = (yds / att).toFixed(1);
-        const long = Math.min(85, Math.round(24 + (yds / 8)));
-        return {
-          ...g,
-          c1: att,
-          c2: yds,
-          c3: avg,
-          c4: tds,
-          c5: long,
-          c6: Math.round(yds * 1.15)
-        };
-      });
-    }
-
-    // Default WR / Receiving
-    const recYdsMatch = statsText.match(/([\d,]+)\s*(?:rec(?:eiving)?\s*yds)/i);
-    const totalYds = recYdsMatch ? parseInt(recYdsMatch[1].replace(/,/g, '')) : 1100;
-    const tdMatch = statsText.match(/(\d+)\s*TD/i);
-    const totalTds = tdMatch ? parseInt(tdMatch[1]) : 12;
-
-    return schedule.map((g, i) => {
-      const factor = [1.05, 0.9, 1.25, 1.1, 0.75, 1.35, 0.85, 1.15, 0.95, 1.0][i];
-      const yds = Math.round((totalYds / 10) * factor);
-      const rec = Math.max(3, Math.round(6 * factor));
-      const tds = i % 3 === 0 ? 2 : (i % 2 === 0 ? 1 : 0);
-      const avg = (yds / rec).toFixed(1);
-      const long = Math.min(78, Math.round(22 + (yds / 6)));
-      return {
-        ...g,
-        c1: rec,
-        c2: yds,
-        c3: avg,
-        c4: tds,
-        c5: long,
-        c6: Math.round(rec * 1.4)
-      };
-    });
-  }
-
-  // Basketball
-  if (sport.includes('basketball')) {
-    const ptsMatch = statsText.match(/([\d.]+)\s*PPG/i);
-    const avgPts = ptsMatch ? parseFloat(ptsMatch[1]) : 18.5;
-
-    return schedule.map((g, i) => {
-      const factor = [1.1, 0.95, 1.2, 0.85, 1.0, 1.3, 0.9, 1.15, 0.8, 1.05][i];
-      const pts = Math.round(avgPts * factor);
-      const reb = Math.round(5 + (i % 5));
-      const ast = Math.round(4 + (i % 4));
-      const stl = Math.round(1 + (i % 3));
-      const fgPct = (48 + (i % 7) * 2) + '%';
-      return {
-        ...g,
-        c1: pts,
-        c2: reb,
-        c3: ast,
-        c4: stl,
-        c5: fgPct,
-        c6: Math.round(pts + reb + ast)
-      };
-    });
-  }
-
-  // Baseball / Softball
-  return schedule.map((g, i) => {
-    const ab = 3 + (i % 2);
-    const h = Math.min(ab, Math.max(1, Math.round(ab * 0.4)));
-    const rbi = i % 2 === 0 ? 2 : 1;
-    const hr = i === 3 || i === 7 ? 1 : 0;
-    const runs = Math.max(1, Math.round(h * 0.8));
-    return {
-      ...g,
-      c1: ab,
-      c2: runs,
-      c3: h,
-      c4: hr,
-      c5: rbi,
-      c6: '.' + Math.round((h / ab) * 1000)
-    };
-  });
+  if (!a) return [];
+  if (Array.isArray(a.game_logs) && a.game_logs.length > 0) return a.game_logs;
+  if (Array.isArray(a.box_scores) && a.box_scores.length > 0) return a.box_scores;
+  return [];
 }
 
 function renderGameLogTable(a) {
-  const sport = (a.primary_sport || 'Football').toLowerCase();
-  const pos = (a.position || 'ATH').toUpperCase();
   const logs = getAthleteGameLogs(a);
-
-  let headers = ['Cmp/Att', 'Pass Yds', 'Cmp%', 'TD', 'Int', 'QBR'];
-  if (sport.includes('football')) {
-    if (pos.includes('RB')) headers = ['Carries', 'Rush Yds', 'YPC Avg', 'TD', 'Long', 'All-Purp'];
-    else if (!pos.includes('QB')) headers = ['Receptions', 'Rec Yds', 'Avg/Rec', 'TD', 'Long', 'Targets'];
-  } else if (sport.includes('basketball')) {
-    headers = ['Points', 'Rebounds', 'Assists', 'Steals', 'FG%', 'PRA'];
-  } else if (sport.includes('baseball') || sport.includes('softball')) {
-    headers = ['AB', 'Runs', 'Hits', 'HR', 'RBI', 'Batting AVG'];
+  if (!logs.length) {
+    const summary = (a && a.season_stats_summary) ? String(a.season_stats_summary).trim() : '';
+    return `
+    <div class="mt-4 bg-slate-900/60 rounded-xl border border-white/10 overflow-hidden">
+      <div class="px-4 py-3 bg-slate-800/60 border-b border-white/5 flex items-center gap-2">
+        <i class="fa-solid fa-calendar-days text-amber-400 text-xs"></i>
+        <h5 class="text-xs font-bold uppercase tracking-wider text-white">Game-by-Game Box Scores</h5>
+      </div>
+      <div class="px-4 py-4 text-xs text-slate-400 space-y-2">
+        <p>No verified game-by-game box scores are on file for <span class="text-slate-200 font-semibold">${(a && a.full_name) || 'this athlete'}</span> yet.</p>
+        ${summary ? `<p class="text-slate-300"><span class="text-amber-300 font-semibold">Season summary:</span> ${summary}</p>` : `<p class="text-slate-500">Season totals/notes will appear here when reported and verified for this athlete.</p>`}
+      </div>
+    </div>`;
   }
+
+  const sport = String((a && a.primary_sport) || '').toLowerCase();
+  const pos = String((a && a.position) || 'ATH').toUpperCase();
+
+  let headers = ['Stat 1', 'Stat 2', 'Stat 3', 'Stat 4', 'Stat 5', 'Stat 6'];
+  if (sport.includes('football')) {
+    if (pos.includes('QB')) headers = ['Cmp/Att', 'Pass Yds', 'Cmp%', 'TD', 'Int', 'QBR'];
+    else if (pos.includes('RB')) headers = ['Carries', 'Rush Yds', 'YPC', 'TD', 'Long', 'All-Purp'];
+    else headers = ['Rec', 'Rec Yds', 'Avg', 'TD', 'Long', 'Targets'];
+  } else if (sport.includes('basketball')) {
+    headers = ['PTS', 'REB', 'AST', 'STL', 'FG%', 'PRA'];
+  } else if (sport.includes('baseball') || sport.includes('softball')) {
+    headers = ['AB', 'R', 'H', 'HR', 'RBI', 'AVG'];
+  }
+
+  const rows = logs.map(g => {
+    const date = g.date || g.game_date || '';
+    const opp = g.opp || g.opponent || g.matchup || '';
+    const res = g.res || g.result || '';
+    const win = g.win === true || /^W/i.test(String(res));
+    const vals = [g.c1,g.c2,g.c3,g.c4,g.c5,g.c6].map(v => (v === undefined || v === null || v === '') ? '—' : v);
+    return { date, opp, res, win, vals };
+  });
 
   return `
     <div class="mt-4 bg-slate-900/90 rounded-xl border border-white/10 overflow-hidden shadow-lg">
       <div class="px-4 py-3 bg-slate-800/80 border-b border-white/5 flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-calendar-days text-amber-400 text-xs"></i>
-          <h5 class="text-xs font-bold uppercase tracking-wider text-white">2026 Game-by-Game Box Scores</h5>
+          <h5 class="text-xs font-bold uppercase tracking-wider text-white">Verified Game-by-Game Box Scores</h5>
         </div>
-        <span class="text-[10px] text-slate-400 font-semibold">10-Game Varsity Regular Season</span>
+        <span class="text-[10px] text-slate-400 font-semibold">${rows.length} game${rows.length===1?'':'s'}</span>
       </div>
-
       <div class="overflow-x-auto">
         <table class="w-full text-left text-xs whitespace-nowrap">
           <thead>
@@ -1811,29 +1684,19 @@ function renderGameLogTable(a) {
             </tr>
           </thead>
           <tbody class="divide-y divide-white/5 text-slate-300">
-            ${logs.map((g, idx) => `
+            ${rows.map(g => `
               <tr class="hover:bg-slate-800/40 transition">
-                <td class="py-2 px-3 text-slate-400 font-mono text-[11px]">${g.date}</td>
-                <td class="py-2 px-3 font-medium text-white">${g.opp}</td>
-                <td class="py-2 px-3">
-                  <span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${g.win ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-300 border border-rose-500/30'}">
-                    ${g.res}
-                  </span>
-                </td>
-                <td class="py-2 px-3 text-right font-mono text-slate-200">${g.c1}</td>
-                <td class="py-2 px-3 text-right font-mono font-bold text-amber-400">${g.c2}</td>
-                <td class="py-2 px-3 text-right font-mono text-slate-300">${g.c3}</td>
-                <td class="py-2 px-3 text-right font-mono font-bold text-white">${g.c4}</td>
-                <td class="py-2 px-3 text-right font-mono text-slate-400">${g.c5}</td>
-                <td class="py-2 px-3 text-right font-mono text-slate-300">${g.c6}</td>
-              </tr>
-            `).join('')}
+                <td class="py-2 px-3 text-slate-400 font-mono text-[11px]">${g.date || '—'}</td>
+                <td class="py-2 px-3 font-medium text-white">${g.opp || '—'}</td>
+                <td class="py-2 px-3">${g.res ? `<span class="px-1.5 py-0.5 rounded text-[10px] font-bold ${g.win ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/30' : 'bg-rose-500/10 text-rose-300 border border-rose-500/30'}">${g.res}</span>` : '—'}</td>
+                ${g.vals.map((v,i) => `<td class="py-2 px-3 text-right font-mono ${i===1||i===3?'font-bold text-amber-400':'text-slate-300'}">${v}</td>`).join('')}
+              </tr>`).join('')}
           </tbody>
         </table>
       </div>
-    </div>
-  `;
+    </div>`;
 }
+
 
 function renderAthleteCard(a) {
   return `
@@ -2067,64 +1930,42 @@ function openAthleteDetail(id) {
                 </div>
               </div>
 
-              <!-- Combine & Physical Measurables (Shoe Size, Wingspan, Hands, Laser Speed) -->
-              
-              <!-- Physical Measurements & Combine Testing -->
+              <!-- Physical Measurements & Film Links -->
               <div class="bg-slate-900/80 rounded-xl p-4 border border-white/5 space-y-3">
                 <div class="flex items-center justify-between">
                   <h5 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                     <i class="fa-solid fa-ruler-combined text-[11px]"></i>
-                    <span>Verified Physical Measurements & Combine Metrics</span>
+                    <span>Physical Measurements & Film</span>
                   </h5>
-                  <span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded font-bold">
-                    Official Scouting Grade
-                  </span>
                 </div>
 
                 ${(() => {
                   const cm = getAthleteCombine(a);
+                  const hasHw = !!(cm.height || cm.weight);
+                  const hasForty = !!cm.forty;
+                  const hasLinks = !!(cm.hudlUrl || cm.workoutUrl);
+                  if (!hasHw && !hasForty && !hasLinks) {
+                    return `<p class="text-xs text-slate-400">No verified physical measurements or combine metrics are on file for this athlete yet.</p>`;
+                  }
                   return `
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
-                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
-                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Height & Weight</span>
-                        <span class="font-bold text-white text-xs sm:text-sm">${cm.height} &bull; ${cm.weight}</span>
-                      </div>
-                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
-                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Shoe / Cleat Size</span>
-                        <span class="font-bold text-amber-300 text-xs sm:text-sm">Men's ${cm.shoeSize}</span>
-                      </div>
-                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
-                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Wingspan</span>
-                        <span class="font-bold text-white text-xs sm:text-sm">${cm.wingspan}</span>
-                      </div>
-                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
-                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Hand Size</span>
-                        <span class="font-bold text-white text-xs sm:text-sm">${cm.handSize}</span>
-                      </div>
-                    </div>
-
-                    <!-- Explosive Plays & Performance Metrics -->
+                    ${(hasHw || hasForty) ? `
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-                      ${cm.explosiveStats.map(s => `
-                        <div class="bg-slate-800/40 rounded-lg p-2.5 border border-white/5 flex items-center justify-between">
-                          <div>
-                            <span class="text-[9px] text-slate-400 uppercase font-bold block">${s.label}</span>
-                            <span class="font-bold ${s.color} text-sm">${s.val}</span>
-                          </div>
-                          <i class="fa-solid ${s.icon} text-base opacity-40"></i>
-                        </div>
-                      `).join('')}
-                    </div>
-
-                    <!-- Game Film & Workout Tape Reels -->
+                      ${hasHw ? `
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Height &amp; Weight</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${cm.height || '—'}${cm.height && cm.weight ? ' &bull; ' : ''}${cm.weight || ''}</span>
+                      </div>` : ''}
+                      ${hasForty ? `
+                      <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
+                        <span class="text-[9px] text-slate-400 uppercase font-bold block">Reported 40-Yard</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${cm.forty}</span>
+                      </div>` : ''}
+                    </div>` : ''}
+                    ${hasLinks ? `
                     <div class="pt-2 flex flex-wrap items-center gap-2">
-                      <a href="${cm.hudlUrl}" target="_blank" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition">
-                        <i class="fa-solid fa-play text-[10px]"></i> Watch Game Film
-                      </a>
-                      <a href="${cm.workoutUrl}" target="_blank" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition">
-                        <i class="fa-solid fa-dumbbell text-[10px] text-amber-400"></i> Workout & Agility Reel
-                      </a>
-                    </div>
+                      ${cm.hudlUrl ? `<a href="${cm.hudlUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition"><i class="fa-solid fa-play text-[10px]"></i> Watch Game Film</a>` : ''}
+                      ${cm.workoutUrl ? `<a href="${cm.workoutUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 min-w-[140px] py-2 px-3 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs flex items-center justify-center gap-2 border border-white/10 transition"><i class="fa-solid fa-dumbbell text-[10px] text-amber-400"></i> Workout / Highlight Reel</a>` : ''}
+                    </div>` : ''}
                   `;
                 })()}
               </div>

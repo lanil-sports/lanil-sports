@@ -1082,10 +1082,8 @@ function renderDirectory() {
     return true;
   });
 
-  // --- Front page vs. Directory split -------------------------------------
-  // Default front page = athletes with a verified photo. The Directory shows
-  // every athlete (photo or not) once any filter/search is used or the user
-  // taps "Browse full directory".
+  // --- Directory listing -------------------------------------
+  // Site shows only athletes with verified/actual player photos.
   const noActiveFilters = !searchTerm && filterClass === 'all' && filterSport === 'all' && filterParish === 'all';
   const photoMatches = filtered.filter(hasVerifiedPhoto);
   const landingMode = !showAllAthletes && noActiveFilters && photoMatches.length > 0;
@@ -1097,15 +1095,13 @@ function renderDirectory() {
     while (i > 0 && suffixes.has(parts[i].toLowerCase())) i--;
     return (parts[i] || parts[parts.length - 1] || '').toLowerCase();
   }
-  const baseList = landingMode
-    ? [...photoMatches].sort((a, b) => {
-        const la = getLastNameSortKey(a.full_name);
-        const lb = getLastNameSortKey(b.full_name);
-        const cmp = la.localeCompare(lb, undefined, { sensitivity: 'base' });
-        if (cmp !== 0) return cmp;
-        return String(a.full_name || '').localeCompare(String(b.full_name || ''), undefined, { sensitivity: 'base' });
-      })
-    : filtered;
+  const baseList = [...photoMatches].sort((a, b) => {
+    const la = getLastNameSortKey(a.full_name);
+    const lb = getLastNameSortKey(b.full_name);
+    const cmp = la.localeCompare(lb, undefined, { sensitivity: 'base' });
+    if (cmp !== 0) return cmp;
+    return String(a.full_name || '').localeCompare(String(b.full_name || ''), undefined, { sensitivity: 'base' });
+  });
   const totalCount = baseList.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;
@@ -1256,7 +1252,7 @@ function renderDirectory() {
         </div>
 
         <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> ${landingMode ? 'photo-verified ' : ''}Louisiana athlete records</span>
+        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> Louisiana athletes with verified player photos</span>
         <div class="flex items-center gap-3">
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Verified</span>
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Claimed</span>
@@ -1264,26 +1260,12 @@ function renderDirectory() {
       </div>
     </div>
 
-    ${landingMode ? `
     <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
       <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
         <i class="fa-solid fa-camera-retro text-amber-400 mr-1"></i>
-        Front page shows <strong class="text-white">${totalCount}</strong> athletes with verified photos.
-        <span class="text-slate-400">Full roster: <strong class="text-white">${filtered.length}</strong> athletes.</span>
+        Showing <strong class="text-white">${totalCount}</strong> athletes with verified player photos${noActiveFilters ? '' : ' matching your filters'}.
       </p>
-      <button onclick="toggleAllAthletes(true)" class="shrink-0 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider hover:bg-amber-300 transition">
-        Browse full directory <i class="fa-solid fa-arrow-right ml-1"></i>
-      </button>
-    </div>` : (noActiveFilters && showAllAthletes ? `
-    <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-      <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
-        <i class="fa-solid fa-list text-amber-400 mr-1"></i>
-        Directory: <strong class="text-white">${filtered.length}</strong> athletes (photos, stats and rosters).
-      </p>
-      <button onclick="toggleAllAthletes(false)" class="shrink-0 px-4 py-2 rounded-xl bg-slate-800 border border-white/10 text-white text-xs font-extrabold uppercase tracking-wider hover:bg-slate-700 transition">
-        Photo spotlight
-      </button>
-    </div>` : '')}
+    </div>
 
     <div id="athlete-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       ${visible.length ? visible.map(athlete => renderAthleteCard(athlete)).join('') : `

@@ -1,0 +1,210 @@
+{
+  "ran_at": "2026-11-20T20:10:03.748Z",
+  "athletes": 5912,
+  "schools_before": 126,
+  "schools_inserted": 180,
+  "athletes_linked": 1484,
+  "link_failures": 0,
+  "inserted_schools": [
+    {
+      "id": "lafayette-2",
+      "name": "Lafayette",
+      "athletes": 11
+    },
+    {
+      "id": "isidore-newman",
+      "name": "Isidore Newman",
+      "athletes": 18
+    },
+    {
+      "id": "slidell",
+      "name": "Slidell",
+      "athletes": 9
+    },
+    {
+      "id": "albany",
+      "name": "Albany",
+      "athletes": 2
+    },
+    {
+      "id": "st-martinville",
+      "name": "St. Martinville",
+      "athletes": 6
+    },
+    {
+      "id": "mcdonogh-35",
+      "name": "McDonogh #35",
+      "athletes": 4
+    },
+    {
+      "id": "warren-easton-2",
+      "name": "Warren Easton",
+      "athletes": 11
+    },
+    {
+      "id": "st-james",
+      "name": "St. James",
+      "athletes": 9
+    },
+    {
+      "id": "st-amant",
+      "name": "St. Amant",
+      "athletes": 8
+    },
+    {
+      "id": "north-iberville",
+      "name": "North Iberville",
+      "athletes": 1
+    },
+    {
+      "id": "the-willow-school",
+      "name": "The Willow School",
+      "athletes": 5
+    },
+    {
+      "id": "st-thomas-more-2",
+      "name": "St. Thomas More",
+      "athletes": 21
+    },
+    {
+      "id": "jesuit",
+      "name": "Jesuit",
+      "athletes": 23
+    },
+    {
+      "id": "zachary",
+      "name": "Zachary",
+      "athletes": 34
+    },
+    {
+      "id": "sterlington",
+      "name": "Sterlington",
+      "athletes": 13
+    },
+    {
+      "id": "southern-lab",
+      "name": "Southern Lab",
+      "athletes": 15
+    },
+    {
+      "id": "green-oaks",
+      "name": "Green Oaks",
+      "athletes": 2
+    },
+    {
+      "id": "parkway",
+      "name": "Parkway",
+      "athletes": 12
+    },
+    {
+      "id": "west-monroe-2",
+      "name": "West Monroe",
+      "athletes": 18
+    },
+    {
+      "id": "st-frederick",
+      "name": "St. Frederick",
+      "athletes": 6
+    },
+    {
+      "id": "ascension-episcopal",
+      "name": "Ascension Episcopal",
+      "athletes": 10
+    },
+    {
+      "id": "quitman",
+      "name": "Quitman",
+      "athletes": 4
+    },
+    {
+      "id": "parkview-baptist",
+      "name": "Parkview Baptist",
+      "athletes": 23
+    },
+    {
+      "id": "rosepine",
+      "name": "Rosepine",
+      "athletes": 4
+    },
+    {
+      "id": "west-ouachita",
+      "name": "West Ouachita",
+      "athletes": 2
+    },
+    {
+      "id": "st-louis-catholic",
+      "name": "St. Louis Catholic",
+      "athletes": 8
+    },
+    {
+      "id": "huntington",
+      "name": "Huntington",
+      "athletes": 7
+    },
+    {
+      "id": "evans",
+      "name": "Evans",
+      "athletes": 1
+    },
+    {
+      "id": "sam-houston",
+      "name": "Sam Houston",
+      "athletes": 13
+    },
+    {
+      "id": "reeves",
+      "name": "Reeves",
+      "athletes": 1
+    },
+    {
+      "id": "caddo-magnet",
+      "name": "Caddo Magnet",
+      "athletes": 3
+    },
+    {
+      "id": "iota",
+      "name": "Iota",
+      "athletes": 2
+    },
+    {
+      "id": "central-catholic",
+      "name": "Central Catholic",
+      "athletes": 4
+    },
+    {
+      "id": "lafayette-renaissance-charter-academy",
+      "name": "Lafayette Renaissance Charter Academy",
+      "athletes": 2
+    },
+    {
+      "id": "vandebilt-catholic",
+      "name": "Vandebilt Catholic",
+      "athletes": 14
+    },
+    {
+      "id": "thibodaux",
+      "name": "Thibodaux",
+      "athletes": 8
+    },
+    {
+      "id": "sulphur",
+      "name": "Sulphur",
+      "athletes": 6
+    },
+    {
+      "id": "lacassine",
+      "name": "Lacassine",
+      "athletes": 1
+    },
+    {
+      "id": "st-joseph-s-academy",
+      "name": "St. Joseph's Academy",
+      "athletes": 9
+    },
+    {
+      "id": "lutcher",
+      "name": "Lutcher",
+      "athletes": 8
+    }
+  ]
+}

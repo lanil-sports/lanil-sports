@@ -1,0 +1,25 @@
+{
+  "run_id": "run-1795203457697",
+  "started_at": "2026-11-20T19:37:37.698Z",
+  "sources": [
+    {
+      "file": "d1_athletes.json",
+      "source": "d1_athletes.json artifact",
+      "count": 1547
+    },
+    {
+      "file": "lhsaa_athletes.json",
+      "source": "window.LHSAA_ATHLETE_DATA artifact",
+      "count": 1547
+    }
+  ],
+  "discovered": 1547,
+  "inserted": 0,
+  "updated": 1547,
+  "verified": 0,
+  "verification_failed": 0,
+  "insert_failed": 0,
+  "update_failed": 0,
+  "ended_at": "2026-11-20T19:40:29.460Z",
+  "events": 1547
+}

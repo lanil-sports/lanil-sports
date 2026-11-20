@@ -26,9 +26,15 @@ const lib = require("./ingest_lib");
 
 const MAXPREPS_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-// Debug: surface uncaught exceptions loudly (redirects here via -File stderr too).
-process.on("uncaughtException", (e) => { console.error("UNCAUGHT:", e.stack || e); });
-process.on("unhandledRejection", (e) => { console.error("UNHANDLED:", e && (e.stack || e.message) || e); });
+// Surface unexpected failures instead of dying silently (long unattended runs).
+process.on("uncaughtException", (e) => {
+  console.error("UNCAUGHT:", e && (e.stack || e.message) || e);
+  process.exitCode = 1;
+});
+process.on("unhandledRejection", (e) => {
+  console.error("UNHANDLED:", e && (e.stack || e.message) || e);
+  process.exitCode = 1;
+});
 
 const MAXPREPS_LA_INDEX = "https://www.maxpreps.com/la/schools/";
 const SOURCE = "MaxPreps";
@@ -277,13 +283,18 @@ async function run(opts) {
   const existing = await lib.fetchExistingAthletes();
   const snap = lib.pickExistingRows(existing);
 
-  // Dev convenience: cap the number of schools processed (env MP_MAX_SCHOOLS).
+  // Dev convenience: cap the number of schools processed (env MP_MAX_SCHOOLS,
+  // MP_SCHOOL_OFFSET). Useful for staged validation runs.
   let schoolsToProcess = schools;
+  const offset = parseInt(process.env.MP_SCHOOL_OFFSET || "0", 10) || 0;
+  if (offset > 0) {
+    schoolsToProcess = schools.slice(offset);
+  }
   if (process.env.MP_MAX_SCHOOLS) {
     const max = parseInt(process.env.MP_MAX_SCHOOLS, 10);
     if (Number.isFinite(max) && max > 0) {
-      schoolsToProcess = schools.slice(0, max);
-      lib.logLine(`MP_MAX_SCHOOLS=${max}: processing ${max} schools (dry-run validation).`);
+      schoolsToProcess = schools.slice(offset, offset + max);
+      lib.logLine(`MP_MAX_SCHOOLS=${max}: processing ${schoolsToProcess.length} schools [${offset}..${offset + max}) (dry-run validation).`);
     }
   }
 
@@ -305,9 +316,12 @@ async function run(opts) {
         const url = `${school.canonicalUrl}${sportSlug}/roster/`;
         let html = null;
         try {
-          lib.logLine(`  [fetch] ${school.name} ${sportSlug} (${new Date().toISOString()})`);
           html = await lib.fetchText(url, { headers: { "User-Agent": MAXPREPS_UA } });
-        } catch (e) { lib.logLine(`  [fetch-fail] ${school.name} ${sportSlug}: ${e.message.substring(0, 80)} (${new Date().toISOString()})`); }
+        } catch (e) {
+          fetchFailures++;
+          lib.logLine(`  [fetch-fail] ${school.name} ${sportSlug}: ${String(e.message).substring(0, 80)}`);
+          continue;
+        }
         if (!html) { fetchFailures++; continue; }
 
         const { rows, count } = parseRosterHtml(html, { ...schoolRow, name: school.name, city: school.city }, sportSlug);
@@ -329,7 +343,7 @@ async function run(opts) {
   // Aggregate sport totals for reporting.
   const sportBreakdown = {};
   // totals has per-source-per-sport buckets: recompute from bySource summary.
-  const entries = Object.entries(totals._bySource).filter(([s]) => s === SOURCE || s.startsWith(`${SOURCE} / `));
+  const entries = Object.entries(totals._bySource).filter(([s]) => s.startsWith(`${SOURCE} / `));
   for (const [source, bucket] of entries) {
     const sportName = source.replace(`${SOURCE} / `, "");
     for (const outcome of ["new", "updated", "skipped", "rejected"]) {
@@ -339,7 +353,7 @@ async function run(opts) {
       }
     }
   }
-  lib.logLine(`Fetched ${fetchedAthletes} roster entries across ${schools.length} LA schools; roster page failures: ${fetchFailures}`);
+  lib.logLine(`Fetched ${fetchedAthletes} roster entries across ${schoolsToProcess.length} LA schools; roster page failures: ${fetchFailures}`);
   lib.logLine(`Per sport: ${JSON.stringify(sportBreakdown)}`);
 
   return {

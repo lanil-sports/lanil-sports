@@ -794,6 +794,21 @@ let searchTerm = '';
 let statSort = 'nil';
 let currentPage = 1;
 const PAGE_SIZE = 25;
+// Front page shows photo-verified athletes only; full roster lives in the Directory.
+let showAllAthletes = false;
+function hasVerifiedPhoto(a) {
+  const h = a && a.headshot_url ? String(a.headshot_url).trim() : '';
+  if (!h) return false;
+  if (h.includes('unsplash.com') || h.includes('placehold')) return false;
+  return true;
+}
+function toggleAllAthletes(showAll) {
+  showAllAthletes = !!showAll;
+  currentPage = 1;
+  render();
+  const gridEl = document.getElementById('athlete-grid');
+  if (gridEl) gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 let unlockedAthletes = new Set();
 
 function getAthleteStatValue(a, sortKey) {
@@ -1062,6 +1077,21 @@ function renderDirectory() {
     return true;
   });
 
+  // --- Front page vs. Directory split -------------------------------------
+  // Default front page = athletes with a verified photo. The Directory shows
+  // every athlete (photo or not) once any filter/search is used or the user
+  // taps "Browse full directory".
+  const noActiveFilters = !searchTerm && filterClass === 'all' && filterSport === 'all' && filterParish === 'all';
+  const photoMatches = filtered.filter(hasVerifiedPhoto);
+  const landingMode = !showAllAthletes && noActiveFilters && photoMatches.length > 0;
+  const baseList = landingMode ? photoMatches : filtered;
+  const totalCount = baseList.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  if (currentPage > totalPages) currentPage = totalPages;
+  if (currentPage < 1) currentPage = 1;
+  const pageStart = (currentPage - 1) * PAGE_SIZE;
+  const visible = baseList.slice(pageStart, pageStart + PAGE_SIZE);
+
   return `
     <div class="mb-10 text-center relative py-4">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
@@ -1205,7 +1235,7 @@ function renderDirectory() {
         </div>
 
         <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-        <span>Showing <strong class="text-white">${filtered.length}</strong> Louisiana athlete records</span>
+        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> ${landingMode ? 'photo-verified ' : ''}Louisiana athlete records</span>
         <div class="flex items-center gap-3">
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Verified</span>
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Claimed</span>
@@ -1213,9 +1243,41 @@ function renderDirectory() {
       </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      ${filtered.map(athlete => renderAthleteCard(athlete)).join('')}
+    ${landingMode ? `
+    <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
+      <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
+        <i class="fa-solid fa-camera-retro text-amber-400 mr-1"></i>
+        Front page shows <strong class="text-white">${totalCount}</strong> athletes with verified photos.
+        <span class="text-slate-400">Full roster: <strong class="text-white">${filtered.length}</strong> athletes.</span>
+      </p>
+      <button onclick="toggleAllAthletes(true)" class="shrink-0 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider hover:bg-amber-300 transition">
+        Browse full directory <i class="fa-solid fa-arrow-right ml-1"></i>
+      </button>
+    </div>` : (noActiveFilters && showAllAthletes ? `
+    <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+      <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
+        <i class="fa-solid fa-list text-amber-400 mr-1"></i>
+        Directory: <strong class="text-white">${filtered.length}</strong> athletes (photos, stats and rosters).
+      </p>
+      <button onclick="toggleAllAthletes(false)" class="shrink-0 px-4 py-2 rounded-xl bg-slate-800 border border-white/10 text-white text-xs font-extrabold uppercase tracking-wider hover:bg-slate-700 transition">
+        Photo spotlight
+      </button>
+    </div>` : '')}
+
+    <div id="athlete-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      ${visible.length ? visible.map(athlete => renderAthleteCard(athlete)).join('') : `
+        <div class="col-span-full rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
+          <p class="text-slate-300 text-sm">No athletes match these filters.</p>
+          <button onclick="toggleAllAthletes(true)" class="mt-4 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">Open full directory</button>
+        </div>`}
     </div>
+
+    ${totalPages > 1 ? `
+    <div class="mt-8 flex items-center justify-center gap-2">
+      <button onclick="goToPage(${Math.max(1, currentPage - 1)})" class="h-8 px-3 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-white/5 ${currentPage === 1 ? 'opacity-40 pointer-events-none' : ''}">Prev</button>
+      ${renderPageNumbers(currentPage, totalPages)}
+      <button onclick="goToPage(${Math.min(totalPages, currentPage + 1)})" class="h-8 px-3 rounded-lg text-xs font-bold bg-slate-800 text-slate-300 hover:text-white border border-white/5 ${currentPage === totalPages ? 'opacity-40 pointer-events-none' : ''}">Next</button>
+    </div>` : ''}
   `;
 }
 
@@ -3332,16 +3394,31 @@ if (window.supabase) {
 // Automated pull for player images & profiles (Live Real-Time + 60s Polling)
 let autoImagePullInterval = null;
 
-async function loadLiveSupabaseAthletes(isSilent = false) {
-  if (!supabaseClient) return;
-  try {
+// Pulls the FULL athlete table in 1,000-row pages (Supabase caps a single response).
+async function fetchAllAthletesPaged() {
+  const pageSize = 1000;
+  let rows = [];
+  for (let from = 0; from < 20000; from += pageSize) {
     const { data, error } = await supabaseClient
       .from('athletes')
       .select('*')
-      .order('est_nil_value', { ascending: false })
-      .limit(1000);
+      .order('est_nil_value', { ascending: false, nullsFirst: false })
+      .order('verified', { ascending: false })
+      .range(from, from + pageSize - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    rows = rows.concat(data);
+    if (data.length < pageSize) break;
+  }
+  return rows;
+}
+
+async function loadLiveSupabaseAthletes(isSilent = false) {
+  if (!supabaseClient) return;
+  try {
+    const data = await fetchAllAthletesPaged();
     
-    if (!error && data && data.length > 0) {
+    if (data && data.length > 0) {
       ATHLETES = data.map(a => {
         let headshot = a.headshot_url || "";
         if (a.full_name && a.full_name.includes('Ryder Lyons') && (!headshot || headshot.includes('on3static'))) {

@@ -1089,7 +1089,23 @@ function renderDirectory() {
   const noActiveFilters = !searchTerm && filterClass === 'all' && filterSport === 'all' && filterParish === 'all';
   const photoMatches = filtered.filter(hasVerifiedPhoto);
   const landingMode = !showAllAthletes && noActiveFilters && photoMatches.length > 0;
-  const baseList = landingMode ? photoMatches : filtered;
+  function getLastNameSortKey(fullName) {
+    const parts = String(fullName || '').trim().replace(/\s+/g, ' ').split(' ').filter(Boolean);
+    if (!parts.length) return '';
+    const suffixes = new Set(['jr', 'jr.', 'sr', 'sr.', 'ii', 'iii', 'iv', 'v']);
+    let i = parts.length - 1;
+    while (i > 0 && suffixes.has(parts[i].toLowerCase())) i--;
+    return (parts[i] || parts[parts.length - 1] || '').toLowerCase();
+  }
+  const baseList = landingMode
+    ? [...photoMatches].sort((a, b) => {
+        const la = getLastNameSortKey(a.full_name);
+        const lb = getLastNameSortKey(b.full_name);
+        const cmp = la.localeCompare(lb, undefined, { sensitivity: 'base' });
+        if (cmp !== 0) return cmp;
+        return String(a.full_name || '').localeCompare(String(b.full_name || ''), undefined, { sensitivity: 'base' });
+      })
+    : filtered;
   const totalCount = baseList.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   if (currentPage > totalPages) currentPage = totalPages;

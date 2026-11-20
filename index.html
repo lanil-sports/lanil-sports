@@ -2091,8 +2091,8 @@ function unlockTest(id) {
 }
 // LANILSPORTS.COM Core (Part 3: Fan Vote, Rankings, Pricing, Share Card)
 function renderPOTW() {
-  const sorted = [...ATHLETES].sort((a,b) => b.votes - a.votes);
-  const totalVotes = sorted.reduce((sum, a) => sum + a.votes, 0);
+  const sorted = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.votes || 0) - (a.votes || 0));
+  const totalVotes = sorted.reduce((sum, a) => sum + (a.votes || 0), 0);
 
   return `
     <div class="max-w-4xl mx-auto space-y-8">
@@ -2161,7 +2161,7 @@ function votePOTW(id) {
 }
 
 function renderRankings() {
-  const topAthletes = [...ATHLETES].sort((a,b) => b.est_nil_value - a.est_nil_value);
+  const topAthletes = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.est_nil_value || 0) - (a.est_nil_value || 0));
   return `
     <div class="space-y-6">
       <div class="text-center mb-8">

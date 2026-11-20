@@ -299,6 +299,38 @@ function openAthleteDetail(id) {
                 </div>
               </div>
 
+              <div class="pt-2 border-t border-white/5">
+                <h5 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Athlete Videos</h5>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  ${(() => {
+                    const videoSections = [
+                      { label: 'Introduction Video', url: a.intro_video_url || a.introduction_video_url || a.intro_url || '', icon: 'fa-solid fa-user', desc: 'Personal intro & background' },
+                      { label: 'Game Film & Highlights', url: a.game_film_url || a.highlight_url || a.highlights_url || a.hudl_url || '', icon: 'fa-solid fa-film', desc: 'In-game plays & highlight reel' },
+                      { label: 'Workouts', url: a.workout_url || a.youtube_url || '', icon: 'fa-solid fa-dumbbell', desc: 'Training & workout footage' }
+                    ];
+                    return videoSections.map(v => v.url ? `
+                      <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="group bg-slate-800/70 hover:bg-slate-700/80 border border-white/10 hover:border-amber-400/40 rounded-xl p-3 transition flex flex-col gap-1.5">
+                        <div class="flex items-center gap-2">
+                          <span class="w-7 h-7 rounded-lg bg-amber-400/15 text-amber-400 flex items-center justify-center text-xs"><i class="${v.icon}"></i></span>
+                          <span class="font-bold text-white text-xs leading-tight">${v.label}</span>
+                        </div>
+                        <span class="text-[10px] text-slate-400">${v.desc}</span>
+                        <span class="mt-auto pt-1 text-[10px] font-semibold text-amber-400 inline-flex items-center gap-1">Watch <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></span>
+                      </a>
+                    ` : `
+                      <button type="button" onclick="alert('${v.label} is not available yet.')" class="text-left bg-slate-800/40 border border-dashed border-white/10 hover:border-amber-400/30 rounded-xl p-3 transition flex flex-col gap-1.5">
+                        <div class="flex items-center gap-2">
+                          <span class="w-7 h-7 rounded-lg bg-slate-700/60 text-slate-400 flex items-center justify-center text-xs"><i class="${v.icon}"></i></span>
+                          <span class="font-bold text-slate-200 text-xs leading-tight">${v.label}</span>
+                        </div>
+                        <span class="text-[10px] text-slate-500">${v.desc}</span>
+                        <span class="mt-auto pt-1 text-[10px] font-semibold text-slate-500 inline-flex items-center gap-1">Coming soon</span>
+                      </button>
+                    `).join('');
+                  })()}
+                </div>
+              </div>
+
               <div>
                 <h5 class="text-xs font-bold text-slate-300 mb-2">Reported Offers & Target Colleges:</h5>
                 <div class="flex flex-wrap gap-2">

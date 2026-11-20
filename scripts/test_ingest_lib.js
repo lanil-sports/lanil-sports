@@ -181,6 +181,44 @@ t.add("A", "updated", "Basketball");
 const g = t.grandTotal();
 check("totals grandTotal", g.new === 2 && g.updated === 1 && g.skipped === 0 && g.rejected === 0);
 
+// ── cross-page dedupe + player_id uniqueness (MaxPreps) ───────────────────
+
+const emptySnap = lib.pickExistingRows([]);
+const sharedSeen = new Set();
+const sharedSeq = new Map();
+function dedupeTestRow(name, grad) {
+  return {
+    full_name: name,
+    school_name: "Neville",
+    parish_city: "Monroe",
+    primary_sport: "Football",
+    grad_year: grad,
+  };
+}
+const phase1 = mp.upsertPhase(
+  [dedupeTestRow("Desi Byrd", 2028), dedupeTestRow("John Pearson", 2028)],
+  emptySnap, sharedSeq, sharedSeen
+);
+const phase2 = mp.upsertPhase(
+  [dedupeTestRow("Desi Byrd", 2028), dedupeTestRow("Jane Doe", 2028)],
+  emptySnap, sharedSeq, sharedSeen
+);
+check("cross-page duplicate skipped", phase2.toInsert.length === 1 && phase2.toInsert[0].full_name === "Jane Doe");
+const allPids = phase1.toInsert.concat(phase2.toInsert).map((r) => r.player_id);
+check("player_id unique per school+grad-year", new Set(allPids).size === allPids.length);
+check("player_id uses school+year sequence", allPids[0] !== allPids[1] && allPids[1] !== allPids[2]);
+
+// Existing player_id collision must not overwrite a different athlete.
+const collideSnap = lib.pickExistingRows([{
+  id: "existing-id", player_id: allPids[0], full_name: "Other Athlete",
+  school_name: "Neville", parish_city: "Monroe", primary_sport: "Football", grad_year: 2028,
+}]);
+const collide = mp.upsertPhase(
+  [dedupeTestRow("Colliding Name", 2028)],
+  collideSnap, new Map(), new Set()
+);
+check("existing player_id collision avoided", collide.toInsert.length === 1 && collide.toInsert[0].player_id !== allPids[0]);
+
 // ── summary ──────────────────────────────────────────────────────────────
 
 const lines = t.summary();

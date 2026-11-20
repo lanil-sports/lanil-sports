@@ -205,14 +205,16 @@ function parseRosterHtml(html, school, sportSlug) {
 // Upsert phase (dedupe + protected merge)
 // ────────────────────────────────────────────────────────────────────────────
 
-function upsertPhase(rows, snap, sequence) {
+function upsertPhase(rows, snap, sequence, seenKeys) {
   const toInsert = [];
   const toPatch = [];
   const sportCounts = {};
-  const seen = new Set();
+  // Shared across the whole run: an athlete listed on two sport pages must be
+  // processed once, not inserted twice.
+  const seen = seenKeys || new Set();
   for (const row of rows) {
     const key = lib.dedupeKey(row);
-    if (seen.has(key)) { continue; } // duplicate within this batch
+    if (seen.has(key)) { continue; } // duplicate anywhere in this run
     seen.add(key);
     if (snap.byKey.has(key)) {
       const existing = snap.byKey.get(key);
@@ -234,10 +236,20 @@ function upsertPhase(rows, snap, sequence) {
       }
       // else skip (unchanged)
     } else {
-      const idx = (sequence.get(key) || 0) + 1;
-      sequence.set(key, idx);
+      // Sequence must be unique per school+grad-year across the WHOLE run, not
+      // per roster page, otherwise two different athletes can share a player_id.
+      const schoolKey = lib.slugify(row.school_name, 40).toUpperCase();
+      const seqKey = `${schoolKey}|${row.grad_year}`;
+      const idx = (sequence.get(seqKey) || 0) + 1;
+      sequence.set(seqKey, idx);
       const now = new Date().toISOString().split("T")[0];
-      const pid = `LANIL-MP-${lib.slugify(row.school_name, 40).toUpperCase()}-${row.grad_year}-${String(idx).padStart(3, "0")}`;
+      let pid = `LANIL-MP-${schoolKey}-${row.grad_year}-${String(idx).padStart(3, "0")}`;
+      // Never collide with an existing player_id in the live DB.
+      let suffix = 1;
+      while (snap.byPlayerId.has(pid)) {
+        pid = `LANIL-MP-${schoolKey}-${row.grad_year}-${String(idx).padStart(3, "0")}-${suffix++}`;
+      }
+      snap.byPlayerId.set(pid, row);
       const slug = `${lib.slugify(row.full_name).slice(0, 40)}-${lib.slugify(row.school_name, 40) || "ls"}-${row.grad_year}-${pid.toLowerCase()}`;
       const insRow = Object.assign({ slug: slug, import_date: now }, row);
       insRow.player_id = pid;
@@ -307,6 +319,9 @@ async function run(opts) {
   lib.logLine(`Schools upsert: ${schoolsUpserted.ok ? "ok" : "FAILED " + (schoolsUpserted.status || "")}`);
 
   let fetchedAthletes = 0, fetchFailures = 0;
+  // Shared across all schools/pages so duplicates are skipped and IDs stay unique.
+  const seenKeys = new Set();
+  const sequence = new Map();
   lib.logLine(`Processing ${schoolsToProcess.length} schools...`);
   for (const school of schoolsToProcess) {
     try {
@@ -326,8 +341,7 @@ async function run(opts) {
 
         const { rows, count } = parseRosterHtml(html, { ...schoolRow, name: school.name, city: school.city }, sportSlug);
         if (count > 0) {
-          const sequence = new Map();
-          const phase = upsertPhase(rows, snap, sequence);
+          const phase = upsertPhase(rows, snap, sequence, seenKeys);
           const write = await upsertWrite(totals, phase, opts);
           fetchedAthletes += count;
           lib.logLine(`  ${school.name} — ${SPORT_DISPLAY[sportSlug] || sportSlug}: parsed ${count} rows, wrote ${write.inserted} new, ${write.patched} updated`);
@@ -373,6 +387,7 @@ module.exports = {
   SOURCE,
   fetchLaSchools,
   parseRosterHtml,
+  upsertPhase,
   mapMaxPrepsRosterRow,
   getGradYear,
   gradeFromYear,

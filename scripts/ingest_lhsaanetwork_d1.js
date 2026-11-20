@@ -323,6 +323,15 @@ async function run(opts) {
       ctx.byNorm.set(schoolNorm, { id: ctx.newSchools.get(schoolNorm).id, name: ctx.newSchools.get(schoolNorm).name, city: ctx.newSchools.get(schoolNorm).city, parish_id: ctx.newSchools.get(schoolNorm).parish_id });
     }
 
+    // Guard against a player_id collision with a different existing athlete.
+    if (snap.byPlayerId.has(incoming.player_id)) {
+      let n = 2;
+      let pid = incoming.player_id;
+      while (snap.byPlayerId.has(pid)) pid = `${incoming.player_id}-${n++}`;
+      incoming.player_id = pid;
+    }
+    snap.byPlayerId.set(incoming.player_id, incoming);
+
     toInsert.push(incoming);
     totals.add(SOURCE, "new", incoming.primary_sport);
     sportCounts[incoming.primary_sport] = (sportCounts[incoming.primary_sport] || 0) + 1;

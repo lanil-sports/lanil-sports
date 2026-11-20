@@ -1,11 +1,16 @@
-name: Weekly Louisiana Sports Ingestion & Sync
+name: Daily Louisiana Sports Ingestion & Sync
 
 on:
   schedule:
-    # Runs every Tuesday at 12:00 UTC (6:00 AM CST / 7:00 AM CDT)
-    - cron: '0 12 * * 2'
-  # Allows you to click "Run workflow" manually from GitHub anytime
+    # Runs every day at 6:00 AM CST / 7:00 AM CDT (12:00 UTC).
+    - cron: '0 12 * * *'
+  # Allows you to click "Run workflow" manually from GitHub anytime.
   workflow_dispatch:
+
+# Prevent overlapping ingestion runs (scheduled vs manual).
+concurrency:
+  group: ${{ github.workflow }}-ingestion
+  cancel-in-progress: true
 
 jobs:
   scrape-and-sync:

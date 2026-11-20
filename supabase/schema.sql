@@ -56,8 +56,23 @@ CREATE TABLE IF NOT EXISTS athletes (
     verified BOOLEAN DEFAULT FALSE,
     parent_consent_verified BOOLEAN DEFAULT FALSE,
     last_updated DATE DEFAULT CURRENT_DATE,
-    created_at TIMESTAMPTZ DEFAULT NOW()
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    -- Migration 01 (athlete ingestion expansion):
+    source_url TEXT,                        -- original roster URL of the athlete
+    import_date DATE,                       -- date ingested from source
+    division TEXT,                          -- school/classification ("4A", "Division I")
+    state TEXT,                             -- LHSAA D1 Tracker: college state
+    weight_lbs INTEGER,                     -- MaxPreps rosters: height/weight
+    height_in INTEGER,
+    bio_url TEXT,                           -- official college bio page (LHSAA D1 Tracker)
+    headshot_permission TEXT,               -- e.g. "maxpreps" for authorized headshot display
+    parish_id TEXT REFERENCES parishes(id) ON DELETE SET NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_athletes_slug ON athletes (slug);
+CREATE INDEX IF NOT EXISTS idx_athletes_player_id ON athletes (player_id);
+CREATE INDEX IF NOT EXISTS idx_athletes_name_school_sport ON athletes ((lower(full_name)), (lower(school_name)), (lower(primary_sport)));
+CREATE INDEX IF NOT EXISTS idx_athletes_parish_city ON athletes ((lower(parish_city)));
 
 -- 4. RECRUITING OFFERS & MILESTONES
 CREATE TABLE IF NOT EXISTS athlete_offers (

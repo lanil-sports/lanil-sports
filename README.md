@@ -72,6 +72,43 @@ lanil-sports/
 
 ---
 
+## 📈 Athlete Ingestion & Coverage Expansion (scripts/ingest_sports.js)
+
+`node scripts/ingest_sports.js` runs the master athlete ingestion engine daily (see `.github/workflows/weekly_sync.yml`, which runs at 6:00 AM CST daily and can be triggered manually):
+
+| Source | Status | Coverage |
+|---|---|---|
+| **LHSAA Network D1 Tracker** (`scripts/ingest_lhsaanetwork_d1.js`) — Louisiana high-school alumni currently playing **Division I** | Primary new source | 1,500+ current D1 athletes (from LHSAA's public D1 Tracker data), 238 Louisiana high schools |
+| **MaxPreps** (`scripts/ingest_maxpreps_all.js`) — official **varsity rosters** (used by UHSAA for tournament programs) | Expanded | All 200 Louisiana MaxPreps schools × football, basketball, baseball, softball, volleyball, soccer, wrestling, golf, tennis, swimming & diving, cross-country, track & field — complete rosters with height/weight/positions/photos |
+
+### Improved pipeline behavior (vs. the old `ingest_maxpreps.js`, which targeted only 25 schools and football only):
+
+- **Complete result collection:** MaxPreps school index now returns all 200 LA schools (no `slice(35,75)`).
+- **Full sport coverage:** every varsity sport with a MaxPreps roster page, all parishes (Ouachita, Caddo, Bossier, Bossier City, Acadiana, Acadiana region parishes, etc.), all graduating classes (Grades 9–12 + multiple seasons).
+- **Dedupe:** keyed on `name | school | sport | parish | grad_year` (across sources: `Edna Karr High School` ≡ `Edna Karr`).
+- **Protected merge:** existing verified athlete rows are never overwritten with empty values; verified/claimed data is preserved.
+- **Normalization:** names, schools, positions (`Defensive Line DL` → `Defensive Line`), and sports (`"Men’s Basketball"` → `Basketball`).
+- **Source attribution:** each athlete records `source_url` (the official roster URL) and `import_date`; MaxPreps rows also record `division`, `weight_lbs`, `height_in`.
+- **Reporting:** logs `new / updated / skipped / rejected` per source and per sport.
+- **Dry-run:** `node scripts/ingest_sports.js --dry-run` — parse + simulate only, no writes. Also runs automatically when Supabase credentials aren't set.
+
+### Database migrations (apply before live ingestion):
+
+- `supabase/migration_01_athlete_sources.sql` — adds `source_url`, `import_date`, `division`, `state`, `weight_lbs`, `height_in`, `bio_url`, `headshot_permission`, `parish_id` to `athletes` + indexes for ingestion lookups. Existing athlete IDs/relationships are preserved; no deletions.
+- `supabase/schema.sql` — updated to include the new columns for fresh installs.
+
+### Image policy (player photos)
+
+- **MaxPreps headshots** (`headshot_url`): official, public — used from official rosters; license documented via MaxPreps Support ("Stats/coaching staff entering data"; rosters are standard public features). `headshot_permission = "maxpreps"`.
+- **LHSAA Network D1 Tracker** exposes no athlete images (tracker data has none); ESPN CDN college logos are stored as `bio_url`/`source_url` references only — they are not downloaded or rehosted.
+- Existing athlete images are preserved when a replacement source has none.
+
+### Tests
+
+`node scripts/test_ingest_lib.js` — 54 offline unit tests for normalization, dedupe keys, protected merging, MaxPreps roster parsing, and D1 Tracker mapping.
+
+---
+
 ## ⚖️ Louisiana NIL Compliance Checklist (La. R.S. 17:3705)
 - **Minor Parental Consent:** Any student under 18 must have parent/guardian approval before commercial NIL agreements are finalized.
 - **No School IP Without Permission:** Athletes cannot wear school uniforms or display official LHSAA member logos in paid commercial endorsements without explicit written authorization from the school principal/athletic director.

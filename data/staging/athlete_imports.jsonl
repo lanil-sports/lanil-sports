@@ -1,0 +1,3 @@
+{"source":"LHSAA Network artifact","source_file":"data/lhsaa_athletes.json","status":"completed","notes":"Ingested via pipeline.js"}
+{"source":"D1 athletes artifact","source_file":"data/d1_athletes.json","status":"completed","notes":"Merged/deduped via pipeline.js"}
+{"source":"School logos artifact","source_file":"school_logos.json","status":"completed","notes":"393 school logo mappings available"}

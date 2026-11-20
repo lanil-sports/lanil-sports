@@ -13,14 +13,14 @@ function groupBy(rows, keyFn) {
 }
 
 async function main() {
-  const athletes = await fetchAll('athletes', 'id,full_name,school_name,parish_city,primary_sport,verified,headshot_url,claimed,potential_colleges,hudl_url,created_at,last_updated');
+  const athletes = await fetchAll('athletes', 'id,full_name,school_name,parish_city,primary_sport,verified,headshot_url,claimed,potential_colleges,season_stats_summary,hudl_url,created_at,last_updated');
 
   const total = athletes.length;
   const verified = athletes.filter((a) => a.verified).length;
   const withPhoto = athletes.filter((a) => a.headshot_url && String(a.headshot_url).length > 0).length;
   const withCollege = athletes.filter((a) => Array.isArray(a.potential_colleges) && a.potential_colleges.length).length;
   const claimed = athletes.filter((a) => a.claimed).length;
-  const withStats = athletes.filter((a) => false).length; // populated by future stat aggregation
+  const withStats = athletes.filter((a) => a.season_stats_summary && String(a.season_stats_summary).trim()).length;
 
   const schools = groupBy(athletes, (a) => a.school_name || 'Unknown');
   const sports = groupBy(athletes, (a) => a.primary_sport || 'Unknown');

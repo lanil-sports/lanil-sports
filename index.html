@@ -2659,7 +2659,6 @@ function updateMerchSlidesForAthlete(a) {
   const heroImageInner = photoSrc
     ? `<img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover">`
     : renderAthleteAvatar(a);
-  const isRyder = a.full_name && a.full_name.includes('Ryder Lyons');
 
   // 1. SLIDE 1: Wall Decal Frame (Ryder-specific asset; others use template + Player Hero Image)
   if (decalFrame) {

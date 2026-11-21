@@ -362,7 +362,7 @@
               
               <!-- Wall Decal Photo Frame -->
               <div id="merch-decal-frame" class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-emerald-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
-                <img id="merch-decal-img" src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-contain">
+                <div class="w-full h-full flex items-center justify-center bg-slate-900/60 text-slate-500 text-xs">Select athlete</div>
               </div>
 
               <div class="pt-2 border-t border-emerald-400/30 text-center relative z-10">
@@ -381,20 +381,19 @@
                 <div class="flex items-center gap-1.5">
                   <div class="w-6 h-6 rounded bg-gradient-to-br from-purple-400 to-indigo-600 text-white font-athletic font-extrabold flex items-center justify-center text-xs shadow-sm border border-purple-300">3D</div>
                   <div>
-                    <span id="merch-figure-header-title" class="font-athletic text-xs font-bold text-purple-300 tracking-wider block leading-none truncate max-w-[200px]">CUSTOM ATHLETE FIGURE</span>
+                    <span id="merch-figure-header-title" class="font-athletic text-xs font-bold text-amber-300 tracking-wider block leading-none truncate max-w-[200px]">3D ACTION FIGURE</span>
                     <span class="text-[8px] text-slate-400 uppercase font-semibold block leading-none">Blister Pack Keepsake</span>
                   </div>
                 </div>
-                <span class="text-[8px] px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 font-bold border border-purple-500/40 uppercase">★ 100% Custom ★</span>
               </div>
-              
+
               <!-- 3D Figure Photo Frame -->
               <div id="merch-figure-frame" class="relative w-full flex-1 rounded-xl overflow-hidden border-2 border-purple-400/60 bg-slate-950 shadow-inner my-1 flex items-center justify-center bg-slate-950/60">
-                <img id="merch-figure-img" src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-contain">
+                <div class="w-full h-full flex items-center justify-center bg-slate-900/60 text-slate-500 text-xs">Select athlete</div>
               </div>
 
               <div class="pt-2 border-t border-purple-400/30 text-center relative z-10">
-                <div id="merch-figure-footer-title" class="font-athletic text-sm font-bold text-purple-300 uppercase leading-none truncate">PHOTO &rarr; 3D POLYRESIN ACTION FIGURE</div>
+                <div id="merch-figure-footer-title" class="font-athletic text-sm font-bold text-purple-300 uppercase leading-none truncate">3D ACTION FIGURE</div>
                 <div class="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">Includes Varsity Uniform, Helmet & MVP Trophy</div>
               </div>
             </div>
@@ -517,7 +516,7 @@
         <div onclick="setMerchSlide(1)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-emerald-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3 min-w-0">
             <div id="merch-thumb-decal-container" class="w-14 h-14 rounded-xl overflow-hidden border border-emerald-500/50 shadow-md shrink-0 group-hover:scale-105 transition bg-slate-900 flex items-center justify-center">
-              <img src="/assets/ryder_lyons_wall_decal.jpg" alt="Custom Athlete Wall Decal" class="w-full h-full object-cover">
+              <i class="fa-solid fa-image text-emerald-400 text-xl"></i>
             </div>
             <div>
               <div class="flex items-center gap-2">
@@ -540,14 +539,14 @@
         <div onclick="setMerchSlide(2)" class="bg-slate-800/60 rounded-xl p-3.5 border border-white/5 hover:border-purple-400/40 transition flex items-center justify-between gap-3 cursor-pointer group">
           <div class="flex items-center gap-3 min-w-0">
             <div id="merch-thumb-figure-container" class="w-14 h-14 rounded-xl overflow-hidden border border-purple-500/50 shadow-md shrink-0 group-hover:scale-105 transition bg-slate-900 flex items-center justify-center">
-              <img src="/assets/ryder_lyons_custom_figure.jpg" alt="Custom Athlete Figure" class="w-full h-full object-cover">
+              <i class="fa-solid fa-cube text-purple-400 text-xl"></i>
             </div>
             <div>
               <div class="flex items-center gap-2">
                 <h5 id="merch-list-name-figure" class="font-bold text-white text-xs group-hover:text-purple-300 transition">Custom 3D Athlete Figure & Bobblehead</h5>
                 <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40 text-[9px] font-bold uppercase leading-none">Option 3</span>
               </div>
-              <p class="text-[11px] text-slate-400">100% custom made from athlete photo &bull; Team jersey &bull; Blister pack or weighted base</p>
+              <p class="text-[11px] text-slate-400">Team jersey &bull; Blister pack or weighted base</p>
               <div class="flex items-center gap-2 mt-1">
                 <span class="text-xs font-bold text-emerald-400">$65.00</span>
                 <span class="text-[10px] text-slate-500">| 7" Polyresin &bull; Hand-Detailed &bull; Collector's Box</span>
@@ -2619,9 +2618,9 @@ function updateMerchSlidesForAthlete(a) {
 
   // Dynamic slide headers, footers, buttons, and captions
   const figureHeaderTitle = document.getElementById('merch-figure-header-title');
-  if (figureHeaderTitle) figureHeaderTitle.textContent = `${a.full_name.toUpperCase()} 3D FIGURE`;
+  if (figureHeaderTitle) figureHeaderTitle.textContent = '3D ACTION FIGURE';
   const figureFooterTitle = document.getElementById('merch-figure-footer-title');
-  if (figureFooterTitle) figureFooterTitle.textContent = `PHOTO ? ${a.full_name.toUpperCase()} 3D ACTION FIGURE`;
+  if (figureFooterTitle) figureFooterTitle.textContent = `${a.full_name.toUpperCase()} 3D ACTION FIGURE`;
 
   const decalHeaderTitle = document.getElementById('merch-decal-header-title');
   if (decalHeaderTitle) decalHeaderTitle.textContent = `${a.full_name.toUpperCase()} WALL DECAL`;
@@ -3064,8 +3063,8 @@ function openMerchOrder(type) {
     `;
   } else if (type === 'bobblehead') {
     defaultPrice = "65.00";
-    document.getElementById('merch-title').textContent = "CUSTOM 3D ACTION FIGURE: " + currentCardAthlete.full_name.toUpperCase();
-    document.getElementById('merch-subtitle').textContent = "100% custom-crafted 3D figure from athlete's headshot in official team uniform with collectible display";
+    document.getElementById('merch-title').textContent = "3D ACTION FIGURE: " + currentCardAthlete.full_name.toUpperCase();
+    document.getElementById('merch-subtitle').textContent = "3D figure from athlete's headshot in official team uniform with collectible display";
     iconEl.innerHTML = getThemedMerchBadge('border-purple-400');
     optSelect.innerHTML = `
       <option value="65.00">Custom 3D Printed Bobblehead (7" Figure in Team Jersey + Base) - $65.00</option>

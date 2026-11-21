@@ -2669,10 +2669,10 @@ function updateMerchSlidesForAthlete(a) {
       decalFrame.innerHTML = `
         <div class="w-full h-full relative flex items-center justify-center bg-slate-950 overflow-hidden">
           <img src="/assets/lanil_wall_decal.jpg" alt="Wall Decal Template" class="absolute inset-0 w-full h-full object-contain pointer-events-none">
-          <div class="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2 w-[34%] aspect-[3/4] rounded-lg overflow-hidden bg-slate-900 shadow-[0_6px_18px_rgba(0,0,0,0.45)] border-2 border-white/90">
+          <div class="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 w-[58%] h-[68%] rounded-xl overflow-hidden bg-slate-900/20 shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
             ${heroImageInner}
           </div>
-          <div class="absolute bottom-[8%] left-1/2 -translate-x-1/2 max-w-[85%] px-2 py-0.5 rounded bg-slate-950/75 border border-emerald-400/50 text-emerald-200 text-[9px] font-bold uppercase tracking-wider truncate">
+          <div class="absolute bottom-[7%] left-1/2 -translate-x-1/2 max-w-[88%] px-2.5 py-1 rounded-md bg-slate-950/80 border border-emerald-400/60 text-emerald-200 text-[10px] font-bold uppercase tracking-wider truncate shadow-lg">
             ${a.full_name}
           </div>
         </div>
@@ -2688,10 +2688,10 @@ function updateMerchSlidesForAthlete(a) {
       figureFrame.innerHTML = `
         <div class="w-full h-full relative flex items-center justify-center bg-slate-950 overflow-hidden">
           <img src="/assets/lanil_custom_action_figure.webp" alt="3D Action Figure Template" class="absolute inset-0 w-full h-full object-contain pointer-events-none">
-          <div class="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-1/2 w-[28%] aspect-[3/4] rounded-md overflow-hidden bg-slate-900 shadow-[0_6px_16px_rgba(0,0,0,0.5)] border border-white/80">
+          <div class="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-[42%] h-[54%] rounded-lg overflow-hidden bg-slate-900/20 shadow-[0_8px_22px_rgba(0,0,0,0.4)]">
             ${heroImageInner}
           </div>
-          <div class="absolute top-[14%] left-1/2 -translate-x-1/2 max-w-[80%] px-2 py-0.5 rounded bg-amber-300/90 text-slate-950 text-[9px] font-extrabold uppercase tracking-wider truncate shadow">
+          <div class="absolute bottom-[8%] left-1/2 -translate-x-1/2 max-w-[86%] px-2.5 py-1 rounded-md bg-amber-300/95 text-slate-950 text-[10px] font-extrabold uppercase tracking-wider truncate shadow-lg border border-amber-100/70">
             ${a.full_name}
           </div>
         </div>
@@ -2713,7 +2713,7 @@ function updateMerchSlidesForAthlete(a) {
       : `
       <div class="w-full h-full relative bg-slate-900 overflow-hidden">
         <img src="/assets/lanil_wall_decal.jpg" alt="Wall Decal" class="absolute inset-0 w-full h-full object-cover opacity-95">
-        <div class="absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2 w-[38%] aspect-[3/4] rounded-[3px] overflow-hidden border border-white/90 bg-slate-900">${thumbHero}</div>
+        <div class="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 w-[60%] h-[70%] rounded-[3px] overflow-hidden bg-slate-900/30">${thumbHero}</div>
       </div>
     `;
   }
@@ -2723,7 +2723,7 @@ function updateMerchSlidesForAthlete(a) {
       : `
       <div class="w-full h-full relative bg-slate-900 overflow-hidden">
         <img src="/assets/lanil_custom_action_figure.webp" alt="3D Figure" class="absolute inset-0 w-full h-full object-cover opacity-95">
-        <div class="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-1/2 w-[30%] aspect-[3/4] rounded-[3px] overflow-hidden border border-white/80 bg-slate-900">${thumbHero}</div>
+        <div class="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-1/2 w-[44%] h-[56%] rounded-[3px] overflow-hidden bg-slate-900/30">${thumbHero}</div>
       </div>
     `;
   }

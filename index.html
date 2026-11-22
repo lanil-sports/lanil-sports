@@ -450,7 +450,7 @@
               <span class="text-[10px] text-amber-300/90 font-normal">Clean 4K export &bull; No watermark &bull; Personal print rights</span>
             </div>
           </div>
-          <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-athletic text-sm font-bold tracking-wider shrink-0 ml-2">$1.00</span>
+          <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-athletic text-sm font-bold tracking-wider shrink-0 ml-2"><span class="text-[0.9em]">$</span>1.00</span>
         </button>
 
         <div class="flex items-center justify-between text-[11px] text-slate-400 px-1 pt-0.5">
@@ -607,15 +607,15 @@
         <div class="grid grid-cols-3 gap-1.5 text-center">
           <div class="bg-slate-900/90 rounded p-1.5 border border-amber-400/20">
             <span class="text-[9px] text-slate-400 block uppercase font-semibold">Player / Parent</span>
-            <span id="merch-player-split" class="font-athletic text-sm font-bold text-amber-400 leading-none">20% ($2.00)</span>
+            <span id="merch-player-split" class="font-athletic text-sm font-bold text-amber-400 leading-none">20% (<span class="text-[0.9em]">$</span>2.00)</span>
           </div>
           <div class="bg-slate-900/90 rounded p-1.5 border border-cyan-400/20">
             <span class="text-[9px] text-slate-400 block uppercase font-semibold">School Booster</span>
-            <span id="merch-school-split" class="font-athletic text-sm font-bold text-cyan-400 leading-none">10% ($1.00)</span>
+            <span id="merch-school-split" class="font-athletic text-sm font-bold text-cyan-400 leading-none">10% (<span class="text-[0.9em]">$</span>1.00)</span>
           </div>
           <div class="bg-slate-900/90 rounded p-1.5 border border-emerald-400/20">
             <span class="text-[9px] text-slate-400 block uppercase font-semibold">Production & Net</span>
-            <span id="merch-platform-split" class="font-athletic text-sm font-bold text-emerald-400 leading-none">70% ($6.99)</span>
+            <span id="merch-platform-split" class="font-athletic text-sm font-bold text-emerald-400 leading-none">70% (<span class="text-[0.9em]">$</span>6.99)</span>
           </div>
         </div>
       </div>
@@ -1933,7 +1933,7 @@ function renderAthleteCard(a) {
           <div class="grid grid-cols-2 gap-2 pt-1">
             <div class="bg-amber-400/5 border border-amber-400/15 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">Est. NIL Value</span>
-              <span class="font-athletic text-lg font-bold text-amber-400 leading-none"><span class="text-emerald-400">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
+              <span class="font-athletic text-lg font-bold text-amber-400 leading-none"><span class="text-emerald-400 text-[0.9em]">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
             </div>
             <div class="bg-slate-900/60 border border-white/5 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">College Interest</span>
@@ -2086,7 +2086,7 @@ function openAthleteDetail(id) {
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
                   <span class="text-[10px] text-slate-400 uppercase font-bold">Estimated Annual NIL</span>
-                  <span class="font-athletic text-2xl font-bold text-emerald-400 block">$${(a.est_nil_value || 0).toLocaleString()}</span>
+                  <span class="font-athletic text-2xl font-bold text-emerald-400 block"><span class="text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</span>
                   <span class="text-[10px] text-slate-500">Based on stats, offers & reach</span>
                 </div>
                 <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
@@ -2442,7 +2442,7 @@ function renderRankings() {
                   <td class="py-3 px-4 font-semibold text-slate-300">${escapeHtml(a.grad_year)}</td>
                   <td class="py-3 px-4">${escapeHtml(a.primary_sport||'')}</td>
                   <td class="py-3 px-4 text-right font-medium">${(a.total_followers || 0).toLocaleString()}</td>
-                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400"><span class="text-emerald-400">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400"><span class="text-emerald-400 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-center">
                     <button onclick="openAthleteDetail('${escapeAttrJs(a.id)}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
                       Profile
@@ -2519,7 +2519,7 @@ function renderPricing() {
             <h3 class="font-athletic text-2xl font-bold text-white mb-1">LANIL ATHLETE PLUS</h3>
             <p class="text-xs text-slate-400 mb-4">Empower your recruiting journey and showcase your high school career.</p>
             <div class="flex items-baseline gap-1 mb-6">
-              <span class="font-athletic text-5xl font-bold text-white">$3.99</span>
+              <span class="font-athletic text-5xl font-bold text-white"><span class="text-[0.9em]">$</span>3.99</span>
               <span class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-300">
@@ -2541,7 +2541,7 @@ function renderPricing() {
             <h3 class="font-athletic text-2xl font-bold text-white mb-1">RECRUITER & MEDIA PRO</h3>
             <p class="text-xs text-slate-400 mb-4">Comprehensive statewide prospect evaluations and recruiting tracking.</p>
             <div class="flex items-baseline gap-1 mb-6">
-              <span class="font-athletic text-5xl font-bold text-white">$19.99</span>
+              <span class="font-athletic text-5xl font-bold text-white"><span class="text-[0.9em]">$</span>19.99</span>
               <span class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-300">
@@ -2563,7 +2563,7 @@ function renderPricing() {
             <h3 class="font-athletic text-2xl font-bold text-white mb-1">PARISH SPONSORSHIP</h3>
             <p class="text-xs text-slate-400 mb-4">Connect your local Louisiana business with hometown sports communities.</p>
             <div class="flex items-baseline gap-1 mb-6">
-              <span class="font-athletic text-5xl font-bold text-white">$99.00</span>
+              <span class="font-athletic text-5xl font-bold text-white"><span class="text-[0.9em]">$</span>99.00</span>
               <span class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-300">

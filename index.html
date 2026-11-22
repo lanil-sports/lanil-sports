@@ -817,6 +817,15 @@ function hasVerifiedPhoto(a) {
   if (/\.(svg)(\?|$)/i.test(lower) && lower.includes('logo')) return false;
   return /^(https?:\/\/|\/assets\/|data:image\/)/i.test(h);
 }
+
+function hasValidAthleteName(a) {
+  const n = String((a && a.full_name) || '').trim();
+  if (!n) return false;
+  if (/^null\b/i.test(n) || /^undefined\b/i.test(n)) return false;
+  if (/^player\s*#?[a-z0-9]*$/i.test(n)) return false;
+  if (/^unknown(\s+player)?$/i.test(n)) return false;
+  return true;
+}
 function toggleAllAthletes(showAll) {
   showAllAthletes = !!showAll;
   currentPage = 1;
@@ -1107,8 +1116,8 @@ function frontPageQualityScore(a) {
 }
 
 function getFrontPageAthletes(count = FRONT_PAGE_COUNT) {
-  // Must have real player image (not school logo/placeholder/unsplash).
-  const eligible = ATHLETES.filter(a => hasVerifiedPhoto(a));
+  // Must have real player image (not school logo/placeholder/unsplash) and a valid name.
+  const eligible = ATHLETES.filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a));
   if (!eligible.length) return [];
 
   const byId = new Set();
@@ -1208,6 +1217,7 @@ function renderHome() {
 
 function renderDirectory() {
   const filtered = ATHLETES.filter(a => {
+    if (!hasValidAthleteName(a)) return false;
     if (filterLevel === 'college') {
       if (a.level !== 'college') return false;
     } else {
@@ -1258,10 +1268,7 @@ function renderDirectory() {
 
   return `
     <div class="mb-10 text-center relative py-4">
-      <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3 max-w-full text-center">
-        <i class="fa-solid fa-flag-checkered"></i>
-        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Preps to College</span>
-      </div>
+
       <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
         DISCOVER LOUISIANA <span class="text-amber-400">TALENT</span>
       </h1>
@@ -2278,7 +2285,7 @@ function unlockTest(id) {
 }
 // LANILSPORTS.COM Core (Part 3: Fan Vote, Rankings, Pricing, Share Card)
 function renderPOTW() {
-  const sorted = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.votes || 0) - (a.votes || 0));
+  const sorted = [...ATHLETES].filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a)).sort((a,b) => (b.votes || 0) - (a.votes || 0));
   const totalVotes = sorted.reduce((sum, a) => sum + (a.votes || 0), 0);
 
   return `
@@ -2348,8 +2355,8 @@ function votePOTW(id) {
 }
 
 function renderRankings() {
-  const topAthletes = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.est_nil_value || 0) - (a.est_nil_value || 0));
-  const topFanVote = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.votes || 0) - (a.votes || 0)).slice(0, 10);
+  const topAthletes = [...ATHLETES].filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a)).sort((a,b) => (b.est_nil_value || 0) - (a.est_nil_value || 0));
+  const topFanVote = [...ATHLETES].filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a)).sort((a,b) => (b.votes || 0) - (a.votes || 0)).slice(0, 10);
   const totalVotes = topFanVote.reduce((sum, a) => sum + (a.votes || 0), 0);
   return `
     <div class="space-y-6">

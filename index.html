@@ -1176,20 +1176,11 @@ function renderHome() {
     <div class="mb-10 text-center relative py-4">
       <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3 max-w-full text-center">
         <i class="fa-solid fa-star"></i>
-        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Front Page</span>
+        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Find Louisiana Talent</span>
       </div>
       <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
-        LOUISIANA <span class="text-amber-400">FRONT PAGE</span>
+        FIND LOUISIANA <span class="text-amber-400">TALENT</span>
       </h1>
-      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 mt-2">
-        Six featured Louisiana athletes, mixed across sports. Explore the full scraped roster in the Directory.
-      </p>
-      <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-[11px] text-slate-300">
-        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-layer-group text-amber-400 mr-1"></i>${featured.length} Featured Athletes</span>
-        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-shuffle text-amber-400 mr-1"></i>Round-Robin Sport Mix</span>
-        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-camera-retro text-amber-400 mr-1"></i>Player Images Only</span>
-        ${sports.length ? `<span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-basketball text-amber-400 mr-1"></i>${sports.join(', ')}</span>` : ''}
-      </div>
       <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
         <button onclick="navigate('directory')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-extrabold text-sm uppercase tracking-wider hover:brightness-110 shadow-md shadow-amber-500/20 transition">
           <i class="fa-solid fa-users mr-1.5"></i> View Full Directory
@@ -1200,19 +1191,12 @@ function renderHome() {
       </div>
     </div>
 
-    <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
-      <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
-        <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
-        The Front Page keeps <strong class="text-white">${FRONT_PAGE_COUNT} featured players</strong>. The Directory tab includes all scraped players.
-      </p>
-      <button onclick="navigate('directory')" class="shrink-0 px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider hover:brightness-110 transition">Open Directory</button>
-    </div>
+
 
     <div id="athlete-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       ${featured.length ? featured.map(athlete => renderAthleteCard(athlete)).join('') : `
         <div class="col-span-full rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-          <p class="text-slate-300 text-sm">No featured front-page athletes are available yet.</p>
-          <button onclick="navigate('directory')" class="mt-4 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">Open Directory</button>
+          <p class="text-slate-300 text-sm">No featured athletes are available yet.</p>
         </div>`}
     </div>
   `;
@@ -1240,7 +1224,7 @@ function renderDirectory() {
   });
 
   // --- Directory listing -------------------------------------
-  // Directory shows all scraped players. Front page keeps 6 featured players.
+  // Directory listing shows athletes with verified player photos.
   const noActiveFilters = !searchTerm && filterClass === 'all' && filterSport === 'all' && filterParish === 'all';
   const photoMatches = filtered.filter(hasVerifiedPhoto);
   function getLastNameSortKey(fullName) {

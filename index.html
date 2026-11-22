@@ -46,6 +46,11 @@
         padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
       }
     }
+    html, body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
     * {
       -webkit-tap-highlight-color: transparent;
     }
@@ -82,7 +87,7 @@
         <div>
           <div class="flex items-center gap-1 sm:gap-1.5">
             <span class="font-athletic text-xl sm:text-2xl tracking-wider font-bold text-white leading-none inline-flex items-center">LANIL<span class="text-amber-400 text-sm sm:text-[16px] font-bold tracking-widest uppercase self-center ml-0.5" style="line-height:1;margin-top:0">SPORTS</span></span>
-            <span class="text-[8px] sm:text-[9px] uppercase px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">PREPS &bull; COLLEGE</span>
+            <span class="hidden sm:inline-flex text-[8px] sm:text-[9px] uppercase px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30">PREPS &bull; COLLEGE</span>
           </div>
           <p class="text-[9px] sm:text-[10px] text-slate-400 -mt-0.5 tracking-tight hidden sm:block">Louisiana Preps to College NIL Directory</p>
         </div>
@@ -97,16 +102,16 @@
       </nav>
 
       <!-- Header Actions: LARGE FAN VOTE WITH HEART & Athlete Portal -->
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
         <!-- LARGE FAN VOTE BUTTON WITH HEART (Prominently featured in menu header) -->
-        <button onclick="navigate('potw')" class="py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-athletic text-base sm:text-2xl font-bold tracking-wider uppercase shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition flex items-center gap-1.5 sm:gap-2 border-2 border-red-400/60 shrink-0 animate-pulse" title="Vote for Louisiana Athlete of the Week">
-          <i class="fa-solid fa-heart text-white text-base sm:text-xl drop-shadow"></i>
-          <span class="leading-none mt-0.5">FAN VOTE</span>
+        <button onclick="navigate('potw')" class="py-1.5 sm:py-2 px-2.5 sm:px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-athletic text-sm sm:text-2xl font-bold tracking-wide sm:tracking-wider uppercase shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition flex items-center gap-1 sm:gap-2 border-2 border-red-400/60 shrink-0" title="Vote for Louisiana Athlete of the Week">
+          <i class="fa-solid fa-heart text-white text-sm sm:text-xl drop-shadow"></i>
+          <span class="leading-none mt-0.5 whitespace-nowrap">FAN VOTE</span>
           <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping hidden sm:inline-block"></span>
         </button>
 
-        <button onclick="openModal('claim-modal')" class="text-xs sm:text-sm font-bold px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1.5 shrink-0">
-          <i class="fa-solid fa-user-check text-xs"></i>
+        <button onclick="openModal('claim-modal')" class="text-[11px] sm:text-sm font-bold px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-xl gold-gradient text-slate-950 hover:brightness-110 shadow-md shadow-amber-500/20 transition flex items-center gap-1 sm:gap-1.5 shrink-0 whitespace-nowrap">
+          <i class="fa-solid fa-user-check text-[11px] sm:text-xs"></i>
           <span class="hidden sm:inline">Athlete Portal</span>
           <span class="sm:hidden">Portal</span>
         </button>

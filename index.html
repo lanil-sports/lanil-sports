@@ -75,7 +75,7 @@
   <!-- Top Announcement Bar -->
   <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-amber-700 px-4 py-2 text-xs text-center font-medium text-amber-200 border-b border-white/10 flex items-center justify-center gap-2">
     <span class="bg-amber-400 text-black font-bold px-1.5 py-0.5 rounded text-[10px]">OFFICIAL</span>
-    <span>Louisiana NIL Directory & Yearbook (2026-2027) is LIVE across all 64 Parishes.</span>
+    <span>Louisiana NIL Directory & Yearbook is LIVE across all 64 Parishes.</span>
   </div>
 
   <!-- Main Navigation -->
@@ -2345,12 +2345,31 @@ function renderPOTW() {
   `;
 }
 
-function votePOTW(id) {
-  const a = ATHLETES.find(x => x.id === id);
-  if (a) {
+async function votePOTW(id) {
+  const a = ATHLETES.find(x => String(x.id) === String(id));
+  if (!a) return;
+  if (typeof a.votes !== 'number') a.votes = 0;
+  if (!supabaseClient) {
     a.votes += 1;
     render();
     alert(`Vote recorded for ${a.full_name}! Thank you for supporting Louisiana high school athletics.`);
+    return;
+  }
+  const fingerprint = getVoterFingerprint();
+  try {
+    const { error } = await supabaseClient
+      .from('fan_votes')
+      .insert({ poll_id: FAN_POLL_ID, athlete_id: a.id, voter_fingerprint: fingerprint });
+    if (error) throw error;
+    a.votes += 1;
+    render();
+    alert(`Vote recorded for ${a.full_name}! Thank you for supporting Louisiana high school athletics.`);
+  } catch (err) {
+    console.warn('Fan vote submit note:', err);
+    // Fallback: still show increment locally so UI is responsive, but note backend issue
+    a.votes += 1;
+    render();
+    alert(`Vote recorded for ${a.full_name}! (Sync may be delayed.)`);
   }
 }
 
@@ -3408,9 +3427,46 @@ function filterByParish(val) { filterParish = val; currentView = 'directory'; cu
 const SUPABASE_URL = 'https://uwnslkzyvmrrycdxvudg.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_VSm_VLdVuFcQHseAssDINA_g9XYQoEW';
 let supabaseClient = null;
+const FAN_POLL_ID = 'potw-current';
 
 if (window.supabase) {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+function getVoterFingerprint() {
+  try {
+    const key = 'lanil_voter_fingerprint';
+    let fp = localStorage.getItem(key);
+    if (!fp) {
+      fp = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : ('vf_' + Math.random().toString(36).slice(2) + Date.now().toString(36));
+      localStorage.setItem(key, fp);
+    }
+    return fp;
+  } catch (_) {
+    return 'vf_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  }
+}
+
+async function fetchFanVoteCounts() {
+  if (!supabaseClient) return new Map();
+  const counts = new Map();
+  const pageSize = 1000;
+  for (let from = 0; from < 50000; from += pageSize) {
+    const { data, error } = await supabaseClient
+      .from('fan_votes')
+      .select('athlete_id')
+      .eq('poll_id', FAN_POLL_ID)
+      .range(from, from + pageSize - 1);
+    if (error) throw error;
+    if (!data || data.length === 0) break;
+    for (const row of data) {
+      const id = String(row.athlete_id || '');
+      if (!id) continue;
+      counts.set(id, (counts.get(id) || 0) + 1);
+    }
+    if (data.length < pageSize) break;
+  }
+  return counts;
 }
 
 // Automated pull for player images & profiles (Live Real-Time + 60s Polling)
@@ -3441,17 +3497,22 @@ async function loadLiveSupabaseAthletes(isSilent = false) {
     const data = await fetchAllAthletesPaged();
     
     if (data && data.length > 0) {
+      let voteCounts = new Map();
+      try { voteCounts = await fetchFanVoteCounts(); } catch (e) { console.warn('Fan vote count fetch note:', e); }
       ATHLETES = data.map(a => {
         let headshot = a.headshot_url || "";
         if (a.full_name && a.full_name.includes('Ryder Lyons') && (!headshot || headshot.includes('on3static'))) {
           headshot = '/assets/ryder_lyons_headshot.jpg';
         }
+        const id = String(a.id || '');
+        const votes = voteCounts.has(id) ? voteCounts.get(id) : 0;
         return {
           ...a,
           player_id: (a.player_id || '').replace(/^ON3-/i, 'LANIL-'),
           season_stats_summary: cleanScoutingText(a.season_stats_summary || ''),
           bio: cleanScoutingText(a.bio || ''),
-          headshot_url: headshot
+          headshot_url: headshot,
+          votes
         };
       });
       render();

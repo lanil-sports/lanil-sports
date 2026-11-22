@@ -1169,11 +1169,11 @@ function renderHome() {
   const sports = [...new Set(featured.map(a => String(a.primary_sport || 'Other').trim() || 'Other'))];
   return `
     <div class="mb-10 text-center relative py-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
+      <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3 max-w-full text-center">
         <i class="fa-solid fa-star"></i>
-        <span>Louisiana NIL Directory & Yearbook (2026-2027) &bull; Front Page</span>
+        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Front Page</span>
       </div>
-      <h1 class="font-athletic text-5xl sm:text-6xl md:text-7xl font-bold tracking-wide uppercase text-white leading-none">
+      <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
         LOUISIANA <span class="text-amber-400">FRONT PAGE</span>
       </h1>
       <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 mt-2">
@@ -1265,11 +1265,11 @@ function renderDirectory() {
 
   return `
     <div class="mb-10 text-center relative py-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
+      <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3 max-w-full text-center">
         <i class="fa-solid fa-flag-checkered"></i>
-        <span>Louisiana NIL Directory & Yearbook (2026-2027) &bull; Preps to College</span>
+        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Preps to College</span>
       </div>
-      <h1 class="font-athletic text-5xl sm:text-6xl md:text-7xl font-bold tracking-wide uppercase text-white leading-none">
+      <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
         DISCOVER LOUISIANA <span class="text-amber-400">TALENT</span>
       </h1>
       <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 mt-2">
@@ -2294,7 +2294,7 @@ function renderPOTW() {
         <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500/20 text-red-300 border border-red-500/30">
           Live Fan Poll  •  Week 11 Round
         </span>
-        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide text-white uppercase mt-2">
+        <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal sm:tracking-wide text-white uppercase mt-2 leading-[0.95] break-words max-w-full">
           LOUISIANA ATHLETE OF THE WEEK
         </h1>
         <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
@@ -2359,8 +2359,8 @@ function renderRankings() {
   return `
     <div class="space-y-6">
       <div class="text-center mb-8">
-        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide uppercase text-white">
-          LOUISIANA NIL & PROSPECT RANKINGS
+        <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
+          LOUISIANA NIL &amp; PROSPECT RANKINGS
         </h1>
         <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
           Statewide prospect index ranking based on verified stats, social media engagement, and college recruiting interest.
@@ -2425,8 +2425,8 @@ function renderPricing() {
         <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400/20 text-amber-300 border border-amber-400/30">
           Clear & Transparent Subscriptions
         </span>
-        <h1 class="font-athletic text-5xl sm:text-6xl font-bold tracking-wide uppercase text-white mt-2">
-          MONETIZATION & MEMBERSHIP PLANS
+        <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl font-bold tracking-normal sm:tracking-wide uppercase text-white mt-2 leading-[0.95] break-words max-w-full">
+          MONETIZATION &amp; MEMBERSHIP PLANS
         </h1>
         <p class="text-xs sm:text-sm text-slate-300 max-w-xl mx-auto mt-1">
           Free to discover talent. Low-cost tools for student-athletes. Premium intelligence for college scouts, media, and local sponsors.

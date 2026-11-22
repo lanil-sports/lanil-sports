@@ -1174,12 +1174,8 @@ function renderHome() {
   const sports = [...new Set(featured.map(a => String(a.primary_sport || 'Other').trim() || 'Other'))];
   return `
     <div class="mb-10 text-center relative py-4">
-      <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3 max-w-full text-center">
-        <i class="fa-solid fa-star"></i>
-        <span>Louisiana NIL Directory &amp; Yearbook (2026-2027) &bull; Find Louisiana Talent</span>
-      </div>
       <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
-        FIND LOUISIANA <span class="text-amber-400">TALENT</span>
+        DISCOVER LOUISIANA <span class="text-amber-400">TALENT</span>
       </h1>
       <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
         <button onclick="navigate('directory')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-extrabold text-sm uppercase tracking-wider hover:brightness-110 shadow-md shadow-amber-500/20 transition">

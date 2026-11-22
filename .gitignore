@@ -4,3 +4,7 @@
 .DS_Store
 Thumbs.db
 *.bak
+
+# Local tooling/logs (may contain secrets or scratch data)
+tools/
+logs/

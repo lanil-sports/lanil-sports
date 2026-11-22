@@ -793,6 +793,22 @@ function cleanScoutingText(str) {
     .trim();
 }
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function escapeAttrJs(value) {
+  return String(value ?? '')
+    .replace(/\\\\/g, '\\\\\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
 
 let ATHLETES = [...window.INITIAL_ATHLETES];
 let currentView = 'home';
@@ -1734,10 +1750,15 @@ function goToPage(page) {
 }
 
 function renderAthleteAvatar(a, extraClasses = '') {
-  if (a.headshot_url && a.headshot_url.trim() !== '' && !a.headshot_url.includes('unsplash.com')) {
+  const safeName = escapeHtml(a.full_name || 'Athlete');
+  const safeSport = escapeHtml(a.primary_sport || 'Sport');
+  const safePosition = escapeHtml(a.position || a.primary_sport || 'VARSITY');
+  const headshot = String(a.headshot_url || '').trim();
+  if (headshot && !headshot.includes('unsplash.com')) {
+    const safeHeadshot = escapeHtml(headshot);
     return `
       <div class="w-full h-full relative overflow-hidden bg-slate-900">
-        <img src="${a.headshot_url}" alt="${a.full_name}" class="w-full h-full object-cover ${extraClasses}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <img src="${safeHeadshot}" alt="${safeName}" class="w-full h-full object-cover ${extraClasses}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
         <div class="w-full h-full hidden flex-col items-center justify-center">
           ${getSportDesign(a.primary_sport).svg}
         </div>
@@ -1748,7 +1769,7 @@ function renderAthleteAvatar(a, extraClasses = '') {
   const design = getSportDesign(a.primary_sport);
   const jerseyMatch = (a.season_stats_summary || '').match(/#(\d+)/);
   const jersey = jerseyMatch ? '#' + jerseyMatch[1] : '';
-  const initials = a.full_name.split(' ').map(n => n[0]).join('').substring(0, 2);
+  const initials = escapeHtml(String(a.full_name || '').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'LA');
 
   return `
     <div class="w-full h-full ${design.bg} flex flex-col items-center justify-center p-3 relative overflow-hidden ${extraClasses}">
@@ -1761,12 +1782,12 @@ function renderAthleteAvatar(a, extraClasses = '') {
 
       <!-- Jersey Number or Clean Initials -->
       <div class="relative z-10 font-athletic text-2xl sm:text-3xl font-bold tracking-wider text-white leading-none drop-shadow-md">
-        ${jersey || initials}
+        ${escapeHtml(jersey || initials)}
       </div>
 
       <!-- Distinctive Position / Sport Tag -->
       <div class="relative z-10 text-[9px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border shadow-sm mt-1.5 ${design.accent}">
-        ${a.position || a.primary_sport || 'VARSITY'}
+        ${safePosition}
       </div>
     </div>
   `;
@@ -1858,13 +1879,13 @@ function renderGameLogTable(a) {
 function renderAthleteCard(a) {
   return `
     <div class="glass rounded-2xl overflow-hidden hover:border-amber-400/50 transition-all duration-300 group flex flex-col justify-between hover:shadow-xl hover:shadow-amber-500/5">
-      <div class="relative aspect-[4/3] bg-slate-800 overflow-hidden cursor-pointer" onclick="openAthleteDetail('${a.id}')">
+      <div class="relative aspect-[4/3] bg-slate-800 overflow-hidden cursor-pointer" onclick="openAthleteDetail('${escapeAttrJs(a.id)}')">
         ${renderAthleteAvatar(a, 'group-hover:scale-105 transition duration-500')}
         <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
         
         <div class="absolute top-3 left-3 flex items-center gap-1.5">
           <span class="badge-blur text-[10px] font-bold uppercase tracking-wider text-amber-300 px-2 py-0.5 rounded-full border border-amber-400/30">
-            Class of ${a.grad_year}
+            Class of ${escapeHtml(a.grad_year)}
           </span>
           ${a.verified ? `
             <span class="badge-blur text-[10px] font-bold text-amber-400 px-2 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
@@ -1878,23 +1899,21 @@ function renderAthleteCard(a) {
             <i class="fa-solid fa-check"></i> Claimed
           </span>
         ` : `
-          <button onclick="event.stopPropagation(); openClaimPreload('${a.full_name}', '${a.school_name}', ${a.grad_year})" class="absolute top-3 right-3 badge-blur text-[10px] font-semibold text-amber-300 hover:text-white px-2 py-0.5 rounded-full border border-amber-400/30 hover:border-amber-400 transition">
+          <button onclick="event.stopPropagation(); openClaimPreload('${escapeAttrJs(a.full_name)}', '${escapeAttrJs(a.school_name)}', ${escapeHtml(a.grad_year)})" class="absolute top-3 right-3 badge-blur text-[10px] font-semibold text-amber-300 hover:text-white px-2 py-0.5 rounded-full border border-amber-400/30 hover:border-amber-400 transition">
             Claim Free
           </button>
         `}
 
         <div class="absolute bottom-3 left-3 right-3">
           <div class="flex items-center gap-2 text-xs font-bold text-amber-400 mb-0.5">
-            <span>${a.position}</span>
+            <span>${escapeHtml(a.position || '')}</span>
             <span> • </span>
-            <span>${a.primary_sport}</span>
+            <span>${escapeHtml(a.primary_sport || '')}</span>
           </div>
-          <h3 class="font-athletic text-2xl font-bold text-white tracking-wide group-hover:text-amber-400 transition leading-tight">
-            ${a.full_name}
-          </h3>
+          <h3 class="font-athletic text-2xl font-bold text-white tracking-wide group-hover:text-amber-400 transition leading-tight">${escapeHtml(a.full_name || '')}</h3>
           <p class="text-xs text-slate-300 flex items-center gap-1.5 truncate">
-            ${getSchoolLogo(a.school_name || a.school_id) ? `<img src="${getSchoolLogo(a.school_name || a.school_id)}" alt="" class="w-4 h-4 rounded-full object-contain bg-white/10 p-0.5 border border-white/20 shrink-0" onerror="this.style.display='none'">` : '<i class="fa-solid fa-school text-slate-400 text-[10px]"></i>'}
-            <span class="truncate">${a.school_name}</span>
+            ${getSchoolLogo(a.school_name || a.school_id) ? `<img src="${escapeHtml(getSchoolLogo(a.school_name || a.school_id))}" alt="" class="w-4 h-4 rounded-full object-contain bg-white/10 p-0.5 border border-white/20 shrink-0" onerror="this.style.display='none'">` : '<i class="fa-solid fa-school text-slate-400 text-[10px]"></i>'}
+            <span class="truncate">${escapeHtml(a.school_name || '')}</span>
           </p>
         </div>
       </div>
@@ -1903,32 +1922,32 @@ function renderAthleteCard(a) {
         <div class="space-y-2">
           <p class="text-[11px] text-slate-400 flex items-center gap-1">
             <i class="fa-solid fa-location-dot text-amber-400 text-[10px]"></i>
-            <span>${a.parish_city}</span>
+            <span>${escapeHtml(a.parish_city || '')}</span>
           </p>
 
           <div class="bg-slate-900/60 rounded-xl p-2.5 border border-white/5 text-xs text-slate-300">
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-0.5">Season Snapshot</p>
-            <p class="text-xs font-medium text-slate-200 line-clamp-2">${cleanScoutingText(a.season_stats_summary)}</p>
+            <p class="text-xs font-medium text-slate-200 line-clamp-2">${escapeHtml(cleanScoutingText(a.season_stats_summary))}</p>
           </div>
 
           <div class="grid grid-cols-2 gap-2 pt-1">
             <div class="bg-amber-400/5 border border-amber-400/15 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">Est. NIL Value</span>
-              <span class="font-athletic text-lg font-bold text-amber-400 leading-none"><span class="text-emerald-400">$</span>${(a.est_nil_value || 0).toLocaleString()}/yr</span>
+              <span class="font-athletic text-lg font-bold text-amber-400 leading-none"><span class="text-emerald-400">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
             </div>
             <div class="bg-slate-900/60 border border-white/5 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">College Interest</span>
-              <span class="font-athletic text-lg font-bold text-white leading-none">${a.potential_colleges.length} Offers</span>
+              <span class="font-athletic text-lg font-bold text-white leading-none">${(a.potential_colleges || []).length} Offers</span>
             </div>
           </div>
         </div>
 
         <div class="pt-3 border-t border-white/10 flex items-center gap-2">
-          <button onclick="openAthleteDetail('${a.id}')" class="flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition flex items-center justify-center gap-1.5">
+          <button onclick="openAthleteDetail('${escapeAttrJs(a.id)}')" class="flex-1 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition flex items-center justify-center gap-1.5">
             <span>View Full Profile</span>
             <i class="fa-solid fa-arrow-right text-[10px] text-amber-400"></i>
           </button>
-          <button onclick="openCardModal('${a.id}')" title="Generate Shareable Card" class="p-2 rounded-xl bg-slate-800/80 hover:bg-amber-400 hover:text-black text-slate-300 text-xs transition">
+          <button onclick="openCardModal('${escapeAttrJs(a.id)}')" title="Generate Shareable Card" class="p-2 rounded-xl bg-slate-800/80 hover:bg-amber-400 hover:text-black text-slate-300 text-xs transition">
             <i class="fa-solid fa-share-nodes"></i>
           </button>
         </div>
@@ -2082,7 +2101,7 @@ function openAthleteDetail(id) {
                 </div>
                 <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
                   <span class="text-[10px] text-slate-400 uppercase font-bold">Recruiting Status</span>
-                  <span class="font-athletic text-2xl font-bold text-amber-400 block">${a.potential_colleges.length} Offers</span>
+                  <span class="font-athletic text-2xl font-bold text-amber-400 block">${(a.potential_colleges || []).length} Offers</span>
                   <span class="text-[10px] text-slate-500">Division I & Regional Interest</span>
                 </div>
               </div>
@@ -3397,7 +3416,7 @@ function showToast(msg) {
     toast.className = 'fixed bottom-5 right-5 z-[9999] px-4 py-3 rounded-xl bg-slate-900/95 border border-amber-400/50 text-white text-xs font-semibold shadow-2xl backdrop-blur-md transition-all duration-300 transform translate-y-10 opacity-0 flex items-center gap-2 max-w-sm pointer-events-auto';
     document.body.appendChild(toast);
   }
-  toast.innerHTML = msg;
+  toast.textContent = String(msg ?? '');
   toast.classList.remove('translate-y-10', 'opacity-0');
   toast.classList.add('translate-y-0', 'opacity-100');
   setTimeout(() => {

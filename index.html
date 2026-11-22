@@ -1406,7 +1406,7 @@ function renderDirectory() {
         </div>
 
         <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> Louisiana scraped athletes${photoMatches.length !== totalCount ? ` (<strong class="text-white">${photoMatches.length}</strong> with verified player photos)` : ''}</span>
+        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> Louisiana athletes${photoMatches.length !== totalCount ? ` (<strong class="text-white">${photoMatches.length}</strong> with verified player photos)` : ''}</span>
         <div class="flex items-center gap-3">
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Verified</span>
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Claimed</span>
@@ -1417,7 +1417,7 @@ function renderDirectory() {
     <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
       <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
         <i class="fa-solid fa-database text-amber-400 mr-1"></i>
-        Showing <strong class="text-white">${totalCount}</strong> scraped athletes${noActiveFilters ? '' : ' matching your filters'}. <span class="text-slate-400">${photoMatches.length} with verified player photos.</span>
+        Showing <strong class="text-white">${totalCount}</strong> athletes${noActiveFilters ? '' : ' matching your filters'}. <span class="text-slate-400">${photoMatches.length} with verified player photos.</span>
       </p>
       <button onclick="navigate('home')" class="shrink-0 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-white/10 text-white text-xs font-bold hover:bg-slate-700 transition"><i class="fa-solid fa-house text-amber-400 mr-1"></i>Front Page</button>
     </div>

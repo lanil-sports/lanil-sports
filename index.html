@@ -1317,7 +1317,7 @@ function renderDirectory() {
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
         <div class="lg:col-span-2 relative">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-          <input type="text" oninput="updateSearch(this.value)" value="${searchTerm}" placeholder="Search athlete, school, parish, or stats (e.g. 2,000 yds, 15 TD, sacks, 3-pt)..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
+          <input type="text" oninput="updateSearch(this.value)" value="${escapeHtml(searchTerm)}" placeholder="Search athlete, school, parish, or stats (e.g. 2,000 yds, 15 TD, sacks, 3-pt)..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
         </div>
 
         <div>
@@ -1969,7 +1969,7 @@ function openAthleteDetail(id) {
         
         <div class="absolute bottom-4 left-6 flex items-center gap-2">
           <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-400 text-black">
-            Class of ${a.grad_year} (${a.current_grade})
+            Class of ${escapeHtml(a.grad_year)} (${escapeHtml(a.current_grade)})
           </span>
           <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-black/60 text-emerald-300 border border-emerald-400/30 flex items-center gap-1.5">
     <i class="fa-solid fa-shield-halved text-[10px]"></i> LHSAA Varsity
@@ -1985,19 +1985,19 @@ function openAthleteDetail(id) {
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h2 class="font-athletic text-3xl sm:text-4xl font-bold text-white leading-none">${a.full_name}</h2>
+                <h2 class="font-athletic text-3xl sm:text-4xl font-bold text-white leading-none">${escapeHtml(a.full_name || '')}</h2>
                 ${a.verified ? '<i class="fa-solid fa-circle-check text-amber-400 text-base" title="Verified Athlete"></i>' : ''}
               </div>
-              <p class="text-xs text-amber-400 font-semibold">${a.position}  •  ${a.primary_sport} ${a.secondary_sports.length ? `(Also: ${a.secondary_sports.join(', ')})` : ''}</p>
-              <p class="text-xs text-slate-300">${a.school_name}  -  ${a.parish_city}</p>
+              <p class="text-xs text-amber-400 font-semibold">${escapeHtml(a.position || '')}  &bull;  ${escapeHtml(a.primary_sport || '')} ${(a.secondary_sports||[]).length ? `(Also: ${escapeHtml((a.secondary_sports||[]).join(', '))})` : ''}</p>
+              <p class="text-xs text-slate-300">${escapeHtml(a.school_name || '')}  -  ${escapeHtml(a.parish_city || '')}</p>
             </div>
           </div>
 
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button onclick="openCardModal('${a.id}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition flex items-center justify-center gap-1.5">
+            <button onclick="openCardModal('${escapeAttrJs(a.id)}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition flex items-center justify-center gap-1.5">
               <i class="fa-solid fa-image"></i> Share Card
             </button>
-            <button onclick="votePOTW('${a.id}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl gold-gradient text-black font-bold text-xs hover:brightness-110 transition flex items-center justify-center gap-1.5">
+            <button onclick="votePOTW('${escapeAttrJs(a.id)}')" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl gold-gradient text-black font-bold text-xs hover:brightness-110 transition flex items-center justify-center gap-1.5">
               <i class="fa-solid fa-fire"></i> Vote (${a.votes || 0})
             </button>
           </div>
@@ -2029,7 +2029,7 @@ function openAthleteDetail(id) {
             <span class="font-athletic text-2xl font-bold text-emerald-400 leading-none">
               #${Math.max(1, Math.min(50, Math.round(90000 / (a.est_nil_value || 4000))))}
             </span>
-            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">Louisiana Class ${a.grad_year}</span>
+            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">Louisiana Class ${escapeHtml(a.grad_year)}</span>
           </div>
 
           <div class="bg-slate-900/80 rounded-xl p-2.5 border border-white/5 text-center">
@@ -2037,13 +2037,13 @@ function openAthleteDetail(id) {
             <span class="font-athletic text-2xl font-bold text-cyan-400 leading-none">
               ${a.potential_colleges.length}
             </span>
-            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">${a.potential_colleges[0] || 'D-I Inquiries'}</span>
+            <span class="text-[10px] text-slate-400 font-bold block mt-0.5">${escapeHtml((a.potential_colleges||[])[0] || 'D-I Inquiries')}</span>
           </div>
         </div>
 
         <div class="mb-6 bg-slate-800/50 rounded-xl p-4 border border-white/5">
           <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">Scouting & Athletic Bio</h4>
-          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${a.bio}</p>
+          <p class="text-xs sm:text-sm text-slate-200 leading-relaxed">${escapeHtml(a.bio || '')}</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -2051,7 +2051,7 @@ function openAthleteDetail(id) {
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
               <i class="fa-solid fa-chart-simple text-amber-400"></i> Season Statistics
             </h4>
-            <p class="text-xs text-slate-200 font-medium">${cleanScoutingText(a.season_stats_summary)}</p>
+            <p class="text-xs text-slate-200 font-medium">${escapeHtml(cleanScoutingText(a.season_stats_summary))}</p>
           </div>
 
           <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">
@@ -2060,9 +2060,9 @@ function openAthleteDetail(id) {
             </h4>
             ${a.newspaper_mentions.map(n => `
               <div class="text-xs mb-1.5">
-                <span class="text-amber-300 font-semibold">${n.source}</span>: 
-                <span class="text-slate-300">"${n.title}"</span> 
-                <span class="text-[10px] text-slate-500">(${n.date})</span>
+                <span class="text-amber-300 font-semibold">${escapeHtml(n.source || '')}</span>: 
+                <span class="text-slate-300">"${escapeHtml(n.title || '')}"</span> 
+                <span class="text-[10px] text-slate-500">(${escapeHtml(n.date || '')})</span>
               </div>
             `).join('')}
           </div>
@@ -2093,7 +2093,7 @@ function openAthleteDetail(id) {
                   <span class="text-[10px] text-slate-400 uppercase font-bold">Social Following</span>
                   ${a.total_followers > 0 ? `
                     <span class="font-athletic text-2xl font-bold text-white block">${a.total_followers.toLocaleString()}</span>
-                    <span class="text-[10px] text-amber-300 font-medium truncate block">${a.social_handles.instagram || a.social_handles.twitter || 'Public Handles'}</span>
+                    <span class="text-[10px] text-amber-300 font-medium truncate block">${escapeHtml(a.social_handles.instagram || a.social_handles.twitter || 'Public Handles')}</span>
                   ` : `
                     <span class="font-athletic text-2xl font-bold text-slate-400 block">Pending Link</span>
                     <span class="text-[10px] text-slate-500">Claim to link @social</span>
@@ -2145,33 +2145,33 @@ function openAthleteDetail(id) {
                       ${hasHw ? `
                       <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
                         <span class="text-[9px] text-slate-400 uppercase font-bold block">Height &amp; Weight</span>
-                        <span class="font-bold text-white text-xs sm:text-sm">${cm.height || '—'}${cm.height && cm.weight ? ' &bull; ' : ''}${cm.weight || ''}</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${escapeHtml(cm.height || '—')}${cm.height && cm.weight ? ' &bull; ' : ''}${escapeHtml(cm.weight || '')}</span>
                       </div>` : ''}
                       ${hasForty ? `
                       <div class="bg-slate-800/60 rounded-lg p-2 border border-white/5">
                         <span class="text-[9px] text-slate-400 uppercase font-bold block">Reported 40-Yard</span>
-                        <span class="font-bold text-white text-xs sm:text-sm">${cm.forty}</span>
+                        <span class="font-bold text-white text-xs sm:text-sm">${escapeHtml(cm.forty)}</span>
                       </div>` : ''}
                     </div>` : (!hasHw && !hasForty ? `<p class="text-xs text-slate-400">No verified physical measurements or combine metrics are on file for this athlete yet.</p>` : '')}
                     <div class="pt-3 border-t border-white/5">
                       <h6 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-2">Athlete Videos</h6>
                       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
                         ${videoSections.map(v => v.url ? `
-                          <a href="${v.url}" target="_blank" rel="noopener noreferrer" class="group bg-slate-800/70 hover:bg-slate-700/80 border border-white/10 hover:border-amber-400/40 rounded-xl p-3 transition flex flex-col gap-1.5">
+                          <a href="${/^https?:\/\//i.test(v.url||'') ? escapeHtml(v.url) : '#'}" target="_blank" rel="noopener noreferrer" class="group bg-slate-800/70 hover:bg-slate-700/80 border border-white/10 hover:border-amber-400/40 rounded-xl p-3 transition flex flex-col gap-1.5">
                             <div class="flex items-center gap-2">
                               <span class="w-7 h-7 rounded-lg bg-amber-400/15 text-amber-400 flex items-center justify-center text-xs"><i class="${v.icon}"></i></span>
-                              <span class="font-bold text-white text-xs leading-tight">${v.label}</span>
+                              <span class="font-bold text-white text-xs leading-tight">${escapeHtml(v.label)}</span>
                             </div>
-                            <span class="text-[10px] text-slate-400">${v.desc}</span>
+                            <span class="text-[10px] text-slate-400">${escapeHtml(v.desc)}</span>
                             <span class="mt-auto pt-1 text-[10px] font-semibold text-amber-400 inline-flex items-center gap-1">Watch <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i></span>
                           </a>
                         ` : `
-                          <button type="button" onclick="alert('${v.label} is not available yet.')" class="text-left bg-slate-800/40 border border-dashed border-white/10 hover:border-amber-400/30 rounded-xl p-3 transition flex flex-col gap-1.5">
+                          <button type="button" onclick="alert('${escapeAttrJs(v.label)} is not available yet.')" class="text-left bg-slate-800/40 border border-dashed border-white/10 hover:border-amber-400/30 rounded-xl p-3 transition flex flex-col gap-1.5">
                             <div class="flex items-center gap-2">
                               <span class="w-7 h-7 rounded-lg bg-slate-700/60 text-slate-400 flex items-center justify-center text-xs"><i class="${v.icon}"></i></span>
-                              <span class="font-bold text-slate-200 text-xs leading-tight">${v.label}</span>
+                              <span class="font-bold text-slate-200 text-xs leading-tight">${escapeHtml(v.label)}</span>
                             </div>
-                            <span class="text-[10px] text-slate-500">${v.desc}</span>
+                            <span class="text-[10px] text-slate-500">${escapeHtml(v.desc)}</span>
                             <span class="mt-auto pt-1 text-[10px] font-semibold text-slate-500 inline-flex items-center gap-1">Coming soon</span>
                           </button>
                         `).join('')}
@@ -2193,8 +2193,8 @@ function openAthleteDetail(id) {
                     const cLogo = getCollegeLogo(c);
                     return `
                       <span class="px-3 py-1.5 rounded-xl bg-slate-900 border border-white/10 text-xs font-bold text-white flex items-center gap-2 shadow-sm hover:border-amber-400/40 transition">
-                        ${cLogo ? `<img src="${cLogo}" alt="${c}" class="w-5 h-5 object-contain shrink-0 drop-shadow" onerror="this.style.display='none'">` : '<i class="fa-solid fa-award text-amber-400"></i>'}
-                        <span>${c}</span>
+                        ${cLogo ? `<img src="${escapeHtml(cLogo)}" alt="${escapeHtml(c)}" class="w-5 h-5 object-contain shrink-0 drop-shadow" onerror="this.style.display='none'">` : '<i class="fa-solid fa-award text-amber-400"></i>'}
+                        <span>${escapeHtml(c)}</span>
                       </span>
                     `;
                   }).join('')}
@@ -2220,7 +2220,7 @@ function openAthleteDetail(id) {
                   Get verified college offers, social media engagement analytics, local business sponsorship inquiry forms, and contact channels.
                 </p>
                 <div class="flex items-center gap-3">
-                  <button onclick="unlockTest('${a.id}')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition">
+                  <button onclick="unlockTest('${escapeAttrJs(a.id)}')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 shadow-lg shadow-amber-500/20 transition">
                     Preview Profile Access ($19.99/mo or Free Trial)
                   </button>
                 </div>
@@ -2336,8 +2336,8 @@ function renderPOTW() {
                   <span class="font-athletic text-2xl font-bold text-slate-500 w-6 text-center">#${idx+1}</span>
                   <div class="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0">${renderAthleteAvatar(a)}</div>
                   <div>
-                    <h4 class="font-athletic text-xl font-bold text-white leading-none">${a.full_name}</h4>
-                    <p class="text-xs text-amber-400">${a.school_name}  •  ${a.primary_sport}</p>
+                    <h4 class="font-athletic text-xl font-bold text-white leading-none">${escapeHtml(a.full_name||'')}</h4>
+                    <p class="text-xs text-amber-400">${escapeHtml(a.school_name||'')}  &bull;  ${escapeHtml(a.primary_sport||'')}</p>
                   </div>
                 </div>
 
@@ -2351,7 +2351,7 @@ function renderPOTW() {
                   </div>
                 </div>
 
-                <button onclick="votePOTW('${a.id}')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-amber-400 hover:text-black text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1.5">
+                <button onclick="votePOTW('${escapeAttrJs(a.id)}')" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-amber-400 hover:text-black text-slate-200 text-xs font-bold transition flex items-center justify-center gap-1.5">
                   <i class="fa-solid fa-thumbs-up"></i>
                   <span>Vote</span>
                 </button>
@@ -2430,21 +2430,21 @@ function renderRankings() {
                     <div class="flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0">${renderAthleteAvatar(a)}</div>
                       <div>
-                        <span class="font-bold text-white block">${a.full_name}</span>
-                        <span class="text-[10px] text-slate-400">${a.position}</span>
+                        <span class="font-bold text-white block">${escapeHtml(a.full_name||'')}</span>
+                        <span class="text-[10px] text-slate-400">${escapeHtml(a.position||'')}</span>
                       </div>
                     </div>
                   </td>
                   <td class="py-3 px-4">
-                    <span class="text-white block">${a.school_name}</span>
-                    <span class="text-[10px] text-slate-400">${a.parish_city}</span>
+                    <span class="text-white block">${escapeHtml(a.school_name||'')}</span>
+                    <span class="text-[10px] text-slate-400">${escapeHtml(a.parish_city||'')}</span>
                   </td>
-                  <td class="py-3 px-4 font-semibold text-slate-300">${a.grad_year}</td>
-                  <td class="py-3 px-4">${a.primary_sport}</td>
+                  <td class="py-3 px-4 font-semibold text-slate-300">${escapeHtml(a.grad_year)}</td>
+                  <td class="py-3 px-4">${escapeHtml(a.primary_sport||'')}</td>
                   <td class="py-3 px-4 text-right font-medium">${(a.total_followers || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400"><span class="text-emerald-400">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-center">
-                    <button onclick="openAthleteDetail('${a.id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
+                    <button onclick="openAthleteDetail('${escapeAttrJs(a.id)}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
                       Profile
                     </button>
                   </td>
@@ -2481,11 +2481,11 @@ function renderRankings() {
                   <td class="py-3 px-4">
                     <div class="flex items-center gap-3">
                       <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0">${renderAthleteAvatar(a)}</div>
-                      <span class="font-bold text-white block">${a.full_name}</span>
+                      <span class="font-bold text-white block">${escapeHtml(a.full_name||'')}</span>
                     </div>
                   </td>
-                  <td class="py-3 px-4 text-slate-300">${a.school_name}</td>
-                  <td class="py-3 px-4">${a.primary_sport}</td>
+                  <td class="py-3 px-4 text-slate-300">${escapeHtml(a.school_name||'')}</td>
+                  <td class="py-3 px-4">${escapeHtml(a.primary_sport||'')}</td>
                   <td class="py-3 px-4 text-right font-bold text-red-300">${(a.votes || 0).toLocaleString()}</td>
                 </tr>
               `).join('')}
@@ -2892,7 +2892,7 @@ function updateMerchSlidesForAthlete(a) {
   }
 
   const heroImageInner = photoSrc
-    ? `<img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover">`
+    ? `<img src="${photoSrc}" alt="${escapeHtml(a.full_name||'')}" class="w-full h-full object-cover">`
     : renderAthleteAvatar(a);
 
   // 1. SLIDE 1: Wall Decal Frame (Ryder-specific asset; others use template + Player Hero Image)
@@ -2935,7 +2935,7 @@ function updateMerchSlidesForAthlete(a) {
 
   // Merch selector thumbnails below slider (exact duplicates of slide imagery)
   const thumbHero = photoSrc
-    ? `<img src="${photoSrc}" alt="${a.full_name}" class="w-full h-full object-cover">`
+    ? `<img src="${photoSrc}" alt="${escapeHtml(a.full_name||'')}" class="w-full h-full object-cover">`
     : `<div class="w-full h-full">${renderAthleteAvatar(a)}</div>`;
 
   if (thumbCard) {

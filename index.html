@@ -75,7 +75,7 @@
   <header class="sticky top-0 z-40 glass border-b border-white/10 shadow-xl">
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
       <!-- Brand Logo -->
-      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="navigate('directory')">
+      <div class="flex items-center gap-2 sm:gap-3 cursor-pointer shrink-0" onclick="navigate('home')">
         <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center font-athletic text-xl sm:text-2xl text-black font-bold shadow-lg shadow-amber-500/20">
           LA
         </div>
@@ -90,9 +90,10 @@
 
       <!-- Desktop Navigation (>= md) -->
       <nav class="hidden md:flex items-center gap-6 text-sm font-semibold">
-        <button onclick="navigate('directory')" class="nav-link text-white hover:text-amber-400 transition">Directory</button>
-        <button onclick="navigate('rankings')" class="nav-link text-slate-300 hover:text-amber-400 transition">Rankings</button>
-        <button onclick="navigate('pricing')" class="nav-link text-slate-300 hover:text-amber-400 transition">Pricing & NIL</button>
+        <button onclick="navigate('home')" id="nav-home" class="nav-link text-slate-300 hover:text-amber-400 transition">Home</button>
+        <button onclick="navigate('directory')" id="nav-directory" class="nav-link text-slate-300 hover:text-amber-400 transition">Directory</button>
+        <button onclick="navigate('rankings')" id="nav-rankings" class="nav-link text-slate-300 hover:text-amber-400 transition">Rankings</button>
+        <button onclick="navigate('pricing')" id="nav-pricing" class="nav-link text-slate-300 hover:text-amber-400 transition">Pricing & NIL</button>
       </nav>
 
       <!-- Header Actions: LARGE FAN VOTE WITH HEART & Athlete Portal -->
@@ -114,7 +115,10 @@
 
     <!-- Mobile Sticky Navigation Bar (< md) - ALWAYS VISIBLE ON MOBILE -->
     <nav class="md:hidden bg-slate-900/98 backdrop-blur-md border-t border-white/10 px-2 py-1.5 flex items-center justify-between gap-1 overflow-x-auto no-scrollbar shadow-inner">
-      <button onclick="navigate('directory')" id="mnav-directory" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-amber-400 text-slate-950 font-bold text-xs shadow flex items-center justify-center gap-1">
+      <button onclick="navigate('home')" id="mnav-home" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-amber-400 text-slate-950 font-bold text-xs shadow flex items-center justify-center gap-1">
+        <i class="fa-solid fa-house text-xs"></i> Home
+      </button>
+      <button onclick="navigate('directory')" id="mnav-directory" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1">
         <i class="fa-solid fa-users text-xs"></i> Directory
       </button>
       <button onclick="navigate('rankings')" id="mnav-rankings" class="mobile-subnav-btn flex-1 py-1.5 px-2 rounded-xl text-center transition whitespace-nowrap bg-slate-800/90 text-slate-300 hover:text-white border border-white/5 font-bold text-xs flex items-center justify-center gap-1">
@@ -784,7 +788,7 @@ function cleanScoutingText(str) {
 
 
 let ATHLETES = [...window.INITIAL_ATHLETES];
-let currentView = 'directory';
+let currentView = 'home';
 let filterClass = 'all';
 let filterSport = 'all';
 let filterParish = 'all';
@@ -1010,6 +1014,18 @@ function updateMobileNavActive(view) {
       if (span) span.className = 'text-[10px] font-medium mt-0.5';
     }
   });
+
+  // Update Desktop Nav
+  const desktopLinks = document.querySelectorAll('.nav-link');
+  desktopLinks.forEach(btn => {
+    if (btn.id === 'nav-' + view) {
+      btn.classList.remove('text-slate-300');
+      btn.classList.add('text-white');
+    } else if (btn.id && btn.id.startsWith('nav-')) {
+      btn.classList.remove('text-white');
+      btn.classList.add('text-slate-300');
+    }
+  });
 }
 
 // Touch swipe gestures on Card Carousel
@@ -1049,7 +1065,10 @@ function navigate(view) {
 function render() {
   const container = document.getElementById('app');
   if (!container) return;
-  if (currentView === 'directory') {
+  updateMobileNavActive(currentView);
+  if (currentView === 'home') {
+    container.innerHTML = renderHome();
+  } else if (currentView === 'directory') {
     container.innerHTML = renderDirectory();
   } else if (currentView === 'potw') {
     container.innerHTML = renderPOTW();
@@ -1058,6 +1077,140 @@ function render() {
   } else if (currentView === 'pricing') {
     container.innerHTML = renderPricing();
   }
+}
+
+// --- Front page featured selection ---------------------------------
+// Explicit overrides: Supabase fields featured_front_page/is_featured_front
+// or IDs listed here take priority. Fallback is deterministic round-robin by sport.
+const FEATURED_FRONT_PAGE_IDS = [];
+const FRONT_PAGE_COUNT = 6;
+
+function isFrontPageFeatured(a) {
+  if (!a) return false;
+  if (a.featured_front_page === true || a.is_featured_front === true) return true;
+  const id = String(a.id || a.player_id || '').trim();
+  return id && FEATURED_FRONT_PAGE_IDS.includes(id);
+}
+
+function frontPageQualityScore(a) {
+  const verified = a.verified ? 1 : 0;
+  const claimed = a.claimed ? 1 : 0;
+  const nil = Number(a.est_nil_value) || 0;
+  return (verified * 100000000) + (claimed * 10000000) + nil;
+}
+
+function getFrontPageAthletes(count = FRONT_PAGE_COUNT) {
+  // Must have real player image (not school logo/placeholder/unsplash).
+  const eligible = ATHLETES.filter(a => hasVerifiedPhoto(a));
+  if (!eligible.length) return [];
+
+  const byId = new Set();
+  const picked = [];
+
+  // 1) Explicit featured picks first (still must have player image).
+  const explicit = eligible
+    .filter(isFrontPageFeatured)
+    .sort((a, b) => frontPageQualityScore(b) - frontPageQualityScore(a) || String(a.full_name || '').localeCompare(String(b.full_name || '')));
+  for (const a of explicit) {
+    const key = String(a.id || a.player_id || a.slug || a.full_name);
+    if (byId.has(key) || picked.length >= count) continue;
+    byId.add(key);
+    picked.push(a);
+  }
+
+  // 2) Deterministic round-robin across sports.
+  const remaining = eligible.filter(a => !byId.has(String(a.id || a.player_id || a.slug || a.full_name)));
+  const groups = new Map();
+  for (const a of remaining) {
+    const sport = String(a.primary_sport || 'Other').trim() || 'Other';
+    if (!groups.has(sport)) groups.set(sport, []);
+    groups.get(sport).push(a);
+  }
+  const sportNames = [...groups.keys()].sort((a, b) => a.localeCompare(b));
+  for (const sport of sportNames) {
+    groups.get(sport).sort((a, b) => frontPageQualityScore(b) - frontPageQualityScore(a) || String(a.full_name || '').localeCompare(String(b.full_name || '')));
+  }
+
+  while (picked.length < count) {
+    let addedThisRound = false;
+    for (const sport of sportNames) {
+      const group = groups.get(sport);
+      if (!group || !group.length) continue;
+      const a = group.shift();
+      const key = String(a.id || a.player_id || a.slug || a.full_name);
+      if (byId.has(key)) continue;
+      byId.add(key);
+      picked.push(a);
+      addedThisRound = true;
+      if (picked.length >= count) break;
+    }
+    if (!addedThisRound) break;
+  }
+
+  // 3) Deterministic fallback: fill any remaining slots by quality.
+  if (picked.length < count) {
+    const fallback = remaining
+      .filter(a => !byId.has(String(a.id || a.player_id || a.slug || a.full_name)))
+      .sort((a, b) => frontPageQualityScore(b) - frontPageQualityScore(a) || String(a.full_name || '').localeCompare(String(b.full_name || '')));
+    for (const a of fallback) {
+      if (picked.length >= count) break;
+      const key = String(a.id || a.player_id || a.slug || a.full_name);
+      if (byId.has(key)) continue;
+      byId.add(key);
+      picked.push(a);
+    }
+  }
+
+  return picked.slice(0, count);
+}
+
+function renderHome() {
+  const featured = getFrontPageAthletes(FRONT_PAGE_COUNT);
+  const sports = [...new Set(featured.map(a => String(a.primary_sport || 'Other').trim() || 'Other'))];
+  return `
+    <div class="mb-10 text-center relative py-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-3">
+        <i class="fa-solid fa-star"></i>
+        <span>Louisiana NIL Directory & Yearbook (2026-2027) &bull; Front Page</span>
+      </div>
+      <h1 class="font-athletic text-5xl sm:text-6xl md:text-7xl font-bold tracking-wide uppercase text-white leading-none">
+        LOUISIANA <span class="text-amber-400">FRONT PAGE</span>
+      </h1>
+      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-300 mt-2">
+        Six featured Louisiana athletes, mixed across sports. Explore the full scraped roster in the Directory.
+      </p>
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-2 text-[11px] text-slate-300">
+        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-layer-group text-amber-400 mr-1"></i>${featured.length} Featured Athletes</span>
+        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-shuffle text-amber-400 mr-1"></i>Round-Robin Sport Mix</span>
+        <span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-camera-retro text-amber-400 mr-1"></i>Player Images Only</span>
+        ${sports.length ? `<span class="px-2.5 py-1 rounded-full bg-slate-800/80 border border-white/10"><i class="fa-solid fa-basketball text-amber-400 mr-1"></i>${sports.join(', ')}</span>` : ''}
+      </div>
+      <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+        <button onclick="navigate('directory')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-extrabold text-sm uppercase tracking-wider hover:brightness-110 shadow-md shadow-amber-500/20 transition">
+          <i class="fa-solid fa-users mr-1.5"></i> View Full Directory
+        </button>
+        <button onclick="navigate('rankings')" class="px-5 py-2.5 rounded-xl bg-slate-800/80 border border-white/10 text-white font-bold text-sm hover:bg-slate-700 transition">
+          <i class="fa-solid fa-trophy text-purple-400 mr-1.5"></i> Rankings
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
+      <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
+        <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
+        The Front Page keeps <strong class="text-white">${FRONT_PAGE_COUNT} featured players</strong>. The Directory tab includes all scraped players.
+      </p>
+      <button onclick="navigate('directory')" class="shrink-0 px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider hover:brightness-110 transition">Open Directory</button>
+    </div>
+
+    <div id="athlete-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      ${featured.length ? featured.map(athlete => renderAthleteCard(athlete)).join('') : `
+        <div class="col-span-full rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
+          <p class="text-slate-300 text-sm">No featured front-page athletes are available yet.</p>
+          <button onclick="navigate('directory')" class="mt-4 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">Open Directory</button>
+        </div>`}
+    </div>
+  `;
 }
 
 function renderDirectory() {
@@ -1082,10 +1235,9 @@ function renderDirectory() {
   });
 
   // --- Directory listing -------------------------------------
-  // Site shows only athletes with verified/actual player photos.
+  // Directory shows all scraped players. Front page keeps 6 featured players.
   const noActiveFilters = !searchTerm && filterClass === 'all' && filterSport === 'all' && filterParish === 'all';
   const photoMatches = filtered.filter(hasVerifiedPhoto);
-  const landingMode = !showAllAthletes && noActiveFilters && photoMatches.length > 0;
   function getLastNameSortKey(fullName) {
     const parts = String(fullName || '').trim().replace(/\s+/g, ' ').split(' ').filter(Boolean);
     if (!parts.length) return '';
@@ -1094,7 +1246,10 @@ function renderDirectory() {
     while (i > 0 && suffixes.has(parts[i].toLowerCase())) i--;
     return (parts[i] || parts[parts.length - 1] || '').toLowerCase();
   }
-  const baseList = [...photoMatches].sort((a, b) => {
+  const baseList = [...filtered].sort((a, b) => {
+    const ap = hasVerifiedPhoto(a) ? 0 : 1;
+    const bp = hasVerifiedPhoto(b) ? 0 : 1;
+    if (ap !== bp) return ap - bp;
     const la = getLastNameSortKey(a.full_name);
     const lb = getLastNameSortKey(b.full_name);
     const cmp = la.localeCompare(lb, undefined, { sensitivity: 'base' });
@@ -1251,7 +1406,7 @@ function renderDirectory() {
         </div>
 
         <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-white/5">
-        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> Louisiana athletes with verified player photos</span>
+        <span>Showing <strong class="text-white">${visible.length ? pageStart + 1 : 0}\u2013${Math.min(pageStart + PAGE_SIZE, totalCount)}</strong> of <strong class="text-white">${totalCount}</strong> Louisiana scraped athletes${photoMatches.length !== totalCount ? ` (<strong class="text-white">${photoMatches.length}</strong> with verified player photos)` : ''}</span>
         <div class="flex items-center gap-3">
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> Verified</span>
           <span class="inline-flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Claimed</span>
@@ -1261,16 +1416,17 @@ function renderDirectory() {
 
     <div class="mb-6 flex flex-col sm:flex-row items-center justify-between gap-3 rounded-2xl border border-amber-400/25 bg-amber-400/5 px-4 py-3">
       <p class="text-xs sm:text-sm text-slate-300 text-center sm:text-left">
-        <i class="fa-solid fa-camera-retro text-amber-400 mr-1"></i>
-        Showing <strong class="text-white">${totalCount}</strong> athletes with verified player photos${noActiveFilters ? '' : ' matching your filters'}.
+        <i class="fa-solid fa-database text-amber-400 mr-1"></i>
+        Showing <strong class="text-white">${totalCount}</strong> scraped athletes${noActiveFilters ? '' : ' matching your filters'}. <span class="text-slate-400">${photoMatches.length} with verified player photos.</span>
       </p>
+      <button onclick="navigate('home')" class="shrink-0 px-3 py-1.5 rounded-lg bg-slate-800/80 border border-white/10 text-white text-xs font-bold hover:bg-slate-700 transition"><i class="fa-solid fa-house text-amber-400 mr-1"></i>Front Page</button>
     </div>
 
     <div id="athlete-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       ${visible.length ? visible.map(athlete => renderAthleteCard(athlete)).join('') : `
         <div class="col-span-full rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
           <p class="text-slate-300 text-sm">No athletes match these filters.</p>
-          <button onclick="toggleAllAthletes(true)" class="mt-4 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">Open full directory</button>
+          <button onclick="filterClass='all';filterSport='all';filterParish='all';filterLevel='high-school';searchTerm='';currentPage=1;render();" class="mt-4 px-4 py-2 rounded-xl bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">Clear filters</button>
         </div>`}
     </div>
 
@@ -3306,13 +3462,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <!-- Fixed Mobile Bottom Navigation Bar (< md) -->
   <div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-lg border-t border-white/10 px-2 py-1 flex items-center justify-around safe-area-bottom shadow-2xl">
-    <button onclick="navigate('directory')" id="bnav-directory" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-amber-400 transition">
-      <i class="fa-solid fa-users text-base"></i>
-      <span class="text-[10px] font-bold mt-0.5">Directory</span>
+    <button onclick="navigate('home')" id="bnav-home" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-amber-400 transition">
+      <i class="fa-solid fa-house text-base"></i>
+      <span class="text-[10px] font-bold mt-0.5">Home</span>
     </button>
-    <button onclick="navigate('rankings')" id="bnav-rankings" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
-      <i class="fa-solid fa-trophy text-base"></i>
-      <span class="text-[10px] font-medium mt-0.5">Rankings</span>
+    <button onclick="navigate('directory')" id="bnav-directory" class="mobile-bnav flex flex-col items-center justify-center py-1 px-3 text-slate-400 hover:text-white transition">
+      <i class="fa-solid fa-users text-base"></i>
+      <span class="text-[10px] font-medium mt-0.5">Directory</span>
     </button>
     <button onclick="openCardModal(currentCardAthlete ? currentCardAthlete.id : '1')" id="bnav-card" class="mobile-bnav -mt-4 flex flex-col items-center justify-center">
       <div class="w-11 h-11 rounded-full gold-gradient text-slate-950 flex items-center justify-center shadow-lg shadow-amber-500/30 border-2 border-slate-950">

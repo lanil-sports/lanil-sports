@@ -66,6 +66,8 @@
         letter-spacing: 0.02em;
       }
     }
+    @keyframes heartbeat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.25); } 28% { transform: scale(1); } 42% { transform: scale(1.25); } 70% { transform: scale(1); } }
+    .heart-beat { display: inline-block; animation: heartbeat 1.2s ease-in-out infinite; transform-origin: center; }
   </style>
 </head>
 <body class="bg-[#0b132b] text-slate-100 font-sans min-h-screen flex flex-col antialiased selection:bg-yellow-400 selection:text-black overflow-x-hidden w-full relative">
@@ -105,7 +107,7 @@
       <div class="flex items-center justify-end gap-1.5 sm:gap-3 ml-auto min-w-0 flex-nowrap">
         <!-- LARGE FAN VOTE BUTTON WITH HEART (Prominently featured in menu header) -->
         <button onclick="navigate('potw')" class="py-1.5 sm:py-2 px-2 sm:px-4 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-500 hover:from-red-500 hover:to-amber-400 text-white font-athletic text-sm sm:text-2xl font-bold tracking-wide sm:tracking-wider uppercase shadow-lg shadow-red-600/40 hover:scale-105 active:scale-95 transition flex items-center gap-1 sm:gap-2 border-2 border-red-400/60 shrink-0" title="Vote for Louisiana Athlete of the Week">
-          <i class="fa-solid fa-heart text-white text-sm sm:text-xl drop-shadow"></i>
+          <span class="heart-beat text-sm sm:text-xl leading-none" aria-hidden="true">❤️</span>
           <span class="leading-none mt-0.5 whitespace-nowrap">FAN VOTE</span>
           <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping hidden sm:inline-block"></span>
         </button>
@@ -2405,7 +2407,7 @@ function renderRankings() {
       <div class="glass rounded-2xl overflow-hidden">
         <div class="px-4 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between gap-3">
           <div>
-            <h2 class="font-athletic text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide">❤️ Top Fan Vote</h2>
+            <h2 class="font-athletic text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide"><span class="heart-beat mr-1" aria-hidden="true">❤️</span>Top Fan Vote</h2>
             <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5">Top athletes by fan votes.</p>
           </div>
           <button onclick="navigate('potw')" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-300 text-xs font-bold transition">View Fan Vote</button>

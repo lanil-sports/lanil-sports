@@ -2341,6 +2341,8 @@ function votePOTW(id) {
 
 function renderRankings() {
   const topAthletes = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.est_nil_value || 0) - (a.est_nil_value || 0));
+  const topFanVote = [...ATHLETES].filter(hasVerifiedPhoto).sort((a,b) => (b.votes || 0) - (a.votes || 0)).slice(0, 10);
+  const totalVotes = topFanVote.reduce((sum, a) => sum + (a.votes || 0), 0);
   return `
     <div class="space-y-6">
       <div class="text-center mb-8">
@@ -2386,13 +2388,52 @@ function renderRankings() {
                   </td>
                   <td class="py-3 px-4 font-semibold text-slate-300">${a.grad_year}</td>
                   <td class="py-3 px-4">${a.primary_sport}</td>
-                  <td class="py-3 px-4 text-right font-medium">${a.total_followers.toLocaleString()}</td>
-                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400">${a.est_nil_value.toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-medium">${(a.total_followers || 0).toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400">${(a.est_nil_value || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-center">
                     <button onclick="openAthleteDetail('${a.id}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
                       Profile
                     </button>
                   </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass rounded-2xl overflow-hidden">
+        <div class="px-4 sm:px-6 py-4 border-b border-white/10 flex items-center justify-between gap-3">
+          <div>
+            <h2 class="font-athletic text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide">❤️ Top Fan Vote</h2>
+            <p class="text-[11px] sm:text-xs text-slate-400 mt-0.5">Top athletes by fan votes.</p>
+          </div>
+          <button onclick="navigate('potw')" class="shrink-0 px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/30 text-red-300 text-xs font-bold transition">View Fan Vote</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-300">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] tracking-wider border-b border-white/10">
+              <tr>
+                <th class="py-3.5 px-4">Rank</th>
+                <th class="py-3.5 px-4">Athlete</th>
+                <th class="py-3.5 px-4">School</th>
+                <th class="py-3.5 px-4">Sport</th>
+                <th class="py-3.5 px-4 text-right">Votes</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              ${topFanVote.map((a, i) => `
+                <tr class="hover:bg-slate-800/40 transition">
+                  <td class="py-3 px-4 font-athletic text-lg font-bold text-red-400">#${i+1}</td>
+                  <td class="py-3 px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-lg overflow-hidden shrink-0">${renderAthleteAvatar(a)}</div>
+                      <span class="font-bold text-white block">${a.full_name}</span>
+                    </div>
+                  </td>
+                  <td class="py-3 px-4 text-slate-300">${a.school_name}</td>
+                  <td class="py-3 px-4">${a.primary_sport}</td>
+                  <td class="py-3 px-4 text-right font-bold text-red-300">${(a.votes || 0).toLocaleString()}</td>
                 </tr>
               `).join('')}
             </tbody>

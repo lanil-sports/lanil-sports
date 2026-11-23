@@ -1933,7 +1933,7 @@ function renderAthleteCard(a) {
           <div class="grid grid-cols-2 gap-2 pt-1">
             <div class="bg-amber-400/5 border border-amber-400/15 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">Est. NIL Value</span>
-              <span class="font-athletic text-lg font-bold text-amber-400 leading-none"><span class="text-emerald-400 text-[0.9em]">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
+              <span class="font-athletic text-lg font-bold text-purple-400 leading-none"><span class="text-purple-300 text-[0.9em]">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
             </div>
             <div class="bg-slate-900/60 border border-white/5 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">College Interest</span>
@@ -2086,7 +2086,7 @@ function openAthleteDetail(id) {
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
                   <span class="text-[10px] text-slate-400 uppercase font-bold">Estimated Annual NIL</span>
-                  <span class="font-athletic text-2xl font-bold text-emerald-400 block"><span class="text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</span>
+                  <span class="font-athletic text-2xl font-bold text-purple-400 block"><span class="text-purple-300 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</span>
                   <span class="text-[10px] text-slate-500">Based on stats, offers & reach</span>
                 </div>
                 <div class="bg-slate-800 rounded-xl p-3 border border-white/5">
@@ -2442,7 +2442,7 @@ function renderRankings() {
                   <td class="py-3 px-4 font-semibold text-slate-300">${escapeHtml(a.grad_year)}</td>
                   <td class="py-3 px-4">${escapeHtml(a.primary_sport||'')}</td>
                   <td class="py-3 px-4 text-right font-medium">${(a.total_followers || 0).toLocaleString()}</td>
-                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-amber-400"><span class="text-emerald-400 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-purple-400"><span class="text-purple-300 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-center">
                     <button onclick="openAthleteDetail('${escapeAttrJs(a.id)}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
                       Profile

@@ -1931,9 +1931,9 @@ function renderAthleteCard(a) {
           </div>
 
           <div class="grid grid-cols-2 gap-2 pt-1">
-            <div class="bg-amber-400/5 border border-amber-400/15 rounded-lg p-2 text-center">
-              <span class="block text-[9px] uppercase font-bold text-slate-400">Est. NIL Value</span>
-              <span class="font-athletic text-lg font-bold text-purple-400 leading-none"><span class="text-purple-300 text-[0.9em]">$</span>${(Number(a.est_nil_value) || 0).toLocaleString()}/yr</span>
+            <div class="bg-purple-500/15 border border-purple-400/30 rounded-lg p-2 text-center">
+              <span class="block text-[9px] uppercase font-bold text-white">Est. NIL Value</span>
+              <span class="font-athletic text-lg font-bold leading-none"><span class="text-emerald-400 text-[0.9em]">$</span><span class="text-amber-400">${(Number(a.est_nil_value) || 0).toLocaleString()}</span><span class="text-slate-300 text-[0.75em]">/yr</span></span>
             </div>
             <div class="bg-slate-900/60 border border-white/5 rounded-lg p-2 text-center">
               <span class="block text-[9px] uppercase font-bold text-slate-400">College Interest</span>

@@ -604,7 +604,7 @@ function renderPricing() {
               <span class="text-xs text-slate-400">/ month</span>
             </div>
             <ul class="space-y-2.5 text-xs text-slate-300">
-              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Up to 10 Headshot & Action Photos</li>
+              <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Up to 3 Photos &amp; Multiple Video Uploads</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Full Bio & Highlight Links (Hudl/YouTube)</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Verified Athlete Badge</li>
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> 9:16 Shareable Digital Player Card</li>

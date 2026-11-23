@@ -1,0 +1,66 @@
+name: Daily Athlete Ingestion & Sync
+
+on:
+  schedule:
+    # Runs daily at 6:00 AM CST / 7:00 AM CDT (12:00 UTC).
+    - cron: '0 12 * * *'
+  # Manual run from GitHub Actions UI.
+  workflow_dispatch:
+
+# Prevent overlapping ingestion runs (scheduled vs manual).
+concurrency:
+  group: lanil-athlete-ingestion
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  scrape-and-sync:
+    name: Ingest and sync athletes
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Verify required secrets
+        run: |
+          if [ -z "${SUPABASE_URL}" ] || [ -z "${SUPABASE_SERVICE_ROLE_KEY}" ]; then
+            echo "::error::Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY GitHub Actions secrets."
+            exit 1
+          fi
+
+      - name: Run live athlete ingestion
+        run: node scripts/ingest_sports.js
+
+      - name: Import staged acquisition data (optional)
+        if: always()
+        continue-on-error: true
+        run: |
+          if [ -f scripts/import_staging.js ]; then
+            node scripts/import_staging.js
+          else
+            echo "No staging import script found; skipping."
+          fi
+
+      - name: Upload ingestion logs and summaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ingestion-logs-${{ github.run_id }}
+          if-no-files-found: ignore
+          retention-days: 30
+          path: |
+            logs/**
+            data/pipeline_summary_*.json
+            data/metrics_report_*.json
+            data/staging/import_results.json

@@ -30,20 +30,49 @@ async function fetchHtml(url){
 
 function parseRosterLinks(html, baseUrl){
   const players=[];
-  const linkRe=/<a[^>]+href=["']([^"']*(?:\/roster\/[^"']+|roster\.aspx\?rp_id=\d+)[^"']*)["'][^>]*>([\s\S]*?)<\/a>/ig;
+  const linkRe=/<a[^>]+href=["']([^"']*(?:\/roster\/[^"']+|roster\.aspx\?rp_id=\d+|\/bios\/[^"']+|\/players\/[^"']+)[^"']*)["'][^>]*>([\s\S]*?)<\/a>/ig;
   const seen=new Set();
   for(const m of html.matchAll(linkRe)){
     let href; try{ href=new URL(m[1], baseUrl).href; }catch{ continue; }
     const name=norm(m[2].replace(/<[^>]+>/g," "));
-    if(!name || name.length<3 || name.length>60) continue;
+    if(!name || name.length<3 || name.length<60) continue;
     if(!/\s/.test(name)) continue;
-    if(/full roster|coaching staff|schedule|stats/i.test(name)) continue;
-    const key=name.toLowerCase();
-    if(seen.has(key)) continue;
+    if(/full roster|coaching staff|schedule|stats|view bio|go to|read more/i.test(name)) continue;
+    const key=name.toLowerCase().replace(/[^a-z ]/g,'').trim();
+    if(!key || seen.has(key)) continue;
     seen.add(key);
     players.push({name, bio_url:href});
   }
   return players;
+}
+
+function sportFromUrl(url){
+  const u=String(url||'').toLowerCase();
+  if(/football/.test(u)) return 'Football';
+  if(/men[^a-z]*s[^a-z]*basketball|mbkb|m-basketball/.test(u)) return 'Basketball';
+  if(/women[^a-z]*s[^a-z]*basketball|wbkb|w-basketball/.test(u)) return 'Basketball';
+  if(/baseball/.test(u)) return 'Baseball';
+  if(/softball/.test(u)) return 'Softball';
+  if(/volleyball|wvball/.test(u)) return 'Volleyball';
+  if(/track|xc|cross-country/.test(u)) return 'Track & Field';
+  if(/soccer/.test(u)) return 'Soccer';
+  if(/tennis/.test(u)) return 'Tennis';
+  if(/golf/.test(u)) return 'Golf';
+  return null;
+}
+
+async function discoverRosterUrls(college){
+  const urls=new Set();
+  // common patterns
+  for(const [p] of SPORT_PATHS) urls.add(`${college.athletics_url}/sports/${p}/roster`);
+  try{
+    const html=await fetchHtml(college.athletics_url);
+    for(const m of html.matchAll(/href=["']([^"']*roster[^"']*)["']/ig)){
+      try{ const u=new URL(m[1], college.athletics_url).href; if(u.includes(college.athletics_url.replace(/^https?:\/\//,''))) urls.add(u.split('#')[0]); }catch{}
+    }
+  }catch{}
+  // keep only roster pages (not individual player)
+  return [...urls].filter(u=>/roster/i.test(u) && !/roster\.aspx\?rp_id/i.test(u) && !/\/players\//i.test(u));
 }
 
 async function upsertPlayer(p, college, sportLabel){
@@ -82,19 +111,26 @@ async function main(){
   let total=0, ok=0, err=0;
   for(const c of targets){
     await ensureSchool(c);
-    for(const [pathSport,label] of SPORT_PATHS){
-      const url=`${c.athletics_url}/sports/${pathSport}/roster`;
+    const rosterUrls = await discoverRosterUrls(c);
+    const seenSportUrl=new Set();
+    for(const url of rosterUrls){
+      const label = sportFromUrl(url);
+      if(!label) continue;
+      const key=label+'|'+url;
+      if(seenSportUrl.has(key)) continue;
+      seenSportUrl.add(key);
       try{
         const html=await fetchHtml(url);
         const players=parseRosterLinks(html,url);
-        console.log(`${c.name} ${label}: ${players.length}`);
+        if(!players.length) continue;
+        console.log(`${c.name} ${label}: ${players.length} (${url})`);
         for(const p of players){
           total++;
           const r=await upsertPlayer(p,c,label);
-          if(r.ok) ok++; else { err++; if(err<10) console.log("  err",r.status,String(r.body||"").slice(0,100)); }
+          if(r.ok) ok++; else { err++; if(err<10) console.log("  err",r.status,String(r.body||"").slice(0,120)); }
         }
-      }catch(e){ /* skip missing sport */ }
-      await sleep(300);
+      }catch(e){ /* skip */ }
+      await sleep(250);
     }
   }
   console.log({total,ok,err,apply:APPLY});

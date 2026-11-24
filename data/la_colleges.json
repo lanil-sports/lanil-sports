@@ -1,0 +1,22 @@
+[
+  {"id":"lsu","name":"Louisiana State University","city":"Baton Rouge","level":"college","division":"NCAA D1","conference":"SEC","athletics_url":"https://lsusports.net","sports":{"football":"https://lsusports.net/sports/fb/roster/","mens_basketball":"https://lsusports.net/sports/mbball/roster/","womens_basketball":"https://lsusports.net/sports/wbball/roster/","baseball":"https://lsusports.net/sports/bsb/roster/","softball":"https://lsusports.net/sports/sb/roster/"}},
+  {"id":"southern","name":"Southern University","city":"Baton Rouge","level":"college","division":"NCAA D1","conference":"SWAC","athletics_url":"https://gojagsports.com"},
+  {"id":"grambling","name":"Grambling State University","city":"Grambling","level":"college","division":"NCAA D1","conference":"SWAC","athletics_url":"https://gsutigers.com"},
+  {"id":"tulane","name":"Tulane University","city":"New Orleans","level":"college","division":"NCAA D1","conference":"AAC","athletics_url":"https://tulanegreenwave.com"},
+  {"id":"ull","name":"University of Louisiana at Lafayette","city":"Lafayette","level":"college","division":"NCAA D1","conference":"Sun Belt","athletics_url":"https://ragincajuns.com"},
+  {"id":"ulm","name":"University of Louisiana at Monroe","city":"Monroe","level":"college","division":"NCAA D1","conference":"Sun Belt","athletics_url":"https://ulmwarhawks.com"},
+  {"id":"latech","name":"Louisiana Tech University","city":"Ruston","level":"college","division":"NCAA D1","conference":"CUSA","athletics_url":"https://latechsports.com"},
+  {"id":"mcneese","name":"McNeese State University","city":"Lake Charles","level":"college","division":"NCAA D1","conference":"Southland","athletics_url":"https://mcneesesports.com"},
+  {"id":"nicholls","name":"Nicholls State University","city":"Thibodaux","level":"college","division":"NCAA D1","conference":"Southland","athletics_url":"https://geauxcolonels.com"},
+  {"id":"nsu","name":"Northwestern State University","city":"Natchitoches","level":"college","division":"NCAA D1","conference":"Southland","athletics_url":"https://nsudemons.com"},
+  {"id":"southeastern","name":"Southeastern Louisiana University","city":"Hammond","level":"college","division":"NCAA D1","conference":"Southland","athletics_url":"https://lionsports.net"},
+  {"id":"uno","name":"University of New Orleans","city":"New Orleans","level":"college","division":"NCAA D1","conference":"Southland","athletics_url":"https://unoprivateers.com"},
+  {"id":"xavier","name":"Xavier University of Louisiana","city":"New Orleans","level":"college","division":"NAIA","conference":"Red River","athletics_url":"https://xulagold.com"},
+  {"id":"dillard","name":"Dillard University","city":"New Orleans","level":"college","division":"NAIA","conference":"GCAC","athletics_url":"https://dillardbleudevils.com"},
+  {"id":"loyola","name":"Loyola University New Orleans","city":"New Orleans","level":"college","division":"NAIA","conference":"SSAC","athletics_url":"https://loyolawolfpack.com"},
+  {"id":"centenary","name":"Centenary College of Louisiana","city":"Shreveport","level":"college","division":"NCAA D3","conference":"SCAC","athletics_url":"https://gocentenary.com"},
+  {"id":"lcu","name":"Louisiana Christian University","city":"Pineville","level":"college","division":"NAIA","conference":"RRAC","athletics_url":"https://lcwildcats.net"},
+  {"id":"lsus","name":"LSU Shreveport","city":"Shreveport","level":"college","division":"NAIA","conference":"RRAC","athletics_url":"https://lsusathletics.com"},
+  {"id":"lsua","name":"LSU Alexandria","city":"Alexandria","level":"college","division":"NAIA","conference":"RRAC","athletics_url":"https://lsuagenerals.com"},
+  {"id":"suno","name":"Southern University at New Orleans","city":"New Orleans","level":"college","division":"NAIA","conference":"GCAC","athletics_url":"https://sunknights.com"}
+]

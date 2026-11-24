@@ -1352,9 +1352,12 @@ function renderDirectory() {
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
-        <div class="lg:col-span-2 relative">
-          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
-          <input type="text" oninput="updateSearch(this.value)" value="${escapeHtml(searchTerm)}" placeholder="Search athlete, school, parish, or stats (e.g. 2,000 yds, 15 TD, sacks, 3-pt)..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
+        <div class="lg:col-span-2 flex gap-2">
+          <div class="relative flex-1">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+            <input id="directory-search-input" type="text" oninput="updateSearch(this.value)" value="${escapeHtml(searchTerm)}" placeholder="Search athlete, school, parish, or stats (e.g. 2,000 yds, 15 TD, sacks, 3-pt)..." class="w-full bg-slate-900/80 border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
+          </div>
+          <button type="button" onclick="const v=document.getElementById('directory-search-input'); updateSearch(v?v.value:searchTerm);" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-extrabold uppercase tracking-wider transition shrink-0">Search</button>
         </div>
 
         <div>
@@ -3475,7 +3478,17 @@ function updateLevel(val) {
 }
 
 function updateParish(val) { filterParish = val; currentPage = 1; render(); }
-function updateSearch(val) { searchTerm = val; currentPage = 1; render(); }
+function updateSearch(val) {
+  searchTerm = val;
+  currentPage = 1;
+  render();
+  const si = document.getElementById('directory-search-input');
+  if (si) {
+    si.focus();
+    const end = si.value.length;
+    si.setSelectionRange(end, end);
+  }
+}
 function filterByClass(val) { filterClass = val.toString(); currentView = 'directory'; currentPage = 1; render(); }
 function filterByParish(val) { filterParish = val; currentView = 'directory'; currentPage = 1; render(); }
 

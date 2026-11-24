@@ -822,9 +822,10 @@ function hasVerifiedPhoto(a) {
   if (!h) return false;
   const lower = h.toLowerCase();
   if (lower.includes('unsplash.com') || lower.includes('placehold')) return false;
-  // Exclude school logos/mascots mistakenly stored as athlete headshots.
+  // Exclude school logos/mascots/venue images mistakenly stored as athlete headshots.
   if (lower.includes('/logo') || lower.includes('school_logo') || lower.includes('mascot')) return false;
   if (/\.(svg)(\?|$)/i.test(lower) && lower.includes('logo')) return false;
+  if (/(stadium|arena|facility|ballpark|fieldhouse|gymnasium|crowd|banner|team_photo|group_photo|skyhawkstand)/i.test(lower)) return false;
   return /^(https?:\/\/|\/assets\/|data:image\/)/i.test(h);
 }
 

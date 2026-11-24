@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const fetch = globalThis.fetch;
 
 async function check() {
   const url = "https://www.on3.com/rivals/maxx-jones-246534/";

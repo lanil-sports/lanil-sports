@@ -18,7 +18,7 @@
  * Auth: no API key needed — rosters are public on maxpreps.com/la/...
  */
 
-const fetch = require("node-fetch");
+const fetch = globalThis.fetch;
 const cheerio = require("cheerio");
 const fs = require("fs");
 const path = require("path");
@@ -106,7 +106,9 @@ function mapMaxPrepsRosterRow(arr, school, sportSlug, totals) {
     newspaper_mentions: [],
     social_handles: {},
     total_followers: 0,
-    est_nil_value: calculateNil(primaryPos, gradeText, weight, heightInches),
+    // MaxPreps rosters have no offers yet; offers bump NIL value via offersMultiplier
+    // on recalc paths (e.g. batch_upsert) once potential_colleges is populated.
+    est_nil_value: calculateNil(primaryPos, gradeText, weight, heightInches, []),
     potential_colleges: [],
     headshot_url: headshotUrl || "",
     headshot_permission: headshotUrl ? "maxpreps" : "", // official rosters → authorized for display
@@ -149,7 +151,7 @@ function gradeFromYear(year) {
   return "";
 }
 
-function calculateNil(pos, grade, weight, heightInches) {
+function calculateNil(pos, grade, weight, heightInches, offers) {
   const base = 250;
   let posMult = 1.0;
   const p = (pos || "").toUpperCase();
@@ -160,10 +162,21 @@ function calculateNil(pos, grade, weight, heightInches) {
   let sizeBonus = 0;
   if (weight >= 220 || heightInches >= 75) sizeBonus = 250;
   let gradeMult = 1.0;
-  if (grade === "Sr.") gradeMult = 1.25;
-  else if (grade === "Jr.") gradeMult = 1.15;
-  else if (grade === "So.") gradeMult = 1.05;
-  return Math.round((base * posMult * gradeMult) + sizeBonus);
+  if (grade === "Sr." || grade === "Senior") gradeMult = 1.25;
+  else if (grade === "Jr." || grade === "Junior") gradeMult = 1.15;
+  else if (grade === "So." || grade === "Sophomore") gradeMult = 1.05;
+  // College offers bump the value: 3+ offers → 1.30x, 1–2 offers → 1.15x (see offersMultiplier).
+  const offerMult = offersMultiplier(offers);
+  return Math.round(((base * posMult * gradeMult) + sizeBonus) * offerMult);
+}
+
+// Offers are stored in athlete.potential_colleges. Players with offers get a
+// bump on their NIL value: 3+ offers = 1.30x, 1–2 offers = 1.15x, none = 1.0x.
+function offersMultiplier(colleges) {
+  const offers = Array.isArray(colleges) ? colleges.filter(Boolean) : [];
+  if (offers.length === 0) return 1;
+  if (offers.length >= 3) return 1.30;
+  return 1.15;
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -392,6 +405,7 @@ module.exports = {
   getGradYear,
   gradeFromYear,
   calculateNil,
+  offersMultiplier,
   ROSTER_SPORTS,
   SPORT_DISPLAY,
 };

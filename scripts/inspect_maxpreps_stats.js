@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const fetch = globalThis.fetch;
 
 async function check() {
   const url = "https://www.maxpreps.com/ca/folsom/folsom-bulldogs/athletes/ryder-lyons/football/stats/?careerid=ufohkivpbcci2";

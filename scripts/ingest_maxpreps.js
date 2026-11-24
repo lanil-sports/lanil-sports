@@ -4,7 +4,7 @@
  * weights, class years, direct headshots (arr[18]), and profile URLs.
  */
 
-const fetch = require("node-fetch");
+const fetch = globalThis.fetch;
 const cheerio = require("cheerio");
 const https = require("https");
 const fs = require("fs");

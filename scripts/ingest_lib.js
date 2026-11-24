@@ -434,7 +434,7 @@ async function supabasePost(path, rows, onConflict) {
     return { ok: true, status: 0, body: "", dryRun: true };
   }
   const query = onConflict ? `?on_conflict=${onConflict}` : "";
-  const table = path.replace(/[?/].*$/, "");
+  const table = path.replace(/[?#].*$/, "").split("/").filter(Boolean).pop() || "";
   const cleanRows = table === "athletes" ? await Promise.all(rows.map((r) => sanitizeRow(table, r))) : rows;
   const resp = await supabaseRequest("POST", `${path}${query}`, cleanRows, {
     Prefer: "resolution=merge-duplicates,return=minimal",
@@ -450,7 +450,7 @@ async function supabasePatch(path, rows) {
     logLine(`[dry-run] would PATCH ${path} (${rows.length} rows)`);
     return { ok: true, status: 0, body: "", dryRun: true };
   }
-  const table = path.replace(/[?/].*$/, "").split("=").pop();
+  const table = path.replace(/[?#].*$/, "").split("/").filter(Boolean).pop() || "";
   const cleanRows = table === "athletes" ? await Promise.all(rows.map((r) => sanitizeRow(table, r))) : rows;
   const resp = await supabaseRequest("PATCH", path, cleanRows, {
     Prefer: "return=minimal",

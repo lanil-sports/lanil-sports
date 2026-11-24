@@ -71,11 +71,17 @@ async function upsertPlayer(p, college, sportLabel){
   return {ok:r.ok,status:r.status,body:r.body};
 }
 
+async function ensureSchool(c){
+  if(!APPLY) return;
+  try{ await lib.supabasePost("/schools", [{id:c.id,name:c.name,city:c.city,lhsaa_member:false,classification:c.division||"College"}], "id"); }catch{}
+}
+
 async function main(){
   const colleges=JSON.parse(fs.readFileSync(path.join(__dirname,"..","data","la_colleges.json"),"utf8"));
   const targets=colleges.slice(0, LIMIT===Infinity?colleges.length:LIMIT);
   let total=0, ok=0, err=0;
   for(const c of targets){
+    await ensureSchool(c);
     for(const [pathSport,label] of SPORT_PATHS){
       const url=`${c.athletics_url}/sports/${pathSport}/roster`;
       try{

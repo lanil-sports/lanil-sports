@@ -97,12 +97,7 @@ function mapMaxPrepsRosterRow(arr, school, sportSlug, totals) {
     primary_sport: sport,
     secondary_sports: lib.normalizePositions(secondaryPos),
     position: lib.normalizePositions(posString).join(" / "),
-    season_stats_summary: [
-      `Class ${gradYear}`,
-      primaryPos ? primaryPos : "",
-      heightStr ? heightStr : "",
-      weight ? `${weight} lbs` : "",
-    ].filter(Boolean).join(" | "),
+    season_stats_summary: "",
     newspaper_mentions: [],
     social_handles: {},
     total_followers: 0,
@@ -113,7 +108,7 @@ function mapMaxPrepsRosterRow(arr, school, sportSlug, totals) {
     headshot_url: headshotUrl || "",
     headshot_permission: headshotUrl ? "maxpreps" : "", // official rosters → authorized for display
     photo_gallery: headshotUrl ? [headshotUrl] : [],
-    bio: `Varsity ${sportSlug} at ${school.name}. Verified LHSAA varsity roster.`,
+    bio: [`Class ${gradYear}`, primaryPos ? primaryPos : "", heightStr ? heightStr : "", weight ? `${weight} lbs` : ""].filter(Boolean).join(" | ") + `. Varsity ${sportSlug} at ${school.name}. Verified LHSAA varsity roster.`,
     hudl_url: profileUrl || "",
     youtube_url: "",
     gpa: null,

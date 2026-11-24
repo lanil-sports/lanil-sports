@@ -2109,7 +2109,7 @@ function openAthleteDetail(id) {
             <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
               <i class="fa-solid fa-chart-simple text-amber-400"></i> Season Statistics
             </h4>
-            <p class="text-xs text-slate-200 font-medium">${escapeHtml(cleanScoutingText(a.season_stats_summary))}</p>
+            <p class="text-xs text-slate-200 font-medium">${escapeHtml(cleanScoutingText(a.season_stats_summary)) || 'No verified season statistics yet.'}</p>
           </div>
 
           <div class="bg-slate-800/50 rounded-xl p-4 border border-white/5">

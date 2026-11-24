@@ -613,10 +613,6 @@
             <span class="text-[9px] text-slate-400 block uppercase font-semibold">School Booster</span>
             <span id="merch-school-split" class="font-athletic text-sm font-bold text-cyan-400 leading-none">10% (<span class="text-[0.9em]">$</span>1.00)</span>
           </div>
-          <div class="bg-slate-900/90 rounded p-1.5 border border-emerald-400/20">
-            <span class="text-[9px] text-slate-400 block uppercase font-semibold">Production & Net</span>
-            <span id="merch-platform-split" class="font-athletic text-sm font-bold text-emerald-400 leading-none">70% (<span class="text-[0.9em]">$</span>6.99)</span>
-          </div>
         </div>
       </div>
 
@@ -1113,7 +1109,7 @@ function render() {
 // Explicit overrides: Supabase fields featured_front_page/is_featured_front
 // or IDs listed here take priority. Fallback is deterministic round-robin by sport.
 const FEATURED_FRONT_PAGE_IDS = [];
-const FRONT_PAGE_COUNT = 6;
+const FRONT_PAGE_COUNT = 15;
 
 function isFrontPageFeatured(a) {
   if (!a) return false;
@@ -1127,6 +1123,17 @@ function frontPageQualityScore(a) {
   const claimed = a.claimed ? 1 : 0;
   const nil = Number(a.est_nil_value) || 0;
   return (verified * 100000000) + (claimed * 10000000) + nil;
+}
+
+function inferAthleteGender(a) {
+  const s = String((a && (a.primary_sport || a.sport)) || '').toLowerCase();
+  const g = String((a && (a.gender || a.sex)) || '').toLowerCase();
+  if (g.startsWith('f') || g.includes('women') || g.includes('girl')) return 'f';
+  if (g.startsWith('m') || g.includes('men') || g.includes('boy')) return 'm';
+  if (/women|woman|girls|girl|softball|women's/.test(s)) return 'f';
+  if (/men's|boys|boy\b|football\b|baseball\b/.test(s)) return 'm';
+  if (/volleyball|soccer|basketball|track|cross country|swimming|tennis|golf|wrestling/.test(s)) return 'u';
+  return 'u';
 }
 
 function getFrontPageAthletes(count = FRONT_PAGE_COUNT) {
@@ -1189,6 +1196,37 @@ function getFrontPageAthletes(count = FRONT_PAGE_COUNT) {
       byId.add(key);
       picked.push(a);
     }
+  }
+
+  // 4) Gender balance pass: aim for mix of male/female when available.
+  const wantEach = Math.floor(count / 3); // at least ~5 of each when possible
+  const counts = { m: 0, f: 0, u: 0 };
+  for (const a of picked) counts[inferAthleteGender(a)]++;
+  const pool = eligible
+    .filter(a => !byId.has(String(a.id || a.player_id || a.slug || a.full_name)))
+    .sort((a, b) => frontPageQualityScore(b) - frontPageQualityScore(a) || String(a.full_name || '').localeCompare(String(b.full_name || '')));
+  function trySwap(targetGender) {
+    if (counts[targetGender] >= wantEach) return false;
+    // replace lowest-quality picked of overrepresented known gender or unknown
+    for (let i = picked.length - 1; i >= 0; i--) {
+      const g = inferAthleteGender(picked[i]);
+      if (g === targetGender) continue;
+      if ((g === 'm' || g === 'f') && counts[g] <= wantEach) continue;
+      const cand = pool.find(p => inferAthleteGender(p) === targetGender && !byId.has(String(p.id || p.player_id || p.slug || p.full_name)));
+      if (!cand) return false;
+      const old = picked[i];
+      byId.delete(String(old.id || old.player_id || old.slug || old.full_name));
+      byId.add(String(cand.id || cand.player_id || cand.slug || cand.full_name));
+      picked[i] = cand;
+      counts[g]--; counts[targetGender]++;
+      return true;
+    }
+    return false;
+  }
+  for (let t = 0; t < 20; t++) {
+    const m1 = trySwap('f');
+    const m2 = trySwap('m');
+    if (!m1 && !m2) break;
   }
 
   return picked.slice(0, count);
@@ -2302,7 +2340,10 @@ function unlockTest(id) {
 }
 // LANILSPORTS.COM Core (Part 3: Fan Vote, Rankings, Pricing, Share Card)
 function renderPOTW() {
-  const sorted = [...ATHLETES].filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a)).sort((a,b) => (b.votes || 0) - (a.votes || 0));
+  const sorted = [...ATHLETES]
+    .filter(a => hasVerifiedPhoto(a) && hasValidAthleteName(a) && (a.votes || 0) > 0)
+    .sort((a,b) => (b.votes || 0) - (a.votes || 0))
+    .slice(0, 20);
   const totalVotes = sorted.reduce((sum, a) => sum + (a.votes || 0), 0);
 
   return `
@@ -3051,13 +3092,13 @@ function openCardModal(id) {
     sportEmojiEl.textContent = getSportIcon(a.primary_sport);
   }
 
-  // Class and Stats (Clean athletic stats, removing LANIL Rating / Stars)
+  // Class and Athletic Bio (replaces season stats on card)
   document.getElementById('card-grad').textContent = a.grad_year;
   const cardStatsEl = document.getElementById('card-stats');
   if (cardStatsEl) {
-    const formattedStats = formatCardStats(a.season_stats_summary || '');
-    if (formattedStats) {
-      cardStatsEl.textContent = formattedStats;
+    const bioText = cleanScoutingText(a.bio || '').trim();
+    if (bioText) {
+      cardStatsEl.textContent = bioText;
       cardStatsEl.style.display = 'block';
     } else {
       cardStatsEl.textContent = '';

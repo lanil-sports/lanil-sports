@@ -1280,12 +1280,16 @@ function renderDirectory() {
     if (filterSport !== 'all' && a.primary_sport !== filterSport) return false;
     if (filterParish !== 'all' && !a.parish_city.toLowerCase().includes(filterParish.toLowerCase())) return false;
     if (searchTerm) {
-      const q = searchTerm.toLowerCase();
-      const matchName = a.full_name.toLowerCase().includes(q);
-      const matchSchool = a.school_name.toLowerCase().includes(q);
-      const matchCity = a.parish_city.toLowerCase().includes(q);
-      const matchPos = (a.position || '').toLowerCase().includes(q);
-      if (!matchName && !matchSchool && !matchCity && !matchPos) return false;
+      const q = searchTerm.toLowerCase().trim();
+      const qNorm = q.replace(/,/g, '');
+      const haystack = [
+        a.full_name, a.school_name, a.parish_city, a.position,
+        a.primary_sport, a.season_stats_summary, a.bio,
+        a.current_grade, a.grad_year, a.level
+      ].filter(Boolean).join(' ').toLowerCase();
+      const hayNorm = haystack.replace(/,/g, '');
+      const match = haystack.includes(q) || hayNorm.includes(qNorm);
+      if (!match) return false;
     }
     return true;
   });

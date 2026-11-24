@@ -1306,7 +1306,20 @@ function renderDirectory() {
     while (i > 0 && suffixes.has(parts[i].toLowerCase())) i--;
     return (parts[i] || parts[parts.length - 1] || '').toLowerCase();
   }
-  const baseList = [...filtered].sort((a, b) => {
+  // Dedupe visible directory entries by normalized name+school+sport (keep best record)
+  const dedupeMap = new Map();
+  for (const a of filtered) {
+    const key = [
+      String(a.full_name||'').toLowerCase().replace(/[^a-z0-9]/g,''),
+      String(a.school_name||'').toLowerCase().replace(/[^a-z0-9]/g,''),
+      String(a.primary_sport||'').toLowerCase().replace(/[^a-z0-9]/g,'')
+    ].join('|');
+    const prev = dedupeMap.get(key);
+    if (!prev) { dedupeMap.set(key, a); continue; }
+    const score = (x) => (hasVerifiedPhoto(x)?1000:0) + (x.verified?100:0) + (x.claimed?50:0) + (String(x.parish_city||'').trim()?10:0) + (Number(x.est_nil_value)||0)/100000;
+    if (score(a) > score(prev)) dedupeMap.set(key, a);
+  }
+  const baseList = [...dedupeMap.values()].sort((a, b) => {
     const ap = hasVerifiedPhoto(a) ? 0 : 1;
     const bp = hasVerifiedPhoto(b) ? 0 : 1;
     if (ap !== bp) return ap - bp;

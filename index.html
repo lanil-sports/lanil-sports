@@ -1836,6 +1836,7 @@ function getAthleteGameLogs(a) {
   if (!a) return [];
   if (Array.isArray(a.game_logs) && a.game_logs.length > 0) return a.game_logs;
   if (Array.isArray(a.box_scores) && a.box_scores.length > 0) return a.box_scores;
+  if (a.social_handles && Array.isArray(a.social_handles.game_logs) && a.social_handles.game_logs.length > 0) return a.social_handles.game_logs;
   return [];
 }
 

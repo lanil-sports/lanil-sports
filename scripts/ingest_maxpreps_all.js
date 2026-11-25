@@ -108,7 +108,7 @@ function mapMaxPrepsRosterRow(arr, school, sportSlug, totals) {
     headshot_url: headshotUrl || "",
     headshot_permission: headshotUrl ? "maxpreps" : "", // official rosters → authorized for display
     photo_gallery: headshotUrl ? [headshotUrl] : [],
-    bio: [`Class ${gradYear}`, primaryPos ? primaryPos : "", heightStr ? heightStr : "", weight ? `${weight} lbs` : ""].filter(Boolean).join(" | ") + `. Varsity ${sportSlug} at ${school.name}. Verified LHSAA varsity roster.`,
+    bio: [`Class ${gradYear}`, primaryPos ? primaryPos : "", heightStr ? heightStr : "", weight ? `${weight} lbs` : ""].filter(Boolean).join(" | ") + `. Varsity ${sportSlug} at ${school.name}.`,
     hudl_url: profileUrl || "",
     youtube_url: "",
     gpa: null,

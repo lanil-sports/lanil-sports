@@ -392,7 +392,41 @@ function openClaimPreload(name, school, year) {
   openModal('claim-modal');
 }
 
-function handleClaimSubmit(e) {
+let pendingStripePlan = typeof pendingStripePlan !== 'undefined' ? pendingStripePlan : null;
+let pendingStripeAthleteId = typeof pendingStripeAthleteId !== 'undefined' ? pendingStripeAthleteId : null;
+
+async function startStripeCheckout(plan, opts = {}) {
+  const email = String(opts.email || '').trim();
+  const athleteId = String(opts.athleteId || '').trim();
+  const athleteName = String(opts.athleteName || '').trim();
+  if (!email) { alert('Email is required for checkout.'); return; }
+  if (plan === 'athlete' && !athleteId) { alert('Athlete profile is required for Athlete Premium checkout.'); return; }
+  try {
+    const resp = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, email, athleteId, athleteName })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.url) throw new Error(data.error || 'Unable to start Stripe checkout.');
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('Stripe checkout error:', err);
+    alert('Checkout error: ' + (err.message || 'Please try again.'));
+  }
+}
+
+function openRecruiterCheckout() {
+  const email = prompt('Enter your email for Recruiter & Media Pro ($19.99/mo):');
+  if (email) startStripeCheckout('recruiter', { email });
+}
+
+function openSponsorCheckout() {
+  const email = prompt('Enter your business email for Parish Sponsorship ($99/mo):');
+  if (email) startStripeCheckout('sponsor', { email });
+}
+
+async function handleClaimSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('claim-name').value;
   const school = document.getElementById('claim-school').value;
@@ -434,6 +468,16 @@ function handleClaimSubmit(e) {
   }
 
   closeModal('claim-modal');
+
+  if (pendingStripePlan === 'athlete') {
+    const plan = pendingStripePlan;
+    const athleteId = pendingStripeAthleteId || athlete.id || athlete.player_id;
+    pendingStripePlan = null;
+    pendingStripeAthleteId = null;
+    await startStripeCheckout(plan, { email, athleteId, athleteName: athlete.full_name || name });
+    return;
+  }
+
   alert(`Success! Profile for ${name} claimed. Confirmation logged to ${email}. You can now manage photos and updates.`);
   render();
   openAthleteDetail(athlete.id);
@@ -611,7 +655,7 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Profile View Analytics</li>
             </ul>
           </div>
-          <button onclick="openModal('claim-modal')" class="w-full mt-6 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition">
+          <button onclick="pendingStripePlan='athlete'; pendingStripeAthleteId=null; openModal('claim-modal')" class="w-full mt-6 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition">
             Claim & Upgrade ($3.99/mo)
           </button>
         </div>
@@ -633,7 +677,7 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Exportable Excel / CSV Dossiers</li>
             </ul>
           </div>
-          <button onclick="alert('Stripe zero-cost checkout integration connects directly here!')" class="w-full mt-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+          <button onclick="openRecruiterCheckout()" class="w-full mt-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
             Start Pro Access ($19.99/mo)
           </button>
         </div>
@@ -654,8 +698,8 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Louisiana Act 810 Compliance Guidance</li>
             </ul>
           </div>
-          <button onclick="alert('Business inquiries can reach out directly to contact@lanilsports.com')" class="w-full mt-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
-            Inquire for Parish Sponsor
+          <button onclick="openSponsorCheckout()" class="w-full mt-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+            Start Parish Sponsorship ($99/mo)
           </button>
         </div>
       </div>

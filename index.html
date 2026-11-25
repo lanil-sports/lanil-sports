@@ -2351,6 +2351,16 @@ async function handleClaimSubmit(e) {
   }
 
   closeModal('claim-modal');
+
+  if (pendingStripePlan === 'athlete') {
+    const plan = pendingStripePlan;
+    const athleteId = pendingStripeAthleteId || athlete.id || athlete.player_id;
+    pendingStripePlan = null;
+    pendingStripeAthleteId = null;
+    await startStripeCheckout(plan, { email, athleteId, athleteName: athlete.full_name || name });
+    return;
+  }
+
   alert(`Success! Profile for ${name} claimed. Confirmation logged to ${email}. You can now manage photos and updates.`);
   render();
   openAthleteDetail(athlete.id);
@@ -2591,7 +2601,7 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> Profile View Analytics</li>
             </ul>
           </div>
-          <button onclick="openModal('claim-modal')" class="w-full mt-6 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition">
+          <button onclick="pendingStripePlan='athlete'; pendingStripeAthleteId=null; openModal('claim-modal')" class="w-full mt-6 py-2.5 rounded-xl gold-gradient text-slate-950 font-bold text-xs hover:brightness-110 transition">
             Claim & Upgrade ($3.99/mo)
           </button>
         </div>
@@ -2613,7 +2623,7 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> Exportable Excel / CSV Dossiers</li>
             </ul>
           </div>
-          <button onclick="alert('Stripe zero-cost checkout integration connects directly here!')" class="w-full mt-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
+          <button onclick="openRecruiterCheckout()" class="w-full mt-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs transition">
             Start Pro Access ($19.99/mo)
           </button>
         </div>
@@ -2634,8 +2644,8 @@ function renderPricing() {
               <li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> Louisiana Act 810 Compliance Guidance</li>
             </ul>
           </div>
-          <button onclick="alert('Business inquiries can reach out directly to contact@lanilsports.com')" class="w-full mt-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
-            Inquire for Parish Sponsor
+          <button onclick="openSponsorCheckout()" class="w-full mt-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition">
+            Start Parish Sponsorship ($99/mo)
           </button>
         </div>
       </div>
@@ -3436,6 +3446,75 @@ function updateMerchPrice(val) {
   if (sEl) sEl.textContent = `10% (${school})`;
   if (pfEl) pfEl.textContent = `70% (${platform})`;
 }
+
+let pendingStripePlan = null;
+let pendingStripeAthleteId = null;
+
+async function startStripeCheckout(plan, opts = {}) {
+  const email = String(opts.email || '').trim();
+  const athleteId = String(opts.athleteId || '').trim();
+  const athleteName = String(opts.athleteName || '').trim();
+  if (!email) {
+    alert('Email is required for checkout.');
+    return;
+  }
+  if (plan === 'athlete' && !athleteId) {
+    alert('Athlete profile is required for Athlete Premium checkout.');
+    return;
+  }
+  try {
+    const resp = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan, email, athleteId, athleteName })
+    });
+    const data = await resp.json().catch(() => ({}));
+    if (!resp.ok || !data.url) {
+      throw new Error(data.error || 'Unable to start Stripe checkout.');
+    }
+    window.location.href = data.url;
+  } catch (err) {
+    console.error('Stripe checkout error:', err);
+    alert('Checkout error: ' + (err.message || 'Please try again.'));
+  }
+}
+
+function openRecruiterCheckout() {
+  const email = prompt('Enter your email for Recruiter & Media Pro ($19.99/mo):');
+  if (email) startStripeCheckout('recruiter', { email });
+}
+
+function openSponsorCheckout() {
+  const email = prompt('Enter your business email for Parish Sponsorship ($99/mo):');
+  if (email) startStripeCheckout('sponsor', { email });
+}
+
+function openAthleteUpgradeCheckout(athleteId, athleteName) {
+  pendingStripePlan = 'athlete';
+  pendingStripeAthleteId = athleteId ? String(athleteId) : null;
+  const nameInput = document.getElementById('claim-name');
+  if (nameInput && athleteName) nameInput.value = athleteName;
+  openModal('claim-modal');
+}
+
+function handleStripeCheckoutReturn() {
+  const params = new URLSearchParams(window.location.search);
+  const checkout = params.get('checkout');
+  const plan = params.get('plan');
+  if (!checkout) return;
+  if (checkout === 'success') {
+    showToast(`Payment successful! ${plan ? plan.toUpperCase() : 'Stripe'} plan is being activated.`);
+  } else if (checkout === 'cancel') {
+    showToast('Checkout canceled. No charge was made.');
+  }
+  params.delete('checkout');
+  params.delete('plan');
+  params.delete('session_id');
+  const next = window.location.pathname + (params.toString() ? '?' + params.toString() : '') + window.location.hash;
+  window.history.replaceState({}, document.title, next);
+}
+
+window.addEventListener('DOMContentLoaded', handleStripeCheckoutReturn);
 
 function handleMerchCheckout(e) {
   e.preventDefault();

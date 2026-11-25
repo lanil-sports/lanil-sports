@@ -1241,16 +1241,18 @@ function renderHome() {
       <h1 class="font-athletic text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-normal sm:tracking-wide uppercase text-white leading-[0.95] break-words max-w-full">
         DISCOVER LOUISIANA <span class="text-amber-400">TALENT</span>
       </h1>
-      <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+      <div class="mt-5 flex justify-center">
+        <button onclick="openModal('claim-modal')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800/80 border border-purple-500/40 text-white font-bold text-sm sm:text-base hover:bg-slate-700 transition">
+          <span class="mr-1.5">🏈 🏀 ⚾ 🏃 🥎</span>
+          <span class="font-athletic tracking-wide">Athlete Empowerment, Powered by AI</span>
+        </button>
+      </div>
+      <div class="mt-4 flex flex-wrap items-center justify-center gap-3">
         <button onclick="navigate('directory')" class="px-5 py-2.5 rounded-xl gold-gradient text-slate-950 font-extrabold text-sm uppercase tracking-wider hover:brightness-110 shadow-md shadow-amber-500/20 transition">
           <i class="fa-solid fa-users mr-1.5"></i> View Full Directory
         </button>
         <button onclick="navigate('rankings')" class="px-5 py-2.5 rounded-xl bg-slate-800/80 border border-white/10 text-white font-bold text-sm hover:bg-slate-700 transition">
           <i class="fa-solid fa-trophy text-purple-400 mr-1.5"></i> Rankings
-        </button>
-        <button onclick="openModal('claim-modal')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800/80 border border-purple-500/40 text-white font-bold text-sm sm:text-base hover:bg-slate-700 transition">
-          <span class="mr-1.5">🏈 🏀 ⚾ 🏃 🥎</span>
-          <span class="font-athletic tracking-wide">Athlete Empowerment, Powered by AI</span>
         </button>
       </div>
       <div class="mt-4 flex justify-center">

@@ -1248,6 +1248,10 @@ function renderHome() {
         <button onclick="navigate('rankings')" class="px-5 py-2.5 rounded-xl bg-slate-800/80 border border-white/10 text-white font-bold text-sm hover:bg-slate-700 transition">
           <i class="fa-solid fa-trophy text-purple-400 mr-1.5"></i> Rankings
         </button>
+        <button onclick="openModal('claim-modal')" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-800/80 border border-purple-500/40 text-white font-bold text-sm sm:text-base hover:bg-slate-700 transition">
+          <span class="mr-1.5">🏈 🏀 ⚾ 🏃 🥎</span>
+          <span class="font-athletic tracking-wide">Athlete Empowerment, Powered by AI</span>
+        </button>
       </div>
       <div class="mt-4 flex justify-center">
         <button onclick="navigate('potw')" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-white font-bold text-sm sm:text-base transition">
@@ -2516,7 +2520,7 @@ function renderRankings() {
                   <td class="py-3 px-4 font-semibold text-slate-300">${escapeHtml(a.grad_year)}</td>
                   <td class="py-3 px-4">${escapeHtml(a.primary_sport||'')}</td>
                   <td class="py-3 px-4 text-right font-medium">${(a.total_followers || 0).toLocaleString()}</td>
-                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-purple-400"><span class="text-purple-300 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
+                  <td class="py-3 px-4 text-right font-athletic text-base font-bold text-purple-400"><span class="text-emerald-400 text-[0.9em]">$</span>${(a.est_nil_value || 0).toLocaleString()}</td>
                   <td class="py-3 px-4 text-center">
                     <button onclick="openAthleteDetail('${escapeAttrJs(a.id)}')" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-semibold">
                       Profile
